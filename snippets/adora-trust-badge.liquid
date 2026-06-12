@@ -1,0 +1,29 @@
+{%- liquid
+  assign tag_name = 'span'
+  assign badge_href = badge_link
+  assign icon_alt_text = badge_icon_alt | default: badge_text | escape
+  assign icon_size_value = badge_icon_size | default: 22
+
+  if badge_href != blank
+    assign tag_name = 'a'
+  endif
+-%}
+
+<{{ tag_name }}
+  class="adora-hero-trust-badge"
+  {% if badge_href != blank %}href="{{ badge_href }}"{% endif %}
+  style="--adora-hero-trust-icon-size: {{ icon_size_value }}px;"
+>
+  {%- if show_badge_icon and badge_icon != blank -%}
+    {{ badge_icon | image_url: width: 96 | image_tag:
+      class: 'adora-hero-trust-badge__icon',
+      alt: icon_alt_text,
+      loading: 'lazy',
+      widths: '24, 48, 72, 96',
+      sizes: icon_size_value
+    }}
+  {%- endif -%}
+  {%- if show_badge_text and badge_text != blank -%}
+    <span class="adora-hero-trust-badge__text">{{ badge_text | escape }}</span>
+  {%- endif -%}
+</{{ tag_name }}>
