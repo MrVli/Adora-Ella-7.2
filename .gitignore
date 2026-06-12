@@ -1,0 +1,25 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies / tooling
+node_modules/
+.shopify/
+
+# Environment files
+.env
+.env.*
+
+# Shopify theme temporary files
+.theme-check.yml.tmp
+
+# Build/cache artifacts
+.cache/
+dist/
+build/
