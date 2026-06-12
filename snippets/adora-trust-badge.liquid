@@ -3,6 +3,7 @@
   assign badge_href = badge_link
   assign icon_alt_text = badge_icon_alt | default: badge_text | escape
   assign icon_size_value = badge_icon_size | default: 22
+  assign icon_size_attr = icon_size_value | append: 'px'
 
   if badge_href != blank
     assign tag_name = 'a'
@@ -20,7 +21,7 @@
       alt: icon_alt_text,
       loading: 'lazy',
       widths: '24, 48, 72, 96',
-      sizes: icon_size_value
+      sizes: icon_size_attr
     }}
   {%- endif -%}
   {%- if show_badge_text and badge_text != blank -%}
