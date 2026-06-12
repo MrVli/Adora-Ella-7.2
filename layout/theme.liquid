@@ -62,6 +62,7 @@
 
     {% render 'global-css', direction: direction %}
     {{ 'adora-sections.css' | asset_url | stylesheet_tag }}
+    {{ 'adora-header.css' | asset_url | stylesheet_tag }}
     {%- render 'global-script' -%}
     <script src="{{ 'adora-sections.js' | asset_url }}" defer="defer"></script>
 
@@ -114,5 +115,6 @@
     {% render 'halo-popup' %}
 
     {% render 'halo-global' %}
+    <script src="{{ 'adora-header.js' | asset_url }}" defer="defer"></script>
   </body>
 </html>
