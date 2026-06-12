@@ -5,7 +5,7 @@
 -%}
 
 <header
-  class="adora-header adora-header--visible adora-header--solid adora-header--nav-{{ section.settings.desktop_nav_position }}{% if section.settings.enable_blur_on_scroll %} adora-header--blur{% endif %}{% if section.settings.enable_bottom_border %} adora-header--border{% endif %}{% if section.settings.enable_soft_shadow %} adora-header--shadow{% endif %}"
+  class="adora-header adora-header--visible adora-header--solid adora-header--nav-{{ section.settings.desktop_nav_position }}{% if section.settings.enable_blur_on_scroll %} adora-header--blur{% endif %}{% if section.settings.enable_bottom_border %} adora-header--border{% endif %}{% if section.settings.enable_soft_shadow %} adora-header--shadow{% endif %}{% unless section.settings.mobile_logo_centered %} adora-header--mobile-logo-inline{% endunless %}"
   data-adora-header
   data-homepage="{% if request.page_type == 'index' %}true{% else %}false{% endif %}"
   data-transparent-homepage="{{ section.settings.enable_transparent_on_homepage }}"
@@ -49,14 +49,7 @@
 
   <div class="adora-header__inner">
     <div class="adora-header__mobile-left">
-      <button
-        class="adora-header__burger"
-        type="button"
-        aria-label="Menü öffnen"
-        aria-controls="{{ drawer_id }}"
-        aria-expanded="false"
-        data-adora-header-burger
-      >
+      <button class="adora-header__burger" type="button" aria-label="Menü öffnen" aria-controls="{{ drawer_id }}" aria-expanded="false" data-adora-header-burger>
         <span class="adora-header__burger-icon" aria-hidden="true"><span></span></span>
       </button>
     </div>
@@ -65,9 +58,7 @@
       {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
         <ul class="adora-header__nav-list">
           {%- for link in section.settings.menu.links -%}
-            <li class="adora-header__nav-item">
-              <a class="adora-header__nav-link" href="{{ link.url }}">{{ link.title | escape }}</a>
-            </li>
+            <li class="adora-header__nav-item"><a class="adora-header__nav-link" href="{{ link.url }}">{{ link.title | escape }}</a></li>
           {%- endfor -%}
         </ul>
       {%- endif -%}
@@ -96,23 +87,13 @@
             </li>
           {%- endif -%}
         {%- endfor -%}
-        {%- if section.settings.show_search -%}
-          <li class="adora-header__utility-item">
-            <a class="adora-header__utility-link" href="{{ routes.search_url }}">Search</a>
-          </li>
-        {%- endif -%}
-        {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
-          <li class="adora-header__utility-item">
-            <a class="adora-header__utility-link" href="{{ routes.account_url }}">Account</a>
-          </li>
-        {%- endif -%}
+        {%- if section.settings.show_search -%}<li class="adora-header__utility-item"><a class="adora-header__utility-link" href="{{ routes.search_url }}">Search</a></li>{%- endif -%}
+        {%- if section.settings.show_account and shop.customer_accounts_enabled -%}<li class="adora-header__utility-item"><a class="adora-header__utility-link" href="{{ routes.account_url }}">Account</a></li>{%- endif -%}
         {%- if section.settings.show_cart -%}
           <li class="adora-header__utility-item">
             <a class="adora-header__utility-button adora-header__cart-link" href="{{ routes.cart_url }}" aria-label="Warenkorb">
               <span>Cart</span>
-              {%- if section.settings.show_cart_count -%}
-                <span class="adora-header__cart-count" aria-label="{{ cart.item_count }} Artikel im Warenkorb">{{ cart.item_count }}</span>
-              {%- endif -%}
+              {%- if section.settings.show_cart_count -%}<span class="adora-header__cart-count" aria-label="{{ cart.item_count }} Artikel im Warenkorb">{{ cart.item_count }}</span>{%- endif -%}
             </a>
           </li>
         {%- endif -%}
@@ -122,72 +103,45 @@
     <div class="adora-header__mobile-cart">
       {%- if section.settings.show_cart -%}
         <a class="adora-header__utility-button adora-header__cart-link" href="{{ routes.cart_url }}" aria-label="Warenkorb">
-          <svg class="adora-header__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M7 8.5V7a5 5 0 0 1 10 0v1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M5.5 8.5h13l-.9 11H6.4l-.9-11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-          </svg>
-          {%- if section.settings.show_cart_count -%}
-            <span class="adora-header__cart-count" aria-label="{{ cart.item_count }} Artikel im Warenkorb">{{ cart.item_count }}</span>
-          {%- endif -%}
+          <svg class="adora-header__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 8.5V7a5 5 0 0 1 10 0v1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M5.5 8.5h13l-.9 11H6.4l-.9-11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          {%- if section.settings.show_cart_count -%}<span class="adora-header__cart-count" aria-label="{{ cart.item_count }} Artikel im Warenkorb">{{ cart.item_count }}</span>{%- endif -%}
         </a>
       {%- endif -%}
     </div>
   </div>
 
   <div class="adora-header__drawer-overlay" aria-hidden="true" data-adora-header-overlay></div>
-  <aside
-    id="{{ drawer_id }}"
-    class="adora-header__drawer adora-header__drawer--{{ section.settings.mobile_drawer_position }}"
-    aria-hidden="true"
-    aria-label="Mobile Navigation"
-  >
+  <aside id="{{ drawer_id }}" class="adora-header__drawer adora-header__drawer--{{ section.settings.mobile_drawer_position }}" aria-hidden="true" aria-label="Mobile Navigation">
     <div class="adora-header__drawer-header">
       <a class="adora-header__drawer-logo" href="{{ routes.root_url }}">{{ section.settings.logo_text | default: 'ADORA' | escape }}</a>
       <button class="adora-header__drawer-close" type="button" aria-label="Menü schließen" data-adora-header-close>
-        <svg class="adora-header__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
+        <svg class="adora-header__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
       </button>
     </div>
 
     {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
       <nav class="adora-header__drawer-nav" aria-label="Mobile Hauptnavigation">
-        {%- for link in section.settings.menu.links -%}
-          <a class="adora-header__drawer-link" href="{{ link.url }}">{{ link.title | escape }}</a>
-        {%- endfor -%}
+        {%- for link in section.settings.menu.links -%}<a class="adora-header__drawer-link" href="{{ link.url }}">{{ link.title | escape }}</a>{%- endfor -%}
       </nav>
     {%- endif -%}
 
     <div class="adora-header__drawer-utilities">
-      {%- if section.settings.show_mobile_search -%}
-        <a class="adora-header__drawer-utility" href="{{ routes.search_url }}">Search</a>
-      {%- endif -%}
-      {%- if section.settings.show_mobile_account and shop.customer_accounts_enabled -%}
-        <a class="adora-header__drawer-utility" href="{{ routes.account_url }}">Account</a>
-      {%- endif -%}
+      {%- if section.settings.show_mobile_search -%}<a class="adora-header__drawer-utility" href="{{ routes.search_url }}">Search</a>{%- endif -%}
+      {%- if section.settings.show_mobile_account and shop.customer_accounts_enabled -%}<a class="adora-header__drawer-utility" href="{{ routes.account_url }}">Account</a>{%- endif -%}
       {%- for block in section.blocks -%}
         {%- if block.type == 'utility_link' and block.settings.show_mobile and block.settings.label != blank -%}
-          <a class="adora-header__drawer-utility" href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>
-            {{ block.settings.label | escape }}
-          </a>
+          <a class="adora-header__drawer-utility" href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
         {%- endif -%}
       {%- endfor -%}
     </div>
 
-    {%- if section.settings.show_mobile_promo_text and section.settings.mobile_promo_text != blank -%}
-      <div class="adora-header__drawer-promo">{{ section.settings.mobile_promo_text }}</div>
-    {%- endif -%}
+    {%- if section.settings.show_mobile_promo_text and section.settings.mobile_promo_text != blank -%}<div class="adora-header__drawer-promo">{{ section.settings.mobile_promo_text }}</div>{%- endif -%}
 
     <div class="adora-header__drawer-promos">
       {%- for block in section.blocks -%}
-        {%- if block.type == 'drawer_promo_link' and block.settings.label != blank -%}
-          <a class="adora-header__drawer-promo-link" href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>
-            {{ block.settings.label | escape }}
-          </a>
-        {%- endif -%}
+        {%- if block.type == 'drawer_promo_link' and block.settings.label != blank -%}<a class="adora-header__drawer-promo-link" href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>{%- endif -%}
       {%- endfor -%}
     </div>
-
     <div class="adora-header__drawer-spacer"></div>
   </aside>
 </header>
@@ -198,359 +152,63 @@
   "tag": "section",
   "class": "adora-header-section",
   "max_blocks": 12,
-  "enabled_on": {
-    "groups": ["header"]
-  },
+  "enabled_on": { "groups": ["header"] },
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "enable_header",
-      "label": "Enable header",
-      "default": true
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo_image",
-      "label": "Logo image"
-    },
-    {
-      "type": "text",
-      "id": "logo_text",
-      "label": "Logo text",
-      "default": "ADORA"
-    },
-    {
-      "type": "range",
-      "id": "logo_width_desktop",
-      "label": "Logo width desktop",
-      "min": 70,
-      "max": 260,
-      "step": 5,
-      "unit": "px",
-      "default": 130
-    },
-    {
-      "type": "range",
-      "id": "logo_width_mobile",
-      "label": "Logo width mobile",
-      "min": 60,
-      "max": 180,
-      "step": 5,
-      "unit": "px",
-      "default": 95
-    },
-    {
-      "type": "header",
-      "content": "Announcement bar"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_announcement",
-      "label": "Show announcement",
-      "default": false
-    },
-    {
-      "type": "richtext",
-      "id": "announcement_text",
-      "label": "Announcement text",
-      "default": "<p>Ein ruhiges Ritual für sichtbar mehr Glow.</p>"
-    },
-    {
-      "type": "text",
-      "id": "announcement_link_label",
-      "label": "Announcement link label"
-    },
-    {
-      "type": "url",
-      "id": "announcement_link_url",
-      "label": "Announcement link URL"
-    },
-    {
-      "type": "color",
-      "id": "announcement_bg_color",
-      "label": "Announcement background color",
-      "default": "#2B211D"
-    },
-    {
-      "type": "color",
-      "id": "announcement_text_color",
-      "label": "Announcement text color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "header",
-      "content": "Header behavior"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_transparent_on_homepage",
-      "label": "Enable transparent header on homepage",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_hide_on_scroll_down",
-      "label": "Hide on scroll down",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_show_on_scroll_up",
-      "label": "Show on scroll up",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_solid_after_scroll",
-      "label": "Use solid background after scroll",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "scroll_threshold",
-      "label": "Scroll threshold",
-      "min": 20,
-      "max": 300,
-      "step": 10,
-      "unit": "px",
-      "default": 80
-    },
-    {
-      "type": "select",
-      "id": "sticky_mode",
-      "label": "Sticky mode",
-      "options": [
-        { "value": "fixed", "label": "Fixed" },
-        { "value": "sticky", "label": "Sticky" }
-      ],
-      "default": "fixed"
-    },
-    {
-      "type": "header",
-      "content": "Desktop layout"
-    },
-    {
-      "type": "select",
-      "id": "desktop_nav_position",
-      "label": "Desktop nav position",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_search",
-      "label": "Show search",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_account",
-      "label": "Show account",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cart",
-      "label": "Show cart",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cart_count",
-      "label": "Show cart count",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_mega_menu",
-      "label": "Enable mega menu",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "Mobile"
-    },
-    {
-      "type": "checkbox",
-      "id": "mobile_logo_centered",
-      "label": "Mobile logo centered",
-      "default": true
-    },
-    {
-      "type": "select",
-      "id": "mobile_drawer_position",
-      "label": "Mobile drawer position",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_mobile_search",
-      "label": "Show mobile search",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_mobile_account",
-      "label": "Show mobile account",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_mobile_promo_text",
-      "label": "Show mobile promo text",
-      "default": false
-    },
-    {
-      "type": "richtext",
-      "id": "mobile_promo_text",
-      "label": "Mobile promo text",
-      "default": "<p>Premium Skincare als ruhiges 3-Step Ritual.</p>"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "transparent_text_color",
-      "label": "Transparent text color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "solid_bg_color",
-      "label": "Solid background color",
-      "default": "#F7F1EA"
-    },
-    {
-      "type": "color",
-      "id": "solid_text_color",
-      "label": "Solid text color",
-      "default": "#2B211D"
-    },
-    {
-      "type": "color",
-      "id": "border_color",
-      "label": "Border color",
-      "default": "rgba(43, 33, 29, 0.12)"
-    },
-    {
-      "type": "color",
-      "id": "drawer_bg_color",
-      "label": "Drawer background color",
-      "default": "#F7F1EA"
-    },
-    {
-      "type": "color",
-      "id": "drawer_text_color",
-      "label": "Drawer text color",
-      "default": "#2B211D"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent color",
-      "default": "#C9A88D"
-    },
-    {
-      "type": "header",
-      "content": "Style"
-    },
-    {
-      "type": "range",
-      "id": "header_height_desktop",
-      "label": "Header height desktop",
-      "min": 56,
-      "max": 120,
-      "step": 2,
-      "unit": "px",
-      "default": 76
-    },
-    {
-      "type": "range",
-      "id": "header_height_mobile",
-      "label": "Header height mobile",
-      "min": 52,
-      "max": 92,
-      "step": 2,
-      "unit": "px",
-      "default": 64
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_blur_on_scroll",
-      "label": "Enable blur on scroll",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_bottom_border",
-      "label": "Enable bottom border",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_soft_shadow",
-      "label": "Enable soft shadow",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "nav_letter_spacing",
-      "label": "Nav letter spacing",
-      "min": 0,
-      "max": 40,
-      "step": 1,
-      "unit": "px/10",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "nav_font_size",
-      "label": "Nav font size",
-      "min": 10,
-      "max": 16,
-      "step": 1,
-      "unit": "px",
-      "default": 12
-    }
+    { "type": "checkbox", "id": "enable_header", "label": "Enable header", "default": true },
+    { "type": "link_list", "id": "menu", "label": "Menu" },
+    { "type": "image_picker", "id": "logo_image", "label": "Logo image" },
+    { "type": "text", "id": "logo_text", "label": "Logo text", "default": "ADORA" },
+    { "type": "range", "id": "logo_width_desktop", "label": "Logo width desktop", "min": 70, "max": 260, "step": 5, "unit": "px", "default": 130 },
+    { "type": "range", "id": "logo_width_mobile", "label": "Logo width mobile", "min": 60, "max": 180, "step": 5, "unit": "px", "default": 95 },
+    { "type": "header", "content": "Announcement bar" },
+    { "type": "checkbox", "id": "show_announcement", "label": "Show announcement", "default": false },
+    { "type": "richtext", "id": "announcement_text", "label": "Announcement text", "default": "<p>Ein ruhiges Ritual für sichtbar mehr Glow.</p>" },
+    { "type": "text", "id": "announcement_link_label", "label": "Announcement link label" },
+    { "type": "url", "id": "announcement_link_url", "label": "Announcement link URL" },
+    { "type": "color", "id": "announcement_bg_color", "label": "Announcement background color", "default": "#2B211D" },
+    { "type": "color", "id": "announcement_text_color", "label": "Announcement text color", "default": "#FFFFFF" },
+    { "type": "header", "content": "Header behavior" },
+    { "type": "checkbox", "id": "enable_transparent_on_homepage", "label": "Enable transparent header on homepage", "default": true },
+    { "type": "checkbox", "id": "enable_hide_on_scroll_down", "label": "Hide on scroll down", "default": true },
+    { "type": "checkbox", "id": "enable_show_on_scroll_up", "label": "Show on scroll up", "default": true },
+    { "type": "checkbox", "id": "enable_solid_after_scroll", "label": "Use solid background after scroll", "default": true },
+    { "type": "range", "id": "scroll_threshold", "label": "Scroll threshold", "min": 20, "max": 300, "step": 10, "unit": "px", "default": 80 },
+    { "type": "select", "id": "sticky_mode", "label": "Sticky mode", "options": [{ "value": "fixed", "label": "Fixed" }, { "value": "sticky", "label": "Sticky" }], "default": "fixed" },
+    { "type": "header", "content": "Desktop layout" },
+    { "type": "select", "id": "desktop_nav_position", "label": "Desktop nav position", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "left" },
+    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
+    { "type": "checkbox", "id": "show_account", "label": "Show account", "default": true },
+    { "type": "checkbox", "id": "show_cart", "label": "Show cart", "default": true },
+    { "type": "checkbox", "id": "show_cart_count", "label": "Show cart count", "default": true },
+    { "type": "checkbox", "id": "enable_mega_menu", "label": "Enable mega menu", "default": false },
+    { "type": "header", "content": "Mobile" },
+    { "type": "checkbox", "id": "mobile_logo_centered", "label": "Mobile logo centered", "default": true },
+    { "type": "select", "id": "mobile_drawer_position", "label": "Mobile drawer position", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }], "default": "left" },
+    { "type": "checkbox", "id": "show_mobile_search", "label": "Show mobile search", "default": true },
+    { "type": "checkbox", "id": "show_mobile_account", "label": "Show mobile account", "default": true },
+    { "type": "checkbox", "id": "show_mobile_promo_text", "label": "Show mobile promo text", "default": false },
+    { "type": "richtext", "id": "mobile_promo_text", "label": "Mobile promo text", "default": "<p>Premium Skincare als ruhiges 3-Step Ritual.</p>" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "transparent_text_color", "label": "Transparent text color", "default": "#FFFFFF" },
+    { "type": "color", "id": "solid_bg_color", "label": "Solid background color", "default": "#F7F1EA" },
+    { "type": "color", "id": "solid_text_color", "label": "Solid text color", "default": "#2B211D" },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#E3D7CC" },
+    { "type": "color", "id": "drawer_bg_color", "label": "Drawer background color", "default": "#F7F1EA" },
+    { "type": "color", "id": "drawer_text_color", "label": "Drawer text color", "default": "#2B211D" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#C9A88D" },
+    { "type": "header", "content": "Style" },
+    { "type": "range", "id": "header_height_desktop", "label": "Header height desktop", "min": 56, "max": 120, "step": 2, "unit": "px", "default": 76 },
+    { "type": "range", "id": "header_height_mobile", "label": "Header height mobile", "min": 52, "max": 92, "step": 2, "unit": "px", "default": 64 },
+    { "type": "checkbox", "id": "enable_blur_on_scroll", "label": "Enable blur on scroll", "default": true },
+    { "type": "checkbox", "id": "enable_bottom_border", "label": "Enable bottom border", "default": true },
+    { "type": "checkbox", "id": "enable_soft_shadow", "label": "Enable soft shadow", "default": false },
+    { "type": "range", "id": "nav_letter_spacing", "label": "Nav letter spacing", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "nav_font_size", "label": "Nav font size", "min": 10, "max": 16, "step": 1, "unit": "px", "default": 12 }
   ],
   "blocks": [
-    {
-      "type": "utility_link",
-      "name": "Utility link",
-      "settings": [
-        { "type": "text", "id": "label", "label": "Label", "default": "Ritual" },
-        { "type": "url", "id": "url", "label": "URL" },
-        { "type": "checkbox", "id": "show_desktop", "label": "Show desktop", "default": true },
-        { "type": "checkbox", "id": "show_mobile", "label": "Show mobile", "default": true }
-      ]
-    },
-    {
-      "type": "drawer_promo_link",
-      "name": "Drawer promo link",
-      "settings": [
-        { "type": "text", "id": "label", "label": "Label", "default": "Glass Skin Ritual entdecken" },
-        { "type": "url", "id": "url", "label": "URL" }
-      ]
-    }
+    { "type": "utility_link", "name": "Utility link", "settings": [{ "type": "text", "id": "label", "label": "Label", "default": "Ritual" }, { "type": "url", "id": "url", "label": "URL" }, { "type": "checkbox", "id": "show_desktop", "label": "Show desktop", "default": true }, { "type": "checkbox", "id": "show_mobile", "label": "Show mobile", "default": true }] },
+    { "type": "drawer_promo_link", "name": "Drawer promo link", "settings": [{ "type": "text", "id": "label", "label": "Label", "default": "Glass Skin Ritual entdecken" }, { "type": "url", "id": "url", "label": "URL" }] }
   ],
-  "presets": [
-    {
-      "name": "ADORA Header"
-    }
-  ]
+  "presets": [{ "name": "ADORA Header" }]
 }
 {% endschema %}
