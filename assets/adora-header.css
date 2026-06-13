@@ -67,6 +67,20 @@
   border-radius: var(--adora-header-frame-radius);
 }
 
+.adora-header--hero-frame[data-homepage="true"][data-transparent-homepage="true"]:not(.adora-header--scrolled):not(.adora-header--drawer-open) {
+  color: var(--adora-header-transparent-text);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.adora-header--hero-frame[data-homepage="true"][data-transparent-homepage="true"][data-sticky-mode="fixed"]:not(.adora-header--scrolled):not(.adora-header--drawer-open) {
+  top: var(--adora-header-frame-inset-mobile);
+  right: var(--adora-header-frame-inset-mobile);
+  left: var(--adora-header-frame-inset-mobile);
+  width: calc(100% - (var(--adora-header-frame-inset-mobile) * 2));
+}
+
 .adora-header--blur.adora-header--solid,
 .adora-header--blur.adora-header--scrolled,
 .adora-header--blur.adora-header--drawer-open {
@@ -330,6 +344,13 @@
     width: calc(100% - (var(--adora-header-frame-inset-desktop) * 2));
   }
 
+  .adora-header--hero-frame[data-homepage="true"][data-transparent-homepage="true"][data-sticky-mode="fixed"]:not(.adora-header--scrolled):not(.adora-header--drawer-open) {
+    top: var(--adora-header-frame-inset-desktop);
+    right: var(--adora-header-frame-inset-desktop);
+    left: var(--adora-header-frame-inset-desktop);
+    width: calc(100% - (var(--adora-header-frame-inset-desktop) * 2));
+  }
+
   .adora-header__inner {
     min-height: var(--adora-header-height-desktop);
     padding-inline: clamp(26px, 2.8vw, 44px);
@@ -401,7 +422,9 @@
   }
 
   .adora-header--transparent .adora-header__nav-link:hover,
-  .adora-header--transparent .adora-header__utility-link:hover {
+  .adora-header--transparent .adora-header__utility-link:hover,
+  .adora-header--hero-frame[data-homepage="true"][data-transparent-homepage="true"]:not(.adora-header--scrolled):not(.adora-header--drawer-open) .adora-header__nav-link:hover,
+  .adora-header--hero-frame[data-homepage="true"][data-transparent-homepage="true"]:not(.adora-header--scrolled):not(.adora-header--drawer-open) .adora-header__utility-link:hover {
     color: currentColor;
     opacity: 0.72;
   }
