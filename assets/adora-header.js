@@ -34,16 +34,17 @@
     const canBeTransparent = () => transparentEnabled && isHomepage;
 
     const setMegaState = (isOpen) => {
-      if (!megaMenu || !megaTrigger || !desktopQuery.matches) {
+      if (!megaMenu || !megaTrigger) {
         return;
       }
 
-      megaOpen = isOpen;
-      header.classList.toggle('adora-header--mega-open', isOpen);
-      megaMenu.setAttribute('aria-hidden', String(!isOpen));
-      megaTrigger.setAttribute('aria-expanded', String(isOpen));
+      const nextState = isOpen && desktopQuery.matches;
+      megaOpen = nextState;
+      header.classList.toggle('adora-header--mega-open', nextState);
+      megaMenu.setAttribute('aria-hidden', String(!nextState));
+      megaTrigger.setAttribute('aria-expanded', String(nextState));
 
-      if (isOpen) {
+      if (nextState) {
         header.classList.remove('adora-header--hidden');
         header.classList.add('adora-header--visible');
       }
@@ -206,10 +207,16 @@
       }
     });
 
-    desktopQuery.addEventListener('change', () => {
+    const handleDesktopChange = () => {
       setMegaState(false);
       requestState();
-    });
+    };
+
+    if (desktopQuery.addEventListener) {
+      desktopQuery.addEventListener('change', handleDesktopChange);
+    } else if (desktopQuery.addListener) {
+      desktopQuery.addListener(handleDesktopChange);
+    }
 
     window.addEventListener('scroll', requestState, { passive: true });
     window.addEventListener('resize', requestState, { passive: true });
