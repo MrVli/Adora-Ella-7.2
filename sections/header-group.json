@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "Header group",
   "type": "header",
@@ -52,7 +61,9 @@
                   "settings": {
                     "text": "End of season sale up to 50% off. <a href=\"/collections\" title=\"All collections\">Shop Now</a>",
                     "font": "body",
-                    "font_size": "1.4rem"
+                    "font_size": "1.4rem",
+                    "font_weight": "default",
+                    "text_align": "center"
                   },
                   "blocks": {}
                 }
@@ -150,11 +161,8 @@
             "promotion_banner_layout": "right",
             "image_border_thickness": 0,
             "image_corner_radius": 0,
-            "image_1": "",
             "link_url_1": "",
-            "image_2": "",
             "link_url_2": "",
-            "image_3": "",
             "link_url_3": ""
           }
         },
@@ -164,7 +172,7 @@
             "menu_item": "COLLECTIONS",
             "grid": "5",
             "width": "page-width",
-            "megamenu_submenu": "custom-menu",
+            "megamenu_submenu": "",
             "product_collection": "",
             "product_limit": 4,
             "product_columns": 4,
@@ -173,7 +181,6 @@
             "vertical_alignment_flex_direction_column": "justify-start",
             "show_promotion_banner": true,
             "banner_row": "bottom",
-            "image_1": "",
             "image_border_thickness": 0,
             "image_corner_radius": 0,
             "link_url_1": "",
@@ -192,9 +199,7 @@
             "show_promotion_banner": true,
             "image_border_thickness": 0,
             "image_corner_radius": 0,
-            "image_1": "",
             "link_url_1": "",
-            "image_2": "",
             "link_url_2": "",
             "show_brand": true,
             "brand_title": "BRANDS BY ALPHABET",
@@ -214,6 +219,7 @@
         "mega_menu_3_pb6MdF",
         "mega_menu_2_A6GMW4"
       ],
+      "disabled": true,
       "name": "Header - Default",
       "settings": {
         "gap": 12,
@@ -230,12 +236,15 @@
         "menu_row": "top",
         "icon_type": "none",
         "menu_gap": 0,
+        "button_type_font_link": "body",
         "button_type_size_link": "1.6rem",
         "button_font_weight_link": "500",
         "case": "uppercase",
+        "button_type_font_link_2": "body",
         "button_type_size_link_2": "1.6rem",
         "button_font_weight_link_2": "600",
         "case_link_2": "uppercase",
+        "button_type_font_link_3": "body",
         "button_type_size_link_3": "1.6rem",
         "button_font_weight_link_3": "default",
         "case_link_3": "none",
@@ -243,31 +252,49 @@
         "message": "",
         "font": "var(--font-body--family)",
         "font_size": "1.2rem",
+        "message_case": "none",
         "message_position": "top",
         "message_row": "top",
         "show_account": true,
         "enable_account_drawer": true,
         "account_type": "icon",
+        "account_display_type": "block",
         "account_row": "top",
         "show_search": true,
         "search_display_type": "icon",
+        "search_display": "block",
         "search_type": "frame",
+        "search_underline_opacity": 0,
         "search_position": "right",
         "search_row": "top",
+        "search_icon_pos_right": 1,
+        "search_icon_pos_top": 1,
         "show_country": true,
         "show_language": true,
         "country_selector_style": true,
         "localization_font": "body",
         "localization_font_size": "1.2rem",
         "localization_type": "icon",
+        "show_localization_shortcode": false,
         "localization_position": "right",
         "localization_row": "top",
         "gift_cards_enabled": false,
         "link_giftcards": "",
         "actions_type": "icon",
+        "actions_display_type": "block",
         "actions_row": "top",
+        "header_actions_order": "account,search,localization,actions",
+        "custom_header_utility": false,
+        "header_utility_size": "1.6rem",
+        "header_utility_font": "var(--font-body--family)",
+        "header_utility_weight": "",
+        "header_utility_line_height": "normal",
+        "header_utility_letter_spacing": "normal",
+        "header_utility_case": "none",
+        "header_utility_wrap": "pretty",
         "section_width": "full-width",
-        "enable_sticky_header": "always",
+        "page_width_custom": 1570,
+        "enable_sticky_header": "scroll-up",
         "divider_width": 0,
         "divider_size": "page-width",
         "border_width": 0,
@@ -299,6 +326,10 @@
         "hot_label_bg": "#ffbb49",
         "enable_transparent_header_home": true,
         "home_color_scheme": "inverse",
+        "custom_bubble_transparent_header": false,
+        "bubble_background_transparent_header": "#ffffff",
+        "bubble_color_transparent_header": "#212121",
+        "bubble_size_transparent_header": 22,
         "enable_transparent_header_product": false,
         "product_color_scheme": "default",
         "enable_transparent_header_collection": false,
@@ -363,8 +394,7 @@
                     "link": "#",
                     "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 },
@@ -374,11 +404,9 @@
                   "settings": {
                     "title": "New In",
                     "link": "#",
-                    "sub_menu": "mobile-menu-new-in",
+                    "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": "",
-                    "banner_level_2": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 },
@@ -388,11 +416,9 @@
                   "settings": {
                     "title": "Accessories",
                     "link": "#",
-                    "sub_menu": "mobile-menu-accessories",
+                    "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": "",
-                    "banner_level_2": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 },
@@ -402,11 +428,9 @@
                   "settings": {
                     "title": "Shop This Look",
                     "link": "#",
-                    "sub_menu": "mobile-menu-shop-this-look",
+                    "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": "",
-                    "banner_level_2": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 },
@@ -416,11 +440,9 @@
                   "settings": {
                     "title": "Blog",
                     "link": "#",
-                    "sub_menu": "mobile-menu-blog",
+                    "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": "",
-                    "banner_level_2": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 },
@@ -430,10 +452,9 @@
                   "settings": {
                     "title": "Buy Theme",
                     "link": "https://1.envato.market/dokaB2",
-                    "sub_menu": "mobile-menu-buy-theme",
+                    "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 },
@@ -445,8 +466,7 @@
                     "link": "",
                     "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 },
@@ -458,8 +478,7 @@
                     "link": "",
                     "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 }
@@ -490,10 +509,9 @@
                   "settings": {
                     "title": "Home Page",
                     "link": "",
-                    "sub_menu": "mobile-menu-home-page",
+                    "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 },
@@ -505,8 +523,7 @@
                     "link": "",
                     "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 },
@@ -518,8 +535,7 @@
                     "link": "",
                     "sub_menu": "",
                     "image_type_level_1": "image",
-                    "svg_upload_level_1": "",
-                    "image_level_1": ""
+                    "svg_upload_level_1": ""
                   },
                   "blocks": {}
                 },
@@ -563,12 +579,14 @@
           ]
         }
       },
+      "disabled": true,
       "name": "Header mobile multi-tab",
       "settings": {
         "show_image_level_1": true,
         "media_type": "circle",
         "media_width": 35,
         "show_image_sub_menu": true,
+        "sub_media_type": "rectangle",
         "media_width_sub_menu": 70,
         "show_country": true,
         "country_selector_style": true,
@@ -576,11 +594,62 @@
         "localization_font": "body",
         "localization_font_size": "1.4rem"
       }
+    },
+    "adora_header_ED7LNc": {
+      "type": "adora-header",
+      "name": "ADORA Header",
+      "settings": {
+        "enable_header": true,
+        "menu": "main-menu",
+        "logo_image": "shopify://shop_images/Adora_Logo_Trans.png",
+        "logo_text": "ADORA",
+        "logo_width_desktop": 130,
+        "logo_width_mobile": 95,
+        "show_announcement": false,
+        "announcement_text": "<p>Ein ruhiges Ritual für sichtbar mehr Glow.</p>",
+        "announcement_link_label": "",
+        "announcement_link_url": "",
+        "announcement_bg_color": "#2B211D",
+        "announcement_text_color": "#FFFFFF",
+        "enable_transparent_on_homepage": true,
+        "enable_hide_on_scroll_down": true,
+        "enable_show_on_scroll_up": true,
+        "enable_solid_after_scroll": true,
+        "scroll_threshold": 80,
+        "sticky_mode": "fixed",
+        "desktop_nav_position": "left",
+        "show_search": true,
+        "show_account": true,
+        "show_cart": true,
+        "show_cart_count": true,
+        "enable_mega_menu": false,
+        "mobile_logo_centered": true,
+        "mobile_drawer_position": "left",
+        "show_mobile_search": true,
+        "show_mobile_account": true,
+        "show_mobile_promo_text": false,
+        "mobile_promo_text": "<p>Premium Skincare als ruhiges 3-Step Ritual.</p>",
+        "transparent_text_color": "#FFFFFF",
+        "solid_bg_color": "#F7F1EA",
+        "solid_text_color": "#2B211D",
+        "border_color": "#E3D7CC",
+        "drawer_bg_color": "#F7F1EA",
+        "drawer_text_color": "#2B211D",
+        "accent_color": "#C9A88D",
+        "header_height_desktop": 76,
+        "header_height_mobile": 64,
+        "enable_blur_on_scroll": true,
+        "enable_bottom_border": true,
+        "enable_soft_shadow": false,
+        "nav_letter_spacing": 18,
+        "nav_font_size": 12
+      }
     }
   },
   "order": [
     "announcement_bar_4tGfEp",
     "header_default",
-    "header_mobile_MqfLk9"
+    "header_mobile_MqfLk9",
+    "adora_header_ED7LNc"
   ]
 }
