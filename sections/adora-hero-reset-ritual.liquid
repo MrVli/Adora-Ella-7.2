@@ -17,116 +17,63 @@
 -%}
 
 <section
-  class="adora-section adora-hero-reset adora-hero-reset--{{ section.settings.hero_height }} adora-hero-reset--image-{{ section.settings.image_position }} adora-hero-reset--text-{{ section.settings.text_alignment }} adora-hero-reset--desktop-{{ section.settings.content_position_desktop }} adora-hero-reset--mobile-{{ section.settings.content_position_mobile }} adora-hero-reset--badges-desktop-{{ section.settings.trust_badge_layout_desktop }} adora-hero-reset--badges-mobile-{{ section.settings.trust_badge_layout_mobile }}{% if section.settings.show_glow_veil %} adora-hero-reset--glow{% endif %}{% if section.settings.enable_header_overlay_spacing %} adora-hero-reset--header-offset{% endif %}"
+  class="adora-hero-reset adora-hero-reset--{{ section.settings.hero_height }} adora-hero-reset--content-{{ section.settings.content_position_desktop }} adora-hero-reset--content-mobile-{{ section.settings.content_position_mobile }} adora-hero-reset--badges-desktop-{{ section.settings.trust_badge_layout_desktop }} adora-hero-reset--badges-mobile-{{ section.settings.trust_badge_layout_mobile }}{% if section.settings.show_glow_veil %} adora-hero-reset--glow{% endif %}"
   style="
     --adora-hero-reset-bg: {{ section.settings.background_color }};
     --adora-hero-reset-text: {{ section.settings.text_color }};
     --adora-hero-reset-accent: {{ section.settings.accent_color }};
     --adora-hero-reset-padding-desktop: {{ section.settings.padding_desktop }}px;
     --adora-hero-reset-padding-mobile: {{ section.settings.padding_mobile }}px;
-    --adora-hero-reset-header-offset-desktop: {{ section.settings.header_overlay_offset_desktop }}px;
-    --adora-hero-reset-header-offset-mobile: {{ section.settings.header_overlay_offset_mobile }}px;
+    --adora-hero-reset-frame-radius: {{ section.settings.frame_radius }}px;
     --adora-hero-reset-overlay-color: {{ section.settings.overlay_color }};
     --adora-hero-reset-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
     --adora-hero-trust-icon-size-default: {{ section.settings.trust_badge_icon_size }}px;
   "
 >
-  <div class="adora-container adora-hero-reset__container">
-    <div class="adora-hero-reset__media" {{ reveal_attr }}>
-      <div class="adora-image-frame adora-hero-reset__image-frame">
-        {%- if use_video -%}
-          <video
-            class="adora-hero-reset__video"
-            {% if section.settings.video_autoplay %}autoplay{% endif %}
-            {% if section.settings.video_loop %}loop{% endif %}
-            {% if section.settings.video_muted %}muted{% endif %}
-            {% if section.settings.video_playsinline %}playsinline{% endif %}
-            {% if section.settings.show_video_controls %}controls{% endif %}
-            {% if section.settings.video_poster_image != blank %}poster="{{ section.settings.video_poster_image | image_url: width: 1400 }}"{% endif %}
-            preload="metadata"
-          >
-            {%- if mobile_video_url != blank -%}
-              <source src="{{ mobile_video_url }}" media="(max-width: 749px)">
-            {%- endif -%}
-            <source src="{{ desktop_video_url }}">
-          </video>
-        {%- elsif hero_image != blank -%}
-          <picture>
-            {%- if mobile_image != blank -%}
-              <source
-                media="(max-width: 749px)"
-                srcset="{{ mobile_image | image_url: width: 480 }} 480w, {{ mobile_image | image_url: width: 720 }} 720w, {{ mobile_image | image_url: width: 960 }} 960w"
-                sizes="100vw"
-              >
-            {%- endif -%}
-            <source
-              media="(min-width: 750px)"
-              srcset="{{ hero_image | image_url: width: 720 }} 720w, {{ hero_image | image_url: width: 960 }} 960w, {{ hero_image | image_url: width: 1280 }} 1280w, {{ hero_image | image_url: width: 1600 }} 1600w"
-              sizes="(min-width: 1440px) 680px, 48vw"
-            >
-            {{ hero_image | image_url: width: 1400 | image_tag:
-              class: 'adora-hero-reset__image',
-              alt: image_alt,
-              loading: 'eager',
-              fetchpriority: 'high',
-              widths: '480, 720, 960, 1280, 1600',
-              sizes: '(min-width: 1440px) 680px, (min-width: 750px) 48vw, 100vw'
-            }}
-          </picture>
-        {%- else -%}
-          <div class="adora-hero-reset__placeholder" aria-hidden="true">
-            <span class="adora-hero-reset__placeholder-mark">ADORA</span>
-          </div>
-        {%- endif -%}
-        <div class="adora-hero-reset__media-overlay" aria-hidden="true"></div>
-      </div>
+  <div class="adora-hero-reset__frame" {{ reveal_attr }}>
+    <div class="adora-hero-reset__media">
+      {%- if use_video -%}
+        <video
+          class="adora-hero-reset__video"
+          {% if section.settings.video_autoplay %}autoplay{% endif %}
+          {% if section.settings.video_loop %}loop{% endif %}
+          {% if section.settings.video_muted %}muted{% endif %}
+          {% if section.settings.video_playsinline %}playsinline{% endif %}
+          {% if section.settings.show_video_controls %}controls{% endif %}
+          {% if section.settings.video_poster_image != blank %}poster="{{ section.settings.video_poster_image | image_url: width: 1800 }}"{% endif %}
+          preload="metadata"
+        >
+          {%- if mobile_video_url != blank -%}<source src="{{ mobile_video_url }}" media="(max-width: 749px)">{%- endif -%}
+          <source src="{{ desktop_video_url }}">
+        </video>
+      {%- elsif hero_image != blank -%}
+        <picture>
+          {%- if mobile_image != blank -%}
+            <source media="(max-width: 749px)" srcset="{{ mobile_image | image_url: width: 640 }} 640w, {{ mobile_image | image_url: width: 960 }} 960w, {{ mobile_image | image_url: width: 1200 }} 1200w" sizes="100vw">
+          {%- endif -%}
+          <source media="(min-width: 750px)" srcset="{{ hero_image | image_url: width: 1200 }} 1200w, {{ hero_image | image_url: width: 1600 }} 1600w, {{ hero_image | image_url: width: 2200 }} 2200w, {{ hero_image | image_url: width: 2800 }} 2800w" sizes="100vw">
+          {{ hero_image | image_url: width: 2200 | image_tag: class: 'adora-hero-reset__image', alt: image_alt, loading: 'eager', fetchpriority: 'high', widths: '640, 960, 1200, 1600, 2200, 2800', sizes: '100vw' }}
+        </picture>
+      {%- else -%}
+        <div class="adora-hero-reset__placeholder" aria-hidden="true"><span>ADORA</span></div>
+      {%- endif -%}
+      <div class="adora-hero-reset__overlay" aria-hidden="true"></div>
     </div>
 
     <div class="adora-hero-reset__content" {{ reveal_attr }}>
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="adora-eyebrow adora-hero-reset__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-      {%- endif -%}
-
-      {%- if section.settings.headline != blank -%}
-        <h1 class="adora-heading adora-hero-reset__heading">{{ section.settings.headline | escape }}</h1>
-      {%- endif -%}
-
-      {%- if section.settings.subheadline != blank -%}
-        <div class="adora-richtext adora-subheading adora-hero-reset__subheading">{{ section.settings.subheadline }}</div>
-      {%- endif -%}
-
+      {%- if section.settings.eyebrow != blank -%}<p class="adora-hero-reset__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      {%- if section.settings.headline != blank -%}<h1 class="adora-hero-reset__heading">{{ section.settings.headline | escape }}</h1>{%- endif -%}
+      {%- if section.settings.subheadline != blank -%}<div class="adora-hero-reset__subheading">{{ section.settings.subheadline }}</div>{%- endif -%}
       <div class="adora-hero-reset__actions">
-        {%- if section.settings.primary_button_label != blank -%}
-          {%- if section.settings.primary_button_link != blank -%}
-            <a class="adora-button adora-button--primary adora-hero-reset__button" href="{{ section.settings.primary_button_link }}">{{ section.settings.primary_button_label | escape }}</a>
-          {%- else -%}
-            <span class="adora-button adora-button--primary adora-hero-reset__button" aria-disabled="true">{{ section.settings.primary_button_label | escape }}</span>
-          {%- endif -%}
-        {%- endif -%}
-
-        {%- if section.settings.secondary_button_label != blank -%}
-          {%- if section.settings.secondary_button_link != blank -%}
-            <a class="adora-button adora-button--secondary adora-hero-reset__button" href="{{ section.settings.secondary_button_link }}">{{ section.settings.secondary_button_label | escape }}</a>
-          {%- else -%}
-            <span class="adora-button adora-button--secondary adora-hero-reset__button" aria-disabled="true">{{ section.settings.secondary_button_label | escape }}</span>
-          {%- endif -%}
-        {%- endif -%}
+        {%- if section.settings.primary_button_label != blank -%}<a class="adora-hero-reset__button adora-hero-reset__button--primary" href="{{ section.settings.primary_button_link | default: '#' }}">{{ section.settings.primary_button_label | escape }}</a>{%- endif -%}
+        {%- if section.settings.secondary_button_label != blank -%}<a class="adora-hero-reset__button adora-hero-reset__button--secondary" href="{{ section.settings.secondary_button_link | default: '#' }}">{{ section.settings.secondary_button_label | escape }}</a>{%- endif -%}
       </div>
-
       {%- if section.settings.show_trust_badges and section.blocks.size > 0 -%}
         <ul class="adora-hero-reset__badges" aria-label="ADORA Ritual Vorteile">
           {%- for block in section.blocks -%}
             {%- if block.settings.badge_text != blank or block.settings.badge_icon != blank -%}
               <li class="adora-hero-reset__badge-item" {{ block.shopify_attributes }}>
-                {% render 'adora-trust-badge',
-                  badge_text: block.settings.badge_text,
-                  badge_icon: block.settings.badge_icon,
-                  badge_icon_alt: block.settings.badge_icon_alt,
-                  badge_icon_size: block.settings.badge_icon_size,
-                  badge_link: block.settings.badge_link,
-                  show_badge_text: block.settings.show_badge_text,
-                  show_badge_icon: block.settings.show_badge_icon
-                %}
+                {% render 'adora-trust-badge', badge_text: block.settings.badge_text, badge_icon: block.settings.badge_icon, badge_icon_alt: block.settings.badge_icon_alt, badge_icon_size: block.settings.badge_icon_size, badge_link: block.settings.badge_link, show_badge_text: block.settings.show_badge_text, show_badge_icon: block.settings.show_badge_icon %}
               </li>
             {%- endif -%}
           {%- endfor -%}
@@ -138,101 +85,167 @@
 
 {% style %}
   #shopify-section-{{ section.id }} .adora-hero-reset {
-    min-height: auto;
-    padding: var(--adora-hero-reset-padding-mobile) 0;
+    position: relative;
+    padding: var(--adora-hero-reset-padding-mobile);
+    background: var(--adora-hero-reset-bg);
     color: var(--adora-hero-reset-text);
-    background: radial-gradient(circle at 18% 12%, rgba(232, 207, 197, 0.42), transparent 34%), var(--adora-hero-reset-bg);
+  }
+
+  #shopify-section-{{ section.id }} .adora-hero-reset__frame {
+    position: relative;
+    min-height: {% if section.settings.hero_height == 'compact' %}620px{% elsif section.settings.hero_height == 'full' %}calc(100svh - (var(--adora-hero-reset-padding-mobile) * 2)){% else %}calc(92svh - (var(--adora-hero-reset-padding-mobile) * 2)){% endif %};
+    overflow: hidden;
+    border-radius: var(--adora-hero-reset-frame-radius);
+    background: var(--adora-bg-soft);
     isolation: isolate;
   }
 
-  #shopify-section-{{ section.id }} .adora-hero-reset--glow::before {
+  #shopify-section-{{ section.id }} .adora-hero-reset--glow .adora-hero-reset__frame::before {
     content: '';
     position: absolute;
-    inset: 8% auto auto 50%;
-    z-index: -1;
-    width: min(58vw, 620px);
-    aspect-ratio: 1;
-    background: radial-gradient(circle, rgba(201, 168, 141, 0.28), transparent 68%);
-    filter: blur(8px);
-    transform: translateX(-50%);
+    inset: 0;
+    z-index: 2;
+    background: radial-gradient(circle at 24% 86%, rgba(247, 241, 234, 0.32), transparent 38%);
     pointer-events: none;
   }
 
-  #shopify-section-{{ section.id }} .adora-hero-reset__container {
-    display: grid;
-    gap: clamp(28px, 7vw, 78px);
-    align-items: center;
+  #shopify-section-{{ section.id }} .adora-hero-reset__media,
+  #shopify-section-{{ section.id }} .adora-hero-reset__media picture,
+  #shopify-section-{{ section.id }} .adora-hero-reset__image,
+  #shopify-section-{{ section.id }} .adora-hero-reset__video,
+  #shopify-section-{{ section.id }} .adora-hero-reset__placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
-  #shopify-section-{{ section.id }} .adora-hero-reset__media { order: 1; }
+  #shopify-section-{{ section.id }} .adora-hero-reset__image,
+  #shopify-section-{{ section.id }} .adora-hero-reset__video {
+    display: block;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .adora-hero-reset__overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--adora-hero-reset-overlay-color);
+    opacity: var(--adora-hero-reset-overlay-opacity);
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-hero-reset__placeholder {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #efe3d7, #e8cfc5);
+  }
+
+  #shopify-section-{{ section.id }} .adora-hero-reset__placeholder span {
+    color: rgba(43, 33, 29, 0.18);
+    font-family: var(--font-heading-family, inherit);
+    font-size: clamp(4rem, 18vw, 14rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+  }
+
   #shopify-section-{{ section.id }} .adora-hero-reset__content {
-    order: 2;
+    position: absolute;
+    right: clamp(22px, 4vw, 56px);
+    bottom: clamp(24px, 5vw, 74px);
+    left: clamp(22px, 4vw, 56px);
+    z-index: 3;
+    max-width: min(720px, 92%);
+    color: var(--adora-hero-reset-text);
     text-align: {{ section.settings.text_alignment }};
   }
 
-  #shopify-section-{{ section.id }} .adora-hero-reset--header-offset .adora-hero-reset__content {
-    padding-top: var(--adora-hero-reset-header-offset-mobile);
+  #shopify-section-{{ section.id }} .adora-hero-reset--content-top .adora-hero-reset__content { top: clamp(110px, 16vw, 170px); bottom: auto; }
+  #shopify-section-{{ section.id }} .adora-hero-reset--content-center .adora-hero-reset__content { top: 50%; bottom: auto; transform: translateY(-50%); }
+  #shopify-section-{{ section.id }} .adora-hero-reset--content-bottom .adora-hero-reset__content { bottom: clamp(24px, 5vw, 74px); }
+
+  #shopify-section-{{ section.id }} .adora-hero-reset__eyebrow {
+    margin: 0 0 12px;
+    color: var(--adora-hero-reset-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
 
-  #shopify-section-{{ section.id }} .adora-hero-reset__eyebrow { color: var(--adora-hero-reset-accent); }
   #shopify-section-{{ section.id }} .adora-hero-reset__heading {
-    max-width: 11ch;
-    color: var(--adora-hero-reset-text);
+    max-width: 13ch;
+    margin: 0;
+    color: currentColor;
+    font-family: var(--font-heading-family, inherit);
+    font-size: clamp(2.7rem, 8vw, 5.9rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
   }
 
-  #shopify-section-{{ section.id }} .adora-hero-reset--text-center .adora-hero-reset__heading,
-  #shopify-section-{{ section.id }} .adora-hero-reset--text-center .adora-hero-reset__subheading { margin-inline: auto; }
+  #shopify-section-{{ section.id }} .adora-hero-reset__subheading {
+    max-width: 620px;
+    margin-top: 18px;
+    font-size: clamp(0.98rem, 1.8vw, 1.18rem);
+    line-height: 1.55;
+  }
 
-  #shopify-section-{{ section.id }} .adora-hero-reset__subheading { color: rgba(43, 33, 29, 0.72); }
+  #shopify-section-{{ section.id }} .adora-hero-reset__subheading p { margin: 0; }
 
   #shopify-section-{{ section.id }} .adora-hero-reset__actions {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     gap: 12px;
-    margin-top: clamp(24px, 5vw, 38px);
+    margin-top: 24px;
   }
 
-  #shopify-section-{{ section.id }} .adora-hero-reset__button { width: 100%; }
+  #shopify-section-{{ section.id }} .adora-hero-reset__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 28px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    color: currentColor;
+    background: transparent;
+    font-size: 0.86rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .adora-hero-reset__button--primary {
+    color: var(--adora-hero-reset-bg);
+    background: var(--adora-hero-reset-text);
+    border-color: var(--adora-hero-reset-text);
+  }
 
   #shopify-section-{{ section.id }} .adora-hero-reset__badges {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: {% if section.settings.text_alignment == 'center' %}center{% else %}flex-start{% endif %};
     padding: 0;
-    margin: clamp(24px, 5vw, 36px) 0 0;
+    margin: 24px 0 0;
     list-style: none;
   }
-
-  #shopify-section-{{ section.id }} .adora-hero-reset--badges-mobile-scroll .adora-hero-reset__badges {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    scroll-snap-type: x proximity;
-  }
-
-  #shopify-section-{{ section.id }} .adora-hero-reset--badges-mobile-stacked .adora-hero-reset__badges {
-    display: grid;
-  }
-
-  #shopify-section-{{ section.id }} .adora-hero-reset__badge-item { flex: 0 0 auto; }
 
   #shopify-section-{{ section.id }} .adora-hero-trust-badge {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 9px;
-    min-height: 38px;
-    padding: 9px 14px;
-    color: var(--adora-hero-reset-text);
-    background: rgba(255, 255, 255, 0.56);
-    border: 1px solid var(--adora-border);
+    gap: 8px;
+    min-height: 36px;
+    padding: 8px 13px;
+    color: currentColor;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.32);
     border-radius: 999px;
-    backdrop-filter: blur(12px);
-    font-size: 0.78rem;
-    font-weight: 600;
+    backdrop-filter: blur(10px);
+    font-size: 0.72rem;
+    font-weight: 800;
     letter-spacing: 0.04em;
-    line-height: 1;
     text-decoration: none;
     text-transform: uppercase;
     white-space: nowrap;
@@ -244,72 +257,27 @@
     object-fit: contain;
   }
 
-  #shopify-section-{{ section.id }} .adora-hero-reset__image-frame {
-    min-height: clamp(360px, 72vw, 620px);
-    border: 1px solid rgba(43, 33, 29, 0.08);
-    box-shadow: var(--adora-shadow-soft);
-  }
-
-  #shopify-section-{{ section.id }} .adora-hero-reset__image,
-  #shopify-section-{{ section.id }} .adora-hero-reset__video {
-    display: block;
-    width: 100%;
-    min-height: inherit;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  #shopify-section-{{ section.id }} .adora-hero-reset__media-overlay {
-    position: absolute;
-    inset: 0;
-    background: var(--adora-hero-reset-overlay-color);
-    opacity: var(--adora-hero-reset-overlay-opacity);
-    pointer-events: none;
-  }
-
-  #shopify-section-{{ section.id }} .adora-hero-reset__placeholder {
-    display: grid;
-    min-height: inherit;
-    place-items: center;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(232, 207, 197, 0.62)), var(--adora-bg-soft);
-  }
-
-  #shopify-section-{{ section.id }} .adora-hero-reset__placeholder-mark {
-    color: rgba(43, 33, 29, 0.2);
-    font-family: var(--font-heading-family, inherit);
-    font-size: clamp(2.2rem, 12vw, 7rem);
-    letter-spacing: 0.14em;
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .adora-hero-reset--content-mobile-top .adora-hero-reset__content { top: 98px; bottom: auto; transform: none; }
+    #shopify-section-{{ section.id }} .adora-hero-reset--content-mobile-center .adora-hero-reset__content { top: 50%; bottom: auto; transform: translateY(-50%); }
+    #shopify-section-{{ section.id }} .adora-hero-reset--content-mobile-bottom .adora-hero-reset__content { top: auto; bottom: 26px; transform: none; }
+    #shopify-section-{{ section.id }} .adora-hero-reset__actions { display: grid; }
+    #shopify-section-{{ section.id }} .adora-hero-reset__button { width: 100%; }
+    #shopify-section-{{ section.id }} .adora-hero-reset--badges-mobile-scroll .adora-hero-reset__badges { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+    #shopify-section-{{ section.id }} .adora-hero-reset--badges-mobile-stacked .adora-hero-reset__badges { display: grid; }
   }
 
   @media screen and (min-width: 750px) {
     #shopify-section-{{ section.id }} .adora-hero-reset {
-      display: flex;
-      min-height: {% if section.settings.hero_height == 'compact' %}70vh{% elsif section.settings.hero_height == 'full' %}100svh{% else %}80vh{% endif %};
-      padding: var(--adora-hero-reset-padding-desktop) 0;
+      padding: var(--adora-hero-reset-padding-desktop);
     }
 
-    #shopify-section-{{ section.id }} .adora-hero-reset__container { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
-    #shopify-section-{{ section.id }} .adora-hero-reset--image-left .adora-hero-reset__container { grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); }
-    #shopify-section-{{ section.id }} .adora-hero-reset--image-left .adora-hero-reset__media { order: 1; }
-    #shopify-section-{{ section.id }} .adora-hero-reset--image-left .adora-hero-reset__content { order: 2; }
-    #shopify-section-{{ section.id }} .adora-hero-reset--image-right .adora-hero-reset__content { order: 1; }
-    #shopify-section-{{ section.id }} .adora-hero-reset--image-right .adora-hero-reset__media { order: 2; }
-
-    #shopify-section-{{ section.id }} .adora-hero-reset--header-offset .adora-hero-reset__content { padding-top: var(--adora-hero-reset-header-offset-desktop); }
-    #shopify-section-{{ section.id }} .adora-hero-reset--desktop-top .adora-hero-reset__container { align-items: start; }
-    #shopify-section-{{ section.id }} .adora-hero-reset--desktop-center .adora-hero-reset__container { align-items: center; }
-    #shopify-section-{{ section.id }} .adora-hero-reset--desktop-bottom .adora-hero-reset__container { align-items: end; }
-
-    #shopify-section-{{ section.id }} .adora-hero-reset__actions {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
+    #shopify-section-{{ section.id }} .adora-hero-reset__frame {
+      min-height: {% if section.settings.hero_height == 'compact' %}720px{% elsif section.settings.hero_height == 'full' %}calc(100svh - (var(--adora-hero-reset-padding-desktop) * 2)){% else %}calc(92svh - (var(--adora-hero-reset-padding-desktop) * 2)){% endif %};
     }
 
-    #shopify-section-{{ section.id }} .adora-hero-reset__button { width: auto; }
-    #shopify-section-{{ section.id }} .adora-hero-reset__image-frame { min-height: {% if section.settings.hero_height == 'compact' %}520px{% elsif section.settings.hero_height == 'full' %}min(820px, 82vh){% else %}min(720px, 74vh){% endif %}; }
-    #shopify-section-{{ section.id }} .adora-hero-reset--badges-desktop-grid .adora-hero-reset__badges { display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); }
-    #shopify-section-{{ section.id }} .adora-hero-reset--badges-desktop-floating .adora-hero-reset__badges { position: absolute; right: clamp(32px, 6vw, 86px); bottom: clamp(32px, 5vw, 70px); max-width: min(420px, 36vw); }
+    #shopify-section-{{ section.id }} .adora-hero-reset--badges-desktop-grid .adora-hero-reset__badges { display: grid; grid-template-columns: repeat(2, max-content); }
+    #shopify-section-{{ section.id }} .adora-hero-reset--badges-desktop-floating .adora-hero-reset__badges { position: absolute; right: 0; bottom: 0; max-width: 420px; }
   }
 {% endstyle %}
 
@@ -341,17 +309,17 @@
     { "type": "checkbox", "id": "video_playsinline", "label": "Video plays inline", "default": true },
     { "type": "checkbox", "id": "show_video_controls", "label": "Show video controls", "default": false },
     { "type": "header", "content": "Overlay" },
-    { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#2B211D" },
-    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 70, "step": 5, "unit": "%", "default": 0 },
-    { "type": "select", "id": "content_position_desktop", "label": "Content position desktop", "options": [{ "value": "top", "label": "Top" }, { "value": "center", "label": "Center" }, { "value": "bottom", "label": "Bottom" }], "default": "center" },
-    { "type": "select", "id": "content_position_mobile", "label": "Content position mobile", "options": [{ "value": "top", "label": "Top" }, { "value": "center", "label": "Center" }, { "value": "bottom", "label": "Bottom" }], "default": "center" },
+    { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 70, "step": 5, "unit": "%", "default": 30 },
+    { "type": "select", "id": "content_position_desktop", "label": "Content position desktop", "options": [{ "value": "top", "label": "Top" }, { "value": "center", "label": "Center" }, { "value": "bottom", "label": "Bottom" }], "default": "bottom" },
+    { "type": "select", "id": "content_position_mobile", "label": "Content position mobile", "options": [{ "value": "top", "label": "Top" }, { "value": "center", "label": "Center" }, { "value": "bottom", "label": "Bottom" }], "default": "bottom" },
     { "type": "header", "content": "Style" },
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#F7F1EA" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#2B211D" },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#C9A88D" },
-    { "type": "range", "id": "padding_desktop", "label": "Section padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 88 },
-    { "type": "range", "id": "padding_mobile", "label": "Section padding mobile", "min": 28, "max": 100, "step": 4, "unit": "px", "default": 48 },
-    { "type": "select", "id": "image_position", "label": "Image position", "options": [{ "value": "right", "label": "Right" }, { "value": "left", "label": "Left" }], "default": "right" },
+    { "type": "color", "id": "background_color", "label": "Page background color", "default": "#F7F1EA" },
+    { "type": "color", "id": "text_color", "label": "Hero text color", "default": "#FFFFFF" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#F7F1EA" },
+    { "type": "range", "id": "padding_desktop", "label": "Outer spacing desktop", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_mobile", "label": "Outer spacing mobile", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "frame_radius", "label": "Hero frame radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 18 },
     { "type": "select", "id": "text_alignment", "label": "Text alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "left" },
     { "type": "select", "id": "hero_height", "label": "Hero height", "options": [{ "value": "compact", "label": "Compact" }, { "value": "standard", "label": "Standard" }, { "value": "full", "label": "Full" }], "default": "standard" },
     { "type": "checkbox", "id": "show_trust_badges", "label": "Show trust badges", "default": true },
@@ -359,11 +327,7 @@
     { "type": "select", "id": "trust_badge_layout_mobile", "label": "Trust badge layout mobile", "options": [{ "value": "wrap", "label": "Wrap" }, { "value": "scroll", "label": "Scroll" }, { "value": "stacked", "label": "Stacked" }], "default": "wrap" },
     { "type": "range", "id": "trust_badge_icon_size", "label": "Trust badge icon size fallback", "min": 12, "max": 48, "step": 2, "unit": "px", "default": 22 },
     { "type": "checkbox", "id": "show_glow_veil", "label": "Show glow veil", "default": true },
-    { "type": "checkbox", "id": "enable_reveal", "label": "Enable soft reveal animation", "default": true },
-    { "type": "header", "content": "Header overlay spacing" },
-    { "type": "checkbox", "id": "enable_header_overlay_spacing", "label": "Enable header overlay spacing", "default": true },
-    { "type": "range", "id": "header_overlay_offset_desktop", "label": "Header overlay offset desktop", "min": 0, "max": 180, "step": 4, "unit": "px", "default": 76 },
-    { "type": "range", "id": "header_overlay_offset_mobile", "label": "Header overlay offset mobile", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 64 }
+    { "type": "checkbox", "id": "enable_reveal", "label": "Enable soft reveal animation", "default": true }
   ],
   "blocks": [
     { "type": "trust_badge", "name": "Trust badge", "settings": [
