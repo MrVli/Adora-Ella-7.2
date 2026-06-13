@@ -1,11 +1,10 @@
 {%- liquid
   assign drawer_id = 'AdoraHeaderDrawer-' | append: section.id
-  assign header_enabled = section.settings.enable_header
   assign logo_alt = section.settings.logo_image.alt | default: section.settings.logo_text | escape
 -%}
 
 <header
-  class="adora-header adora-header--visible adora-header--solid adora-header--nav-{{ section.settings.desktop_nav_position }}{% if section.settings.enable_blur_on_scroll %} adora-header--blur{% endif %}{% if section.settings.enable_bottom_border %} adora-header--border{% endif %}{% if section.settings.enable_soft_shadow %} adora-header--shadow{% endif %}{% unless section.settings.mobile_logo_centered %} adora-header--mobile-logo-inline{% endunless %}"
+  class="adora-header adora-header--visible adora-header--solid adora-header--nav-{{ section.settings.desktop_nav_position }}{% if section.settings.enable_blur_on_scroll %} adora-header--blur{% endif %}{% if section.settings.enable_bottom_border %} adora-header--border{% endif %}{% if section.settings.enable_soft_shadow %} adora-header--shadow{% endif %}{% if section.settings.enable_hero_frame_mode %} adora-header--hero-frame{% endif %}"
   data-adora-header
   data-homepage="{% if request.page_type == 'index' %}true{% else %}false{% endif %}"
   data-transparent-homepage="{{ section.settings.enable_transparent_on_homepage }}"
@@ -31,19 +30,16 @@
     --adora-header-nav-spacing: {{ section.settings.nav_letter_spacing | divided_by: 10.0 }}px;
     --adora-header-announcement-bg: {{ section.settings.announcement_bg_color }};
     --adora-header-announcement-text: {{ section.settings.announcement_text_color }};
+    --adora-header-frame-inset-desktop: {{ section.settings.hero_frame_inset_desktop }}px;
+    --adora-header-frame-inset-mobile: {{ section.settings.hero_frame_inset_mobile }}px;
+    --adora-header-frame-radius: {{ section.settings.hero_frame_radius }}px;
   "
-  {% unless header_enabled %}hidden{% endunless %}
+  {% unless section.settings.enable_header %}hidden{% endunless %}
 >
   {%- if section.settings.show_announcement -%}
     <div class="adora-header__announcement">
-      {%- if section.settings.announcement_text != blank -%}
-        <div class="adora-header__announcement-text">{{ section.settings.announcement_text }}</div>
-      {%- endif -%}
-      {%- if section.settings.announcement_link_label != blank -%}
-        <a class="adora-header__announcement-link" href="{{ section.settings.announcement_link_url | default: '#' }}">
-          {{ section.settings.announcement_link_label | escape }}
-        </a>
-      {%- endif -%}
+      {%- if section.settings.announcement_text != blank -%}<div class="adora-header__announcement-text">{{ section.settings.announcement_text }}</div>{%- endif -%}
+      {%- if section.settings.announcement_link_label != blank -%}<a class="adora-header__announcement-link" href="{{ section.settings.announcement_link_url | default: '#' }}">{{ section.settings.announcement_link_label | escape }}</a>{%- endif -%}
     </div>
   {%- endif -%}
 
@@ -57,22 +53,14 @@
     <nav class="adora-header__nav" aria-label="Hauptnavigation">
       {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
         <ul class="adora-header__nav-list">
-          {%- for link in section.settings.menu.links -%}
-            <li class="adora-header__nav-item"><a class="adora-header__nav-link" href="{{ link.url }}">{{ link.title | escape }}</a></li>
-          {%- endfor -%}
+          {%- for link in section.settings.menu.links -%}<li><a class="adora-header__nav-link" href="{{ link.url }}">{{ link.title | escape }}</a></li>{%- endfor -%}
         </ul>
       {%- endif -%}
     </nav>
 
     <a class="adora-header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
       {%- if section.settings.logo_image != blank -%}
-        {{ section.settings.logo_image | image_url: width: 360 | image_tag:
-          class: 'adora-header__logo-image',
-          alt: logo_alt,
-          loading: 'eager',
-          widths: '120, 180, 240, 300, 360',
-          sizes: '(min-width: 990px) var(--adora-header-logo-width-desktop), var(--adora-header-logo-width-mobile)'
-        }}
+        {{ section.settings.logo_image | image_url: width: 420 | image_tag: class: 'adora-header__logo-image', alt: logo_alt, loading: 'eager', widths: '120, 180, 240, 320, 420', sizes: '(min-width: 990px) var(--adora-header-logo-width-desktop), var(--adora-header-logo-width-mobile)' }}
       {%- else -%}
         <span class="adora-header__logo-text">{{ section.settings.logo_text | default: 'ADORA' | escape }}</span>
       {%- endif -%}
@@ -81,32 +69,16 @@
     <div class="adora-header__utilities" aria-label="Header Links">
       <ul class="adora-header__utility-list">
         {%- for block in section.blocks -%}
-          {%- if block.type == 'utility_link' and block.settings.show_desktop and block.settings.label != blank -%}
-            <li class="adora-header__utility-item" {{ block.shopify_attributes }}>
-              <a class="adora-header__utility-link" href="{{ block.settings.url | default: '#' }}">{{ block.settings.label | escape }}</a>
-            </li>
-          {%- endif -%}
+          {%- if block.type == 'utility_link' and block.settings.show_desktop and block.settings.label != blank -%}<li {{ block.shopify_attributes }}><a class="adora-header__utility-link" href="{{ block.settings.url | default: '#' }}">{{ block.settings.label | escape }}</a></li>{%- endif -%}
         {%- endfor -%}
-        {%- if section.settings.show_search -%}<li class="adora-header__utility-item"><a class="adora-header__utility-link" href="{{ routes.search_url }}">Search</a></li>{%- endif -%}
-        {%- if section.settings.show_account and shop.customer_accounts_enabled -%}<li class="adora-header__utility-item"><a class="adora-header__utility-link" href="{{ routes.account_url }}">Account</a></li>{%- endif -%}
-        {%- if section.settings.show_cart -%}
-          <li class="adora-header__utility-item">
-            <a class="adora-header__utility-button adora-header__cart-link" href="{{ routes.cart_url }}" aria-label="Warenkorb">
-              <span>Cart</span>
-              {%- if section.settings.show_cart_count -%}<span class="adora-header__cart-count" aria-label="{{ cart.item_count }} Artikel im Warenkorb">{{ cart.item_count }}</span>{%- endif -%}
-            </a>
-          </li>
-        {%- endif -%}
+        {%- if section.settings.show_search -%}<li><a class="adora-header__utility-link" href="{{ routes.search_url }}">Search</a></li>{%- endif -%}
+        {%- if section.settings.show_account and shop.customer_accounts_enabled -%}<li><a class="adora-header__utility-link" href="{{ routes.account_url }}">Account</a></li>{%- endif -%}
+        {%- if section.settings.show_cart -%}<li><a class="adora-header__utility-link adora-header__cart-link" href="{{ routes.cart_url }}">Cart {%- if section.settings.show_cart_count -%}<span class="adora-header__cart-count">({{ cart.item_count }})</span>{%- endif -%}</a></li>{%- endif -%}
       </ul>
     </div>
 
     <div class="adora-header__mobile-cart">
-      {%- if section.settings.show_cart -%}
-        <a class="adora-header__utility-button adora-header__cart-link" href="{{ routes.cart_url }}" aria-label="Warenkorb">
-          <svg class="adora-header__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 8.5V7a5 5 0 0 1 10 0v1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M5.5 8.5h13l-.9 11H6.4l-.9-11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-          {%- if section.settings.show_cart_count -%}<span class="adora-header__cart-count" aria-label="{{ cart.item_count }} Artikel im Warenkorb">{{ cart.item_count }}</span>{%- endif -%}
-        </a>
-      {%- endif -%}
+      {%- if section.settings.show_cart -%}<a class="adora-header__cart-link" href="{{ routes.cart_url }}" aria-label="Warenkorb">Cart {%- if section.settings.show_cart_count -%}<span class="adora-header__cart-count">({{ cart.item_count }})</span>{%- endif -%}</a>{%- endif -%}
     </div>
   </div>
 
@@ -114,35 +86,16 @@
   <aside id="{{ drawer_id }}" class="adora-header__drawer adora-header__drawer--{{ section.settings.mobile_drawer_position }}" aria-hidden="true" aria-label="Mobile Navigation">
     <div class="adora-header__drawer-header">
       <a class="adora-header__drawer-logo" href="{{ routes.root_url }}">{{ section.settings.logo_text | default: 'ADORA' | escape }}</a>
-      <button class="adora-header__drawer-close" type="button" aria-label="Menü schließen" data-adora-header-close>
-        <svg class="adora-header__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      </button>
+      <button class="adora-header__drawer-close" type="button" aria-label="Menü schließen" data-adora-header-close>×</button>
     </div>
-
-    {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
-      <nav class="adora-header__drawer-nav" aria-label="Mobile Hauptnavigation">
-        {%- for link in section.settings.menu.links -%}<a class="adora-header__drawer-link" href="{{ link.url }}">{{ link.title | escape }}</a>{%- endfor -%}
-      </nav>
-    {%- endif -%}
-
+    {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}<nav class="adora-header__drawer-nav" aria-label="Mobile Hauptnavigation">{%- for link in section.settings.menu.links -%}<a class="adora-header__drawer-link" href="{{ link.url }}">{{ link.title | escape }}</a>{%- endfor -%}</nav>{%- endif -%}
     <div class="adora-header__drawer-utilities">
       {%- if section.settings.show_mobile_search -%}<a class="adora-header__drawer-utility" href="{{ routes.search_url }}">Search</a>{%- endif -%}
       {%- if section.settings.show_mobile_account and shop.customer_accounts_enabled -%}<a class="adora-header__drawer-utility" href="{{ routes.account_url }}">Account</a>{%- endif -%}
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'utility_link' and block.settings.show_mobile and block.settings.label != blank -%}
-          <a class="adora-header__drawer-utility" href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
-        {%- endif -%}
-      {%- endfor -%}
+      {%- for block in section.blocks -%}{%- if block.type == 'utility_link' and block.settings.show_mobile and block.settings.label != blank -%}<a class="adora-header__drawer-utility" href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>{%- endif -%}{%- endfor -%}
     </div>
-
     {%- if section.settings.show_mobile_promo_text and section.settings.mobile_promo_text != blank -%}<div class="adora-header__drawer-promo">{{ section.settings.mobile_promo_text }}</div>{%- endif -%}
-
-    <div class="adora-header__drawer-promos">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'drawer_promo_link' and block.settings.label != blank -%}<a class="adora-header__drawer-promo-link" href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>{%- endif -%}
-      {%- endfor -%}
-    </div>
-    <div class="adora-header__drawer-spacer"></div>
+    <div class="adora-header__drawer-promos">{%- for block in section.blocks -%}{%- if block.type == 'drawer_promo_link' and block.settings.label != blank -%}<a class="adora-header__drawer-promo-link" href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>{%- endif -%}{%- endfor -%}</div>
   </aside>
 </header>
 
@@ -158,8 +111,13 @@
     { "type": "link_list", "id": "menu", "label": "Menu" },
     { "type": "image_picker", "id": "logo_image", "label": "Logo image" },
     { "type": "text", "id": "logo_text", "label": "Logo text", "default": "ADORA" },
-    { "type": "range", "id": "logo_width_desktop", "label": "Logo width desktop", "min": 70, "max": 260, "step": 5, "unit": "px", "default": 130 },
-    { "type": "range", "id": "logo_width_mobile", "label": "Logo width mobile", "min": 60, "max": 180, "step": 5, "unit": "px", "default": 95 },
+    { "type": "range", "id": "logo_width_desktop", "label": "Logo width desktop", "min": 70, "max": 300, "step": 5, "unit": "px", "default": 150 },
+    { "type": "range", "id": "logo_width_mobile", "label": "Logo width mobile", "min": 60, "max": 180, "step": 5, "unit": "px", "default": 100 },
+    { "type": "header", "content": "Hero frame behavior" },
+    { "type": "checkbox", "id": "enable_hero_frame_mode", "label": "Place header visually inside homepage hero", "default": true },
+    { "type": "range", "id": "hero_frame_inset_desktop", "label": "Hero frame inset desktop", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 24 },
+    { "type": "range", "id": "hero_frame_inset_mobile", "label": "Hero frame inset mobile", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "hero_frame_radius", "label": "Solid header radius", "min": 0, "max": 34, "step": 2, "unit": "px", "default": 18 },
     { "type": "header", "content": "Announcement bar" },
     { "type": "checkbox", "id": "show_announcement", "label": "Show announcement", "default": false },
     { "type": "richtext", "id": "announcement_text", "label": "Announcement text", "default": "<p>Ein ruhiges Ritual für sichtbar mehr Glow.</p>" },
@@ -200,10 +158,10 @@
     { "type": "range", "id": "header_height_desktop", "label": "Header height desktop", "min": 56, "max": 120, "step": 2, "unit": "px", "default": 76 },
     { "type": "range", "id": "header_height_mobile", "label": "Header height mobile", "min": 52, "max": 92, "step": 2, "unit": "px", "default": 64 },
     { "type": "checkbox", "id": "enable_blur_on_scroll", "label": "Enable blur on scroll", "default": true },
-    { "type": "checkbox", "id": "enable_bottom_border", "label": "Enable bottom border", "default": true },
+    { "type": "checkbox", "id": "enable_bottom_border", "label": "Enable bottom border", "default": false },
     { "type": "checkbox", "id": "enable_soft_shadow", "label": "Enable soft shadow", "default": false },
-    { "type": "range", "id": "nav_letter_spacing", "label": "Nav letter spacing", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 18 },
-    { "type": "range", "id": "nav_font_size", "label": "Nav font size", "min": 10, "max": 16, "step": 1, "unit": "px", "default": 12 }
+    { "type": "range", "id": "nav_letter_spacing", "label": "Nav letter spacing", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 8 },
+    { "type": "range", "id": "nav_font_size", "label": "Nav font size", "min": 10, "max": 18, "step": 1, "unit": "px", "default": 15 }
   ],
   "blocks": [
     { "type": "utility_link", "name": "Utility link", "settings": [{ "type": "text", "id": "label", "label": "Label", "default": "Ritual" }, { "type": "url", "id": "url", "label": "URL" }, { "type": "checkbox", "id": "show_desktop", "label": "Show desktop", "default": true }, { "type": "checkbox", "id": "show_mobile", "label": "Show mobile", "default": true }] },
