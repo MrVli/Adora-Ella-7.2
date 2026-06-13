@@ -6,6 +6,7 @@
   }
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const desktopQuery = window.matchMedia('(min-width: 990px)');
 
   headers.forEach((header) => {
     const isHomepage = header.dataset.homepage === 'true';
@@ -20,22 +21,75 @@
     const burger = header.querySelector('[data-adora-header-burger]');
     const closeButtons = header.querySelectorAll('[data-adora-header-close]');
     const drawerLinks = drawer ? drawer.querySelectorAll('a') : [];
+    const megaMenu = header.querySelector('[data-adora-mega-menu]');
+    const megaTrigger = header.querySelector('[data-adora-mega-trigger]');
+    const megaTabs = header.querySelectorAll('[data-adora-mega-tab]');
+    const megaPanels = header.querySelectorAll('[data-adora-mega-panel]');
     let lastScrollY = window.scrollY;
     let ticking = false;
     let drawerOpen = false;
+    let megaOpen = false;
+    let closeMegaTimer;
 
     const canBeTransparent = () => transparentEnabled && isHomepage;
+
+    const setMegaState = (isOpen) => {
+      if (!megaMenu || !megaTrigger || !desktopQuery.matches) {
+        return;
+      }
+
+      megaOpen = isOpen;
+      header.classList.toggle('adora-header--mega-open', isOpen);
+      megaMenu.setAttribute('aria-hidden', String(!isOpen));
+      megaTrigger.setAttribute('aria-expanded', String(isOpen));
+
+      if (isOpen) {
+        header.classList.remove('adora-header--hidden');
+        header.classList.add('adora-header--visible');
+      }
+
+      requestState();
+    };
+
+    const closeMegaSoon = () => {
+      window.clearTimeout(closeMegaTimer);
+      closeMegaTimer = window.setTimeout(() => setMegaState(false), 120);
+    };
+
+    const keepMegaOpen = () => {
+      window.clearTimeout(closeMegaTimer);
+      setMegaState(true);
+    };
+
+    const activateMegaTab = (tab) => {
+      const target = tab.dataset.adoraMegaTab;
+
+      megaTabs.forEach((item) => {
+        const isActive = item === tab;
+        item.classList.toggle('is-active', isActive);
+        item.setAttribute('aria-selected', String(isActive));
+      });
+
+      megaPanels.forEach((panel) => {
+        panel.classList.toggle('is-active', panel.dataset.adoraMegaPanel === target);
+      });
+    };
 
     const setState = () => {
       const currentScrollY = window.scrollY;
       const scrollingDown = currentScrollY > lastScrollY;
       const pastThreshold = currentScrollY > threshold;
+      const forceSolid = drawerOpen || megaOpen;
 
-      header.classList.toggle('adora-header--transparent', canBeTransparent() && !pastThreshold && !drawerOpen);
-      header.classList.toggle('adora-header--solid', !canBeTransparent() || drawerOpen || (pastThreshold && solidAfterScroll));
+      header.classList.toggle('adora-header--transparent', canBeTransparent() && !pastThreshold && !forceSolid);
+      header.classList.toggle('adora-header--solid', !canBeTransparent() || forceSolid || (pastThreshold && solidAfterScroll));
       header.classList.toggle('adora-header--scrolled', pastThreshold && solidAfterScroll);
 
-      if (!drawerOpen && pastThreshold && scrollingDown && hideOnDown) {
+      if (megaOpen && (scrollingDown || !desktopQuery.matches)) {
+        setMegaState(false);
+      }
+
+      if (!drawerOpen && !megaOpen && pastThreshold && scrollingDown && hideOnDown) {
         header.classList.add('adora-header--hidden');
         header.classList.remove('adora-header--visible');
       } else if (!scrollingDown && showOnUp) {
@@ -77,6 +131,7 @@
       }
 
       if (isOpen) {
+        setMegaState(false);
         header.classList.remove('adora-header--hidden');
         header.classList.add('adora-header--visible');
 
@@ -109,10 +164,51 @@
       link.addEventListener('click', () => setDrawer(false));
     });
 
+    if (megaTrigger && megaMenu) {
+      megaTrigger.addEventListener('mouseenter', keepMegaOpen);
+      megaTrigger.addEventListener('focus', keepMegaOpen);
+      megaTrigger.addEventListener('click', (event) => {
+        if (desktopQuery.matches) {
+          event.preventDefault();
+          setMegaState(!megaOpen);
+        }
+      });
+
+      header.addEventListener('mouseleave', closeMegaSoon);
+      megaMenu.addEventListener('mouseenter', keepMegaOpen);
+      megaMenu.addEventListener('mouseleave', closeMegaSoon);
+      megaMenu.addEventListener('focusin', keepMegaOpen);
+      megaMenu.addEventListener('focusout', () => {
+        window.setTimeout(() => {
+          if (!header.contains(document.activeElement)) {
+            setMegaState(false);
+          }
+        }, 0);
+      });
+    }
+
+    megaTabs.forEach((tab) => {
+      tab.addEventListener('mouseenter', () => activateMegaTab(tab));
+      tab.addEventListener('focus', () => activateMegaTab(tab));
+      tab.addEventListener('click', () => activateMegaTab(tab));
+    });
+
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && drawerOpen) {
-        setDrawer(false);
+      if (event.key === 'Escape') {
+        if (drawerOpen) {
+          setDrawer(false);
+        }
+
+        if (megaOpen) {
+          setMegaState(false);
+          megaTrigger?.focus({ preventScroll: true });
+        }
       }
+    });
+
+    desktopQuery.addEventListener('change', () => {
+      setMegaState(false);
+      requestState();
     });
 
     window.addEventListener('scroll', requestState, { passive: true });
