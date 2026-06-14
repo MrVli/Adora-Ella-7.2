@@ -1,0 +1,40 @@
+{%- liquid
+  assign step_number = number
+  assign step_title = title
+  assign step_product_name = product_name
+  assign step_text = text
+  assign step_image = image
+  assign step_mobile_image = mobile_image
+  assign step_link = link
+  assign step_button_label = button_label
+-%}
+
+<div class="adora-card adora-ritual-step-card">
+  <div class="adora-ritual-step-card__media">
+    {% render 'adora-image-frame', image: step_image, mobile_image: step_mobile_image, alt: step_title, aspect_ratio: '4 / 5', class: 'adora-ritual-step-card__image-frame' %}
+  </div>
+
+  <div class="adora-ritual-step-card__content">
+    {%- if step_number != blank -%}
+      <span class="adora-ritual-step-card__number">{{ step_number | escape }}</span>
+    {%- endif -%}
+
+    {%- if step_title != blank -%}
+      <h3 class="adora-ritual-step-card__title">{{ step_title | escape }}</h3>
+    {%- endif -%}
+
+    {%- if step_product_name != blank -%}
+      <p class="adora-ritual-step-card__product">{{ step_product_name | escape }}</p>
+    {%- endif -%}
+
+    {%- if step_text != blank -%}
+      <div class="adora-richtext adora-ritual-step-card__text">{{ step_text }}</div>
+    {%- endif -%}
+
+    {%- if step_button_label != blank -%}
+      <div class="adora-ritual-step-card__action">
+        {% render 'adora-button', label: step_button_label, link: step_link, style: 'outline', class: 'adora-ritual-step-card__button' %}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
