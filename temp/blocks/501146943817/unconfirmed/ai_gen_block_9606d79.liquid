@@ -1,6 +1,387 @@
+{% doc %}
+  @prompt
+    Erstelle:
+    sections/adora-sensory-textures.liquid
+    
+    Ziel:
+    Visuelle Texture Section. Sie soll das Produkt fühlbar machen: milchige Reinigung, cremige Pflege, goldenes Öl. Fokus: Desire, Premium Perception, Visual-first.
+    
+    Default Texte:
+    Eyebrow: "FÜHL DAS RITUAL"
+    Headline: "Skincare, die du fast spüren kannst."
+    Subheadline: "Milchige Reinigung, cremige Pflege und ein nährendes Öl-Finish — jeder Schritt wurde als sinnlicher Moment entwickelt."
+    
+    Default Texture Cards:
+    1. Label: "Milchige Reinigung"
+       Text: "Sanft, weich, beruhigend."
+    2. Label: "Cream Comfort"
+       Text: "Feuchtigkeit, die sich wie Pflege anfühlt."
+    3. Label: "Golden Finish"
+       Text: "Ein nährender Abschluss mit natürlichem Glow."
+    
+    Layout:
+    - Desktop: asymmetrisches Editorial Grid, eine große Kachel, zwei kleinere.
+    - Mobile: vertikale Bildkarten.
+    - Optional Text oben, links oder overlay.
+    
+    Design:
+    - Große Makro-Bilder.
+    - Lavender/Cream Color Grading.
+    - Runde Bildkanten 28-40px.
+    - Overlay minimal und lesbar.
+    - 70% Visual, 30% Text.
+    - Keine langen Texte.
+    - Keine Icons nötig.
+    
+    Schema Settings:
+    - eyebrow
+    - headline
+    - subheadline richtext
+    - layout: asymmetric_grid/equal_grid/stacked_editorial
+    - text_position: top/left/overlay
+    - background_style: cream/mist/lilac_gradient/custom
+    - background_color
+    - text_color
+    - overlay_color
+    - overlay_opacity
+    - card_radius
+    - padding_desktop
+    - padding_mobile
+    - show_labels
+    
+    Blocks:
+    texture_card, max 6:
+    - image
+    - mobile_image
+    - label
+    - text
+    - link
+    - image_alt
+    - make_large
+    
+    Technik:
+    - Nutze adora-image-frame.
+    - Klassen mit adora-sensory-textures Prefix.
+    - CSS Grid, keine Masonry Library.
+    - Lazy Loading.
+    - Mobile-first.
+    - Shopify Theme Check kompatibel.
+    
+    Am Ende geänderte Dateien auflisten.
+{% enddoc %}
+{% liquid
+  assign ai_gen_id = block.id | replace: '_', '' | downcase
+  assign card_image = block.settings.image
+  assign card_mobile_image = block.settings.mobile_image
+  assign card_label = block.settings.label
+  assign card_text = block.settings.text
+  assign card_link = block.settings.link
+  assign card_alt = block.settings.image_alt
+%}
+
+{% style %}
+  .adora-sensory-texture-card-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    border-radius: {{ block.settings.card_radius }}px;
+    background: #F5F3F0;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    display: block;
+  }
+
+  .adora-sensory-texture-card__link-{{ ai_gen_id }} {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  .adora-sensory-texture-card__inner-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: {{ block.settings.min_height_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .adora-sensory-texture-card__inner-{{ ai_gen_id }} {
+      min-height: {{ block.settings.min_height_desktop }}px;
+    }
+  }
+
+  .adora-sensory-texture-card__image-wrapper-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .adora-sensory-texture-card__image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .adora-sensory-texture-card__placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #E8E3DC 0%, #F5F0F8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .adora-sensory-texture-card__placeholder-{{ ai_gen_id }} svg {
+    width: 80px;
+    height: 80px;
+    opacity: 0.3;
+  }
+
+  .adora-sensory-texture-card__empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    color: #999;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .adora-sensory-texture-card__overlay-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 32px 24px;
+    background: linear-gradient(180deg, transparent 0%, {{ block.settings.overlay_color }} 100%);
+    opacity: {{ block.settings.overlay_opacity }};
+  }
+
+  .adora-sensory-texture-card__content-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    z-index: 2;
+  }
+
+  .adora-sensory-texture-card__label-{{ ai_gen_id }} {
+    font-size: 18px;
+    font-weight: 500;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 8px;
+    line-height: 1.3;
+  }
+
+  .adora-sensory-texture-card__text-{{ ai_gen_id }} {
+    font-size: 14px;
+    line-height: 1.5;
+    color: {{ block.settings.text_color }};
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .adora-sensory-texture-card__label-{{ ai_gen_id }} {
+      font-size: 22px;
+    }
+    .adora-sensory-texture-card__text-{{ ai_gen_id }} {
+      font-size: 15px;
+    }
+  }
+{% endstyle %}
+
+<div class="adora-sensory-texture-card-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if card_link != blank %}
+    <a href="{{ card_link }}" class="adora-sensory-texture-card__link-{{ ai_gen_id }}">
+  {% endif %}
+  
+  <div class="adora-sensory-texture-card__inner-{{ ai_gen_id }}">
+    <div class="adora-sensory-texture-card__image-wrapper-{{ ai_gen_id }}">
+      {% if card_image != blank %}
+        <picture>
+          {% if card_mobile_image != blank %}
+            <source 
+              media="(max-width: 749px)" 
+              srcset="{{ card_mobile_image | image_url: width: 800 }}"
+            >
+          {% endif %}
+          <img
+            src="{{ card_image | image_url: width: 1200 }}"
+            srcset="{{ card_image | image_url: width: 600 }} 600w,
+                    {{ card_image | image_url: width: 900 }} 900w,
+                    {{ card_image | image_url: width: 1200 }} 1200w"
+            sizes="(min-width: 750px) 50vw, 100vw"
+            alt="{{ card_alt | default: card_label | escape }}"
+            loading="lazy"
+            width="{{ card_image.width }}"
+            height="{{ card_image.height }}"
+            class="adora-sensory-texture-card__image-{{ ai_gen_id }}"
+          >
+        </picture>
+      {% else %}
+        <div class="adora-sensory-texture-card__placeholder-{{ ai_gen_id }}">
+          {{ 'image' | placeholder_svg_tag }}
+          <div class="adora-sensory-texture-card__empty-state-{{ ai_gen_id }}">
+            Add texture image
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if block.settings.show_overlay %}
+      <div class="adora-sensory-texture-card__overlay-{{ ai_gen_id }}"></div>
+    {% endif %}
+
+    {% if card_label != blank or card_text != blank %}
+      <div class="adora-sensory-texture-card__content-{{ ai_gen_id }}">
+        {% if card_label != blank %}
+          <h3 class="adora-sensory-texture-card__label-{{ ai_gen_id }}">
+            {{ card_label }}
+          </h3>
+        {% endif %}
+        
+        {% if card_text != blank %}
+          <p class="adora-sensory-texture-card__text-{{ ai_gen_id }}">
+            {{ card_text }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+  
+  {% if card_link != blank %}
+    </a>
+  {% endif %}
+</div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Sensory texture card",
+  "tag": null,
+  "class": "adora-sensory-texture-card-block",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Milchige Reinigung"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Sanft, weich, beruhigend."
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show overlay",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.4
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "min_height_desktop",
+      "label": "Min height desktop",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "min_height_mobile",
+      "label": "Min height mobile",
+      "min": 250,
+      "max": 600,
+      "step": 50,
+      "unit": "px",
+      "default": 350
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sensory texture card"
+    }
+  ]
+}
 {% endschema %}
