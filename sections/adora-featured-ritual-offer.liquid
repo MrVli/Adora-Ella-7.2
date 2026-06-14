@@ -1,0 +1,474 @@
+{%- liquid
+  assign offer_product = section.settings.product
+  assign cta_link = section.settings.primary_button_link
+  assign section_bg = section.settings.background_color
+  assign image_position = section.settings.image_position
+  assign current_price = section.settings.manual_price_text
+  assign compare_price = section.settings.compare_price_text
+
+  if cta_link == blank and offer_product != blank
+    assign cta_link = offer_product.url
+  endif
+
+  if current_price == blank and offer_product != blank
+    assign current_price = offer_product.price | money
+  endif
+
+  if compare_price == blank and offer_product != blank and offer_product.compare_at_price > offer_product.price
+    assign compare_price = offer_product.compare_at_price | money
+  endif
+
+  case section.settings.background_style
+    when 'cream'
+      assign section_bg = 'var(--adora-cream)'
+    when 'mist'
+      assign section_bg = 'var(--adora-mist)'
+    when 'lilac_gradient'
+      assign section_bg = 'linear-gradient(135deg, #fff8ef 0%, #fbf3ff 46%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<section
+  class="adora-section adora-featured-ritual adora-featured-ritual--{{ section.settings.layout_style }} adora-featured-ritual--image-{{ image_position }}{% if section.settings.show_step_cards %} adora-featured-ritual--has-steps{% endif %}"
+  style="
+    --adora-featured-ritual-bg: {{ section_bg }};
+    --adora-featured-ritual-card-bg: {{ section.settings.card_background_color }};
+    --adora-featured-ritual-text: {{ section.settings.text_color }};
+    --adora-featured-ritual-accent: {{ section.settings.accent_color }};
+    --adora-featured-ritual-padding-desktop: {{ section.settings.padding_desktop }}px;
+    --adora-featured-ritual-padding-mobile: {{ section.settings.padding_mobile }}px;
+  "
+>
+  <div class="adora-container adora-featured-ritual__container">
+    <div class="adora-featured-ritual__card" data-adora-reveal>
+      <div class="adora-featured-ritual__media-wrap">
+        {% render 'adora-image-frame', image: section.settings.main_image, mobile_image: section.settings.mobile_image, alt: section.settings.image_alt, aspect_ratio: '4 / 5', class: 'adora-featured-ritual__image-frame', loading: 'lazy' %}
+        <div class="adora-featured-ritual__glow-mark" aria-hidden="true"></div>
+      </div>
+
+      <div class="adora-featured-ritual__panel">
+        <div class="adora-featured-ritual__intro">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="adora-eyebrow adora-featured-ritual__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.headline != blank -%}
+            <h2 class="adora-heading adora-featured-ritual__headline">{{ section.settings.headline | escape }}</h2>
+          {%- endif -%}
+
+          {%- if section.settings.subheadline != blank -%}
+            <div class="adora-richtext adora-featured-ritual__subheadline">{{ section.settings.subheadline }}</div>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_price and current_price != blank -%}
+          <div class="adora-featured-ritual__price-row" aria-label="Preis">
+            <span class="adora-featured-ritual__price">{{ current_price | escape }}</span>
+            {%- if section.settings.show_compare_price and compare_price != blank -%}
+              <span class="adora-featured-ritual__compare-price">{{ compare_price | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_includes -%}
+          <div class="adora-featured-ritual__includes">
+            {%- if section.settings.included_heading != blank -%}
+              <h3 class="adora-featured-ritual__included-heading">{{ section.settings.included_heading | escape }}</h3>
+            {%- endif -%}
+
+            {%- assign included_blocks = section.blocks | where: 'type', 'included_item' -%}
+            {%- if included_blocks.size > 0 -%}
+              <ul class="adora-featured-ritual__included-list">
+                {%- for block in included_blocks -%}
+                  {%- if block.settings.title != blank or block.settings.text != blank or block.settings.value_text != blank -%}
+                    <li class="adora-featured-ritual__included-item" {{ block.shopify_attributes }}>
+                      <span class="adora-featured-ritual__included-dot" aria-hidden="true"></span>
+                      <span class="adora-featured-ritual__included-copy">
+                        {%- if block.settings.title != blank -%}<strong>{{ block.settings.title | escape }}</strong>{%- endif -%}
+                        {%- if block.settings.text != blank -%}<span>{{ block.settings.text | escape }}</span>{%- endif -%}
+                      </span>
+                      {%- if block.settings.value_text != blank -%}
+                        <span class="adora-featured-ritual__included-value">{{ block.settings.value_text | escape }}</span>
+                      {%- endif -%}
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- assign step_blocks = section.blocks | where: 'type', 'step_card' -%}
+        {%- if section.settings.show_step_cards and step_blocks.size > 0 -%}
+          <div class="adora-featured-ritual__steps" aria-label="Ritual Schritte">
+            {%- for block in step_blocks -%}
+              <article class="adora-featured-ritual__step" {{ block.shopify_attributes }}>
+                {%- if block.settings.number != blank -%}<span class="adora-featured-ritual__step-number">{{ block.settings.number | escape }}</span>{%- endif -%}
+                {%- if block.settings.title != blank -%}<h3 class="adora-featured-ritual__step-title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+                {%- if block.settings.text != blank -%}<p class="adora-featured-ritual__step-text">{{ block.settings.text | escape }}</p>{%- endif -%}
+              </article>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <div class="adora-featured-ritual__actions">
+          {% render 'adora-button', label: section.settings.primary_button_label, link: cta_link, style: section.settings.button_style, class: 'adora-featured-ritual__primary-button' %}
+          {% render 'adora-button', label: section.settings.secondary_button_label, link: section.settings.secondary_button_link, style: 'outline', class: 'adora-featured-ritual__secondary-button' %}
+        </div>
+
+        {%- if section.settings.microcopy != blank -%}
+          <p class="adora-featured-ritual__microcopy">{{ section.settings.microcopy | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} .adora-featured-ritual {
+    padding-block: var(--adora-featured-ritual-padding-mobile);
+    color: var(--adora-featured-ritual-text);
+    background: var(--adora-featured-ritual-bg);
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__card {
+    display: grid;
+    gap: 18px;
+    padding: 12px;
+    overflow: hidden;
+    background: var(--adora-featured-ritual-card-bg);
+    border: 1px solid rgba(128, 83, 148, 0.16);
+    border-radius: 30px;
+    box-shadow: 0 24px 80px rgba(58, 35, 81, 0.1);
+    backdrop-filter: blur(18px);
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__media-wrap {
+    position: relative;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__image-frame {
+    min-height: 420px;
+    border-radius: 24px;
+    box-shadow: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__glow-mark {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    width: 72px;
+    height: 72px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(216, 154, 53, 0.52), rgba(216, 154, 53, 0.02) 66%);
+    filter: blur(2px);
+    opacity: 0.72;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__panel {
+    display: grid;
+    align-content: center;
+    gap: 20px;
+    padding: 10px 6px 8px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__eyebrow {
+    margin-bottom: 10px;
+    color: var(--adora-featured-ritual-accent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__headline {
+    max-width: 11ch;
+    color: var(--adora-featured-ritual-text);
+    font-size: clamp(2.55rem, 10vw, 4.2rem);
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__subheadline {
+    max-width: 58ch;
+    margin-top: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__price-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__price {
+    color: var(--adora-featured-ritual-text);
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__compare-price {
+    color: var(--adora-muted);
+    font-size: 0.95rem;
+    text-decoration: line-through;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__included-heading {
+    margin: 0 0 12px;
+    color: var(--adora-featured-ritual-text);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__included-list {
+    display: grid;
+    gap: 9px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__included-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.52);
+    border: 1px solid rgba(128, 83, 148, 0.12);
+    border-radius: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__included-dot {
+    width: 9px;
+    height: 9px;
+    margin-top: 6px;
+    border-radius: 999px;
+    background: var(--adora-featured-ritual-accent);
+    box-shadow: 0 0 0 5px rgba(128, 83, 148, 0.1);
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__included-copy {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+    color: var(--adora-muted);
+    font-size: 0.94rem;
+    line-height: 1.4;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__included-copy strong {
+    color: var(--adora-featured-ritual-text);
+    font-weight: 800;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__included-value {
+    color: var(--adora-amber-oil);
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__step {
+    padding: 12px;
+    background: rgba(232, 175, 254, 0.16);
+    border: 1px solid rgba(128, 83, 148, 0.12);
+    border-radius: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__step-number {
+    display: block;
+    color: var(--adora-featured-ritual-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__step-title {
+    margin: 8px 0 0;
+    color: var(--adora-featured-ritual-text);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__step-text {
+    margin: 8px 0 0;
+    color: var(--adora-muted);
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__actions {
+    display: grid;
+    gap: 10px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual__microcopy {
+    margin: -6px 0 0;
+    color: var(--adora-muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  #shopify-section-{{ section.id }} .adora-featured-ritual--compact .adora-featured-ritual__included-list {
+    gap: 7px;
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .adora-featured-ritual {
+      padding-block: var(--adora-featured-ritual-padding-desktop);
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual__card {
+      grid-template-columns: minmax(0, 1.06fr) minmax(390px, 0.94fr);
+      gap: clamp(22px, 3vw, 48px);
+      padding: clamp(16px, 2vw, 24px);
+      border-radius: 40px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual--image-right .adora-featured-ritual__media-wrap {
+      order: 2;
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual--image-right .adora-featured-ritual__panel {
+      order: 1;
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual__image-frame {
+      min-height: clamp(560px, 56vw, 760px);
+      border-radius: 32px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual__panel {
+      padding: clamp(20px, 2vw, 34px) clamp(10px, 1vw, 18px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual__headline {
+      font-size: clamp(3rem, 4.6vw, 5.4rem);
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual__actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual__primary-button,
+    #shopify-section-{{ section.id }} .adora-featured-ritual__secondary-button {
+      width: auto;
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual--editorial .adora-featured-ritual__card {
+      grid-template-columns: minmax(0, 1.18fr) minmax(380px, 0.82fr);
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual--compact .adora-featured-ritual__card {
+      grid-template-columns: minmax(0, 0.9fr) minmax(390px, 1.1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .adora-featured-ritual__steps {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual__included-item {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    #shopify-section-{{ section.id }} .adora-featured-ritual__included-value {
+      grid-column: 2;
+      white-space: normal;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "ADORA Featured Ritual Offer",
+  "tag": "section",
+  "class": "adora-featured-ritual-offer-section",
+  "max_blocks": 14,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "DAS KOMPLETTE RITUAL" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Das Glass Skin Reset Ritual" },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>Drei aufeinander abgestimmte Schritte für Haut, die sich gereinigt, gepflegt und natürlich strahlend anfühlt.</p>" },
+    { "type": "text", "id": "included_heading", "label": "Included heading", "default": "Enthalten im Ritual" },
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "manual_price_text", "label": "Manual price text" },
+    { "type": "text", "id": "compare_price_text", "label": "Compare price text" },
+    { "type": "image_picker", "id": "main_image", "label": "Main image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "ADORA Glass Skin Reset Ritual Bundle" },
+    { "type": "text", "id": "primary_button_label", "label": "Primary button label", "default": "Ritual starten" },
+    { "type": "url", "id": "primary_button_link", "label": "Primary button link" },
+    { "type": "text", "id": "secondary_button_label", "label": "Secondary button label", "default": "Mehr erfahren" },
+    { "type": "url", "id": "secondary_button_link", "label": "Secondary button link" },
+    { "type": "text", "id": "microcopy", "label": "Microcopy", "default": "Limitiertes Launch-Angebot · solange der Vorrat reicht" },
+    { "type": "checkbox", "id": "show_price", "label": "Show price", "default": true },
+    { "type": "checkbox", "id": "show_compare_price", "label": "Show compare price", "default": true },
+    { "type": "checkbox", "id": "show_includes", "label": "Show included items", "default": true },
+    { "type": "checkbox", "id": "show_step_cards", "label": "Show step cards", "default": true },
+    { "type": "header", "content": "Design" },
+    { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "mist" },
+    { "type": "color_background", "id": "background_color", "label": "Custom background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 46%, #f4d8ff 100%)" },
+    { "type": "color", "id": "card_background_color", "label": "Card background", "default": "rgba(255, 255, 255, 0.72)" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#3A2351" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "select", "id": "button_style", "label": "Primary button style", "options": [{ "value": "primary", "label": "Primary" }, { "value": "secondary", "label": "Secondary" }, { "value": "outline", "label": "Outline" }, { "value": "glass", "label": "Glass" }], "default": "primary" },
+    { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "select", "id": "image_position", "label": "Image position", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }], "default": "left" },
+    { "type": "select", "id": "layout_style", "label": "Layout style", "options": [{ "value": "classic", "label": "Classic" }, { "value": "editorial", "label": "Editorial" }, { "value": "compact", "label": "Compact" }], "default": "classic" }
+  ],
+  "blocks": [
+    {
+      "type": "included_item",
+      "name": "Included item",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Gentle Cleansing Milk" },
+        { "type": "text", "id": "text", "label": "Text", "default": "sanfte Reinigung ohne trockenes Hautgefühl" },
+        { "type": "text", "id": "value_text", "label": "Value text" }
+      ]
+    },
+    {
+      "type": "step_card",
+      "name": "Step card",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Number", "default": "01" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Reinigen" },
+        { "type": "text", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Featured Ritual Offer",
+      "blocks": [
+        { "type": "included_item", "settings": { "title": "Gentle Cleansing Milk", "text": "sanfte Reinigung ohne trockenes Hautgefühl" } },
+        { "type": "included_item", "settings": { "title": "Moisturising Day Cream", "text": "tägliche Feuchtigkeit und Komfort" } },
+        { "type": "included_item", "settings": { "title": "Nourishing Facial Oil", "text": "nährendes Finish für sichtbaren Glow" } },
+        { "type": "included_item", "settings": { "title": "Premium Ritual Box", "text": "ein Selfcare-Moment zum Auspacken" } },
+        { "type": "step_card", "settings": { "number": "01", "title": "Reinigen" } },
+        { "type": "step_card", "settings": { "number": "02", "title": "Pflegen" } },
+        { "type": "step_card", "settings": { "number": "03", "title": "Versiegeln" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
