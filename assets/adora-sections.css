@@ -132,7 +132,8 @@
 .adora-button:focus-visible,
 .adora-card:focus-within,
 .adora-image-frame:focus-within,
-.adora-badge:focus-visible {
+.adora-badge:focus-visible,
+.adora-value-badge:focus-visible {
   outline: 2px solid var(--adora-primary);
   outline-offset: 4px;
 }
@@ -246,6 +247,153 @@
   border: 0 !important;
 }
 
+.adora-section-header {
+  max-width: var(--adora-section-header-max-width, 720px);
+}
+
+.adora-section-header--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.adora-section-header--center .adora-subheading {
+  margin-inline: auto;
+}
+
+.adora-image-frame-snippet {
+  aspect-ratio: var(--adora-image-frame-aspect-ratio, 4 / 5);
+}
+
+.adora-image-frame-snippet__picture,
+.adora-image-frame-snippet__image,
+.adora-image-frame-snippet__placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.adora-image-frame-snippet__image {
+  object-fit: cover;
+}
+
+.adora-image-frame-snippet__placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+  color: rgba(58, 35, 81, 0.22);
+  background: radial-gradient(circle at 20% 10%, rgba(232, 175, 254, 0.58), transparent 36%), linear-gradient(135deg, var(--adora-cream) 0%, var(--adora-mist) 52%, var(--adora-soft-lilac) 100%);
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 12vw, 8rem);
+  font-weight: 800;
+  letter-spacing: -0.065em;
+  line-height: 1;
+}
+
+.adora-trust-badge {
+  min-height: 38px;
+}
+
+.adora-trust-badge__icon {
+  flex: 0 0 var(--adora-trust-badge-icon-size, 22px);
+  width: var(--adora-trust-badge-icon-size, 22px);
+  height: var(--adora-trust-badge-icon-size, 22px);
+  object-fit: contain;
+}
+
+.adora-value-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 7px 12px;
+  color: var(--adora-deep-plum);
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid var(--adora-border);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 12px 34px rgba(58, 35, 81, 0.06);
+  backdrop-filter: blur(14px);
+}
+
+.adora-value-badge__icon {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 6px;
+  color: #ffffff;
+  background: var(--adora-primary);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+}
+
+.adora-ritual-step-card {
+  display: grid;
+  gap: 18px;
+  padding: 14px;
+}
+
+.adora-ritual-step-card__media {
+  min-width: 0;
+}
+
+.adora-ritual-step-card__image-frame {
+  width: 100%;
+  box-shadow: none;
+}
+
+.adora-ritual-step-card__content {
+  display: grid;
+  gap: 10px;
+  padding: 6px 4px 8px;
+}
+
+.adora-ritual-step-card__number {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  color: var(--adora-primary);
+  background: rgba(232, 175, 254, 0.2);
+  border: 1px solid rgba(128, 83, 148, 0.16);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.adora-ritual-step-card__title {
+  margin: 0;
+  color: var(--adora-deep-plum);
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 4.8vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.adora-ritual-step-card__product {
+  margin: 0;
+  color: var(--adora-primary);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.adora-ritual-step-card__text {
+  font-size: var(--body-size);
+}
+
+.adora-ritual-step-card__action {
+  margin-top: 6px;
+}
+
 .adora-reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -289,6 +437,14 @@
     display: flex;
     align-items: center;
     gap: 14px;
+  }
+
+  .adora-ritual-step-card {
+    padding: 16px;
+  }
+
+  .adora-ritual-step-card__content {
+    padding: 8px 8px 10px;
   }
 }
 
