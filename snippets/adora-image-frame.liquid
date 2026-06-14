@@ -1,0 +1,35 @@
+{%- liquid
+  assign frame_image = image
+  assign frame_mobile_image = mobile_image
+  assign frame_alt = alt | default: frame_image.alt | default: 'ADORA visual' | escape
+  assign frame_ratio = aspect_ratio | default: '4 / 5'
+  assign frame_class = class
+  assign frame_loading = loading | default: 'lazy'
+-%}
+
+<div
+  class="adora-image-frame adora-image-frame-snippet{% if frame_class != blank %} {{ frame_class | escape }}{% endif %}"
+  style="--adora-image-frame-aspect-ratio: {{ frame_ratio | escape }};"
+>
+  {%- if frame_image != blank -%}
+    <picture class="adora-image-frame-snippet__picture">
+      {%- if frame_mobile_image != blank -%}
+        <source
+          media="(max-width: 749px)"
+          srcset="{{ frame_mobile_image | image_url: width: 640 }} 640w, {{ frame_mobile_image | image_url: width: 960 }} 960w, {{ frame_mobile_image | image_url: width: 1200 }} 1200w"
+          sizes="100vw"
+        >
+      {%- endif -%}
+      <source
+        media="(min-width: 750px)"
+        srcset="{{ frame_image | image_url: width: 900 }} 900w, {{ frame_image | image_url: width: 1400 }} 1400w, {{ frame_image | image_url: width: 2000 }} 2000w"
+        sizes="(min-width: 990px) 50vw, 100vw"
+      >
+      {{ frame_image | image_url: width: 1400 | image_tag: class: 'adora-image-frame-snippet__image', alt: frame_alt, loading: frame_loading, widths: '640, 900, 1200, 1400, 2000', sizes: '(min-width: 990px) 50vw, 100vw' }}
+    </picture>
+  {%- else -%}
+    <div class="adora-image-frame-snippet__placeholder" aria-hidden="true">
+      <span>ADORA</span>
+    </div>
+  {%- endif -%}
+</div>
