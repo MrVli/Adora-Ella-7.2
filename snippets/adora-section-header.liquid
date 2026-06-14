@@ -1,0 +1,23 @@
+{%- liquid
+  assign header_align = align | default: 'left'
+  assign header_max_width = max_width | default: '720px'
+-%}
+
+{%- if eyebrow != blank or heading != blank or text != blank -%}
+  <div
+    class="adora-section-header adora-section-header--{{ header_align | escape }}"
+    style="--adora-section-header-max-width: {{ header_max_width | escape }};"
+  >
+    {%- if eyebrow != blank -%}
+      <p class="adora-eyebrow adora-section-header__eyebrow">{{ eyebrow | escape }}</p>
+    {%- endif -%}
+
+    {%- if heading != blank -%}
+      <h2 class="adora-heading adora-section-header__heading">{{ heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if text != blank -%}
+      <div class="adora-richtext adora-subheading adora-section-header__text">{{ text }}</div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
