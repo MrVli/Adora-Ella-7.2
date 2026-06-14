@@ -465,12 +465,97 @@
         "background_style": "mist",
         "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 48%, rgba(244, 216, 255, 1) 100%)",
         "text_color": "#805394",
-        "overlay_color": "#3A2351",
+        "overlay_color": "#3a2351",
         "overlay_opacity": 18,
         "card_radius": 36,
         "padding_desktop": 96,
         "padding_mobile": 64,
         "show_labels": true
+      }
+    },
+    "adora_routine_transformation_8tz63d": {
+      "type": "adora-routine-transformation",
+      "blocks": {
+        "before_item_PFrzrP": {
+          "type": "before_item",
+          "settings": {
+            "text": "Zu viele Schritte"
+          }
+        },
+        "before_item_BgqbYe": {
+          "type": "before_item",
+          "settings": {
+            "text": "Zu viele Produkte"
+          }
+        },
+        "before_item_4dardr": {
+          "type": "before_item",
+          "settings": {
+            "text": "Unklare Reihenfolge"
+          }
+        },
+        "before_item_QhVDFk": {
+          "type": "before_item",
+          "settings": {
+            "text": "Pflege fühlt sich wie Aufwand an"
+          }
+        },
+        "after_item_xQxLDz": {
+          "type": "after_item",
+          "settings": {
+            "text": "Drei bewusste Schritte"
+          }
+        },
+        "after_item_RW3yCz": {
+          "type": "after_item",
+          "settings": {
+            "text": "Klare Ritual-Logik"
+          }
+        },
+        "after_item_k39HHP": {
+          "type": "after_item",
+          "settings": {
+            "text": "Weiches, gepflegtes Hautgefühl"
+          }
+        },
+        "after_item_GDLGcK": {
+          "type": "after_item",
+          "settings": {
+            "text": "Ein Moment, den du wiederholen willst"
+          }
+        }
+      },
+      "block_order": [
+        "before_item_PFrzrP",
+        "before_item_BgqbYe",
+        "before_item_4dardr",
+        "before_item_QhVDFk",
+        "after_item_xQxLDz",
+        "after_item_RW3yCz",
+        "after_item_k39HHP",
+        "after_item_GDLGcK"
+      ],
+      "name": "ADORA Routine Shift",
+      "settings": {
+        "eyebrow": "VOM CHAOS ZUM RITUAL",
+        "headline": "Von überladener Routine zu bewusstem Reset.",
+        "subheadline": "<p>ADORA reduziert deine Pflege auf das, was sich klar, vollständig und wiederholbar anfühlt.</p>",
+        "before_title": "Vorher: Überladen",
+        "after_title": "Nachher: Reset",
+        "image_alt_before": "Überladene Skincare Routine",
+        "image_alt_after": "ADORA Reset Ritual",
+        "button_label": "Ritual entdecken",
+        "button_link": "",
+        "background_style": "cream",
+        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 50%, rgba(244, 216, 255, 1) 100%)",
+        "before_panel_background": "linear-gradient(180deg, rgba(247, 241, 236, 0.86), rgba(255, 255, 255, 0.7) 100%)",
+        "after_panel_background": "linear-gradient(135deg, rgba(251, 243, 255, 0.92), rgba(244, 216, 255, 0.72) 50%, rgba(255, 248, 239, 0.88) 100%)",
+        "text_color": "#3A2351",
+        "accent_color": "#805394",
+        "padding_desktop": 96,
+        "padding_mobile": 64,
+        "show_cta": true,
+        "show_center_marker": true
       }
     },
     "slideshow_tyrRgz": {
@@ -7407,6 +7492,7 @@
     "adora_problem_reframe_wjxCcH",
     "adora_ritual_steps_FQyGF8",
     "adora_sensory_textures_Tjte67",
+    "adora_routine_transformation_8tz63d",
     "slideshow_tyrRgz",
     "collection_list_NRwJx3",
     "section_7hRDd8",
