@@ -1,0 +1,17 @@
+{%- liquid
+  assign value_text = text
+  assign value_icon_text = icon_text
+  assign value_class = class
+-%}
+
+{%- if value_text != blank or value_icon_text != blank -%}
+  <span class="adora-value-badge{% if value_class != blank %} {{ value_class | escape }}{% endif %}">
+    {%- if value_icon_text != blank -%}
+      <span class="adora-value-badge__icon" aria-hidden="true">{{ value_icon_text | escape }}</span>
+    {%- endif -%}
+
+    {%- if value_text != blank -%}
+      <span class="adora-value-badge__text">{{ value_text | escape }}</span>
+    {%- endif -%}
+  </span>
+{%- endif -%}
