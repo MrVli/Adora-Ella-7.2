@@ -1,0 +1,228 @@
+{%- liquid
+  assign section_bg = section.settings.background_color
+
+  case section.settings.background_style
+    when 'cream'
+      assign section_bg = 'var(--adora-cream)'
+    when 'mist'
+      assign section_bg = 'var(--adora-mist)'
+    when 'lilac_gradient'
+      assign section_bg = 'linear-gradient(135deg, #fff8ef 0%, #fbf3ff 48%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<section
+  class="adora-section adora-philosophy adora-philosophy--{{ section.settings.text_alignment }} adora-philosophy--badges-desktop-{{ section.settings.badge_layout_desktop }} adora-philosophy--badges-mobile-{{ section.settings.badge_layout_mobile }}{% if section.settings.show_divider_top %} adora-philosophy--divider-top{% endif %}{% if section.settings.show_divider_bottom %} adora-philosophy--divider-bottom{% endif %}"
+  style="
+    --adora-philosophy-bg: {{ section_bg }};
+    --adora-philosophy-text: {{ section.settings.text_color }};
+    --adora-philosophy-accent: {{ section.settings.accent_color }};
+    --adora-philosophy-max-width: {{ section.settings.max_width }}px;
+    --adora-philosophy-padding-desktop: {{ section.settings.padding_desktop }}px;
+    --adora-philosophy-padding-mobile: {{ section.settings.padding_mobile }}px;
+  "
+>
+  <div class="adora-container adora-philosophy__container">
+    <div class="adora-philosophy__content" data-adora-reveal>
+      {%- if section.settings.statement_text != blank -%}
+        <h2 class="adora-heading adora-philosophy__statement">{{ section.settings.statement_text | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.subtext != blank -%}
+        <div class="adora-richtext adora-philosophy__subtext">{{ section.settings.subtext }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.show_benefit_badges and section.blocks.size > 0 -%}
+        <ul class="adora-philosophy__badges" aria-label="ADORA Vorteile">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.text != blank or block.settings.icon_text != blank -%}
+              <li class="adora-philosophy__badge-item" {{ block.shopify_attributes }}>
+                {%- if block.settings.link != blank -%}
+                  <a class="adora-philosophy__badge-link" href="{{ block.settings.link }}">
+                    {% render 'adora-value-badge', text: block.settings.text, icon_text: block.settings.icon_text, class: 'adora-philosophy__badge' %}
+                  </a>
+                {%- else -%}
+                  {% render 'adora-value-badge', text: block.settings.text, icon_text: block.settings.icon_text, class: 'adora-philosophy__badge' %}
+                {%- endif -%}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} .adora-philosophy {
+    position: relative;
+    padding-block: var(--adora-philosophy-padding-mobile);
+    color: var(--adora-philosophy-text);
+    background: var(--adora-philosophy-bg);
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy::before,
+  #shopify-section-{{ section.id }} .adora-philosophy::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(128, 83, 148, 0.18), transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy::before {
+    top: 0;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy::after {
+    bottom: 0;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy--divider-top::before,
+  #shopify-section-{{ section.id }} .adora-philosophy--divider-bottom::after {
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy__container {
+    display: grid;
+    place-items: center;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy__content {
+    width: min(100%, var(--adora-philosophy-max-width));
+    color: currentColor;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy--center .adora-philosophy__content {
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy__statement {
+    margin: 0;
+    color: currentColor;
+    font-size: clamp(2.4rem, 11vw, 4.6rem);
+    letter-spacing: -0.064em;
+    line-height: 0.94;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy__subtext {
+    max-width: 680px;
+    margin-top: 16px;
+    color: color-mix(in srgb, currentColor 74%, transparent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy--center .adora-philosophy__subtext {
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0;
+    margin: 22px 0 0;
+    list-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy--center .adora-philosophy__badges {
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy__badge-link {
+    display: inline-flex;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy__badge {
+    color: var(--adora-philosophy-accent);
+    background: rgba(255, 255, 255, 0.54);
+    border-color: rgba(128, 83, 148, 0.16);
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy__badge .adora-value-badge__icon {
+    background: var(--adora-philosophy-accent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy--badges-mobile-scroll .adora-philosophy__badges {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-philosophy--badges-mobile-stacked .adora-philosophy__badges {
+    display: grid;
+  }
+
+  @supports not (color: color-mix(in srgb, white 50%, transparent)) {
+    #shopify-section-{{ section.id }} .adora-philosophy__subtext {
+      color: var(--adora-muted);
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .adora-philosophy {
+      padding-block: var(--adora-philosophy-padding-desktop);
+    }
+
+    #shopify-section-{{ section.id }} .adora-philosophy__statement {
+      font-size: clamp(3.2rem, 5vw, 6.4rem);
+    }
+
+    #shopify-section-{{ section.id }} .adora-philosophy--badges-desktop-grid .adora-philosophy__badges {
+      display: grid;
+      grid-template-columns: repeat(2, max-content);
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "ADORA Philosophy Strip",
+  "tag": "section",
+  "class": "adora-philosophy-strip-section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "statement_text", "label": "Statement", "default": "Weniger Schritte. Mehr Hautgefühl." },
+    { "type": "richtext", "id": "subtext", "label": "Subtext", "default": "<p>ADORA verwandelt deine Skincare-Routine in ein klares Ritual: sanft reinigen, tief pflegen, Glow versiegeln.</p>" },
+    { "type": "select", "id": "text_alignment", "label": "Text alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "center" },
+    { "type": "range", "id": "max_width", "label": "Max width", "min": 520, "max": 1200, "step": 20, "unit": "px", "default": 900 },
+    { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "lilac_gradient" },
+    { "type": "color_background", "id": "background_color", "label": "Custom background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 48%, #f4d8ff 100%)" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#3A2351" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 40, "max": 180, "step": 4, "unit": "px", "default": 92 },
+    { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "checkbox", "id": "show_divider_top", "label": "Show top divider", "default": false },
+    { "type": "checkbox", "id": "show_divider_bottom", "label": "Show bottom divider", "default": false },
+    { "type": "checkbox", "id": "show_benefit_badges", "label": "Show benefit badges", "default": true },
+    { "type": "select", "id": "badge_layout_desktop", "label": "Badge layout desktop", "options": [{ "value": "row", "label": "Row" }, { "value": "grid", "label": "Grid" }], "default": "row" },
+    { "type": "select", "id": "badge_layout_mobile", "label": "Badge layout mobile", "options": [{ "value": "wrap", "label": "Wrap" }, { "value": "scroll", "label": "Scroll" }, { "value": "stacked", "label": "Stacked" }], "default": "wrap" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit_badge",
+      "name": "Benefit badge",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Sanfte Reinigung" },
+        { "type": "text", "id": "icon_text", "label": "Icon text" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Philosophy Strip",
+      "blocks": [
+        { "type": "benefit_badge", "settings": { "text": "Sanfte Reinigung" } },
+        { "type": "benefit_badge", "settings": { "text": "Tägliche Feuchtigkeit" } },
+        { "type": "benefit_badge", "settings": { "text": "Nährender Glow" } },
+        { "type": "benefit_badge", "settings": { "text": "Komplettes Ritual" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
