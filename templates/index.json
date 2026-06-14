@@ -391,7 +391,7 @@
         "layout_mobile": "stacked",
         "background_style": "mist",
         "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 48%, rgba(244, 216, 255, 1) 100%)",
-        "card_background_color": "#FFFFFF",
+        "card_background_color": "#ffffff",
         "text_color": "#805394",
         "accent_color": "#805394",
         "padding_desktop": 96,
@@ -399,6 +399,78 @@
         "show_ritual_line": true,
         "show_buttons": true,
         "enable_card_hover": true
+      }
+    },
+    "adora_sensory_textures_Tjte67": {
+      "type": "adora-sensory-textures",
+      "blocks": {
+        "texture_card_eyDpxY": {
+          "type": "texture_card",
+          "settings": {
+            "image": "shopify://shop_images/Hyaluron_956b8c38-e85e-449f-a179-986f33c71270.png",
+            "label": "Milchige Reinigung",
+            "text": "Sanft, weich, beruhigend.",
+            "link": "",
+            "image_alt": "",
+            "make_large": false
+          }
+        },
+        "texture_card_PeaXJR": {
+          "type": "texture_card",
+          "settings": {
+            "image": "shopify://shop_images/Aloe.png",
+            "label": "Milchige Reinigung",
+            "text": "Sanft, weich, beruhigend.",
+            "link": "",
+            "image_alt": "",
+            "make_large": true
+          }
+        },
+        "texture_card_B9m4f8": {
+          "type": "texture_card",
+          "settings": {
+            "image": "shopify://shop_images/White_Tea___Sage.png",
+            "label": "Cream Comfort",
+            "text": "Feuchtigkeit, die sich wie Pflege anfühlt.",
+            "link": "",
+            "image_alt": "",
+            "make_large": false
+          }
+        },
+        "texture_card_rnXzUT": {
+          "type": "texture_card",
+          "settings": {
+            "image": "shopify://shop_images/Sodium_PCA_Bindet_Feuchtigkeit_wie_ein_natuerlicher_Bestandteil_der_Haut._Fuer_ein_pralles_elastisches_Hautgefuehl_ohne_Fettfilm..png",
+            "label": "Golden Finish",
+            "text": "Ein nährender Abschluss mit natürlichem Glow.",
+            "link": "",
+            "image_alt": "",
+            "make_large": false
+          }
+        }
+      },
+      "block_order": [
+        "texture_card_eyDpxY",
+        "texture_card_PeaXJR",
+        "texture_card_B9m4f8",
+        "texture_card_rnXzUT"
+      ],
+      "name": "ADORA Textures",
+      "settings": {
+        "eyebrow": "FÜHL DAS RITUAL",
+        "headline": "Skincare, die du fast spüren kannst.",
+        "subheadline": "<p>Milchige Reinigung, cremige Pflege und ein nährendes Öl-Finish — jeder Schritt wurde als sinnlicher Moment entwickelt.</p>",
+        "layout": "asymmetric_grid",
+        "text_position": "top",
+        "background_style": "mist",
+        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 48%, rgba(244, 216, 255, 1) 100%)",
+        "text_color": "#805394",
+        "overlay_color": "#3A2351",
+        "overlay_opacity": 18,
+        "card_radius": 36,
+        "padding_desktop": 96,
+        "padding_mobile": 64,
+        "show_labels": true
       }
     },
     "slideshow_tyrRgz": {
@@ -7334,6 +7406,7 @@
     "adora_featured_ritual_offer_K8iJG3",
     "adora_problem_reframe_wjxCcH",
     "adora_ritual_steps_FQyGF8",
+    "adora_sensory_textures_Tjte67",
     "slideshow_tyrRgz",
     "collection_list_NRwJx3",
     "section_7hRDd8",
