@@ -9,107 +9,6 @@
  */
 {
   "sections": {
-    "adora_featured_ritual_offer_K8iJG3": {
-      "type": "adora-featured-ritual-offer",
-      "blocks": {
-        "included_item_VmqGGA": {
-          "type": "included_item",
-          "settings": {
-            "title": "Gentle Cleansing Milk",
-            "text": "sanfte Reinigung ohne trockenes Hautgefühl",
-            "value_text": ""
-          }
-        },
-        "included_item_8GQwxP": {
-          "type": "included_item",
-          "settings": {
-            "title": "Moisturising Day Cream",
-            "text": "tägliche Feuchtigkeit und Komfort",
-            "value_text": ""
-          }
-        },
-        "included_item_WiVhbR": {
-          "type": "included_item",
-          "settings": {
-            "title": "Nourishing Facial Oil",
-            "text": "nährendes Finish für sichtbaren Glow",
-            "value_text": ""
-          }
-        },
-        "included_item_6yBKGU": {
-          "type": "included_item",
-          "settings": {
-            "title": "Premium Ritual Box",
-            "text": "ein Selfcare-Moment zum Auspacken",
-            "value_text": ""
-          }
-        },
-        "step_card_tNVVwa": {
-          "type": "step_card",
-          "settings": {
-            "number": "01",
-            "title": "Reinigen",
-            "text": ""
-          }
-        },
-        "step_card_dYDJTM": {
-          "type": "step_card",
-          "settings": {
-            "number": "02",
-            "title": "Pflegen",
-            "text": ""
-          }
-        },
-        "step_card_Dg4NPV": {
-          "type": "step_card",
-          "settings": {
-            "number": "03",
-            "title": "Versiegeln",
-            "text": ""
-          }
-        }
-      },
-      "block_order": [
-        "included_item_VmqGGA",
-        "included_item_8GQwxP",
-        "included_item_WiVhbR",
-        "included_item_6yBKGU",
-        "step_card_tNVVwa",
-        "step_card_dYDJTM",
-        "step_card_Dg4NPV"
-      ],
-      "name": "ADORA Ritual Offer",
-      "settings": {
-        "eyebrow": "DAS KOMPLETTE RITUAL",
-        "headline": "Das Glass Skin Reset Ritual",
-        "subheadline": "<p>Drei aufeinander abgestimmte Schritte für Haut, die sich gereinigt, gepflegt und natürlich strahlend anfühlt.</p>",
-        "included_heading": "Enthalten im Ritual",
-        "product": "glowy-skin-trio-collection-box",
-        "manual_price_text": "",
-        "compare_price_text": "",
-        "main_image": "shopify://shop_images/1.png",
-        "image_alt": "ADORA Glass Skin Reset Ritual Bundle",
-        "primary_button_label": "Ritual starten",
-        "primary_button_link": "",
-        "secondary_button_label": "Mehr erfahren",
-        "secondary_button_link": "",
-        "microcopy": "Limitiertes Launch-Angebot · solange der Vorrat reicht",
-        "show_price": true,
-        "show_compare_price": true,
-        "show_includes": true,
-        "show_step_cards": true,
-        "background_style": "mist",
-        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 46%, rgba(244, 216, 255, 1) 100%)",
-        "card_background_color": "#FFFFFF",
-        "text_color": "#805394",
-        "accent_color": "#805394",
-        "button_style": "primary",
-        "padding_desktop": 96,
-        "padding_mobile": 64,
-        "image_position": "left",
-        "layout_style": "classic"
-      }
-    },
     "adora_hero_reset_ritual_MzeUDF": {
       "type": "adora-hero-reset-ritual",
       "blocks": {
@@ -270,6 +169,164 @@
         "show_benefit_badges": true,
         "badge_layout_desktop": "row",
         "badge_layout_mobile": "wrap"
+      }
+    },
+    "adora_featured_ritual_offer_K8iJG3": {
+      "type": "adora-featured-ritual-offer",
+      "blocks": {
+        "included_item_VmqGGA": {
+          "type": "included_item",
+          "settings": {
+            "title": "Gentle Cleansing Milk",
+            "text": "sanfte Reinigung ohne trockenes Hautgefühl",
+            "value_text": ""
+          }
+        },
+        "included_item_8GQwxP": {
+          "type": "included_item",
+          "settings": {
+            "title": "Moisturising Day Cream",
+            "text": "tägliche Feuchtigkeit und Komfort",
+            "value_text": ""
+          }
+        },
+        "included_item_WiVhbR": {
+          "type": "included_item",
+          "settings": {
+            "title": "Nourishing Facial Oil",
+            "text": "nährendes Finish für sichtbaren Glow",
+            "value_text": ""
+          }
+        },
+        "included_item_6yBKGU": {
+          "type": "included_item",
+          "settings": {
+            "title": "Premium Ritual Box",
+            "text": "ein Selfcare-Moment zum Auspacken",
+            "value_text": ""
+          }
+        },
+        "step_card_tNVVwa": {
+          "type": "step_card",
+          "settings": {
+            "number": "01",
+            "title": "Reinigen",
+            "text": ""
+          }
+        },
+        "step_card_dYDJTM": {
+          "type": "step_card",
+          "settings": {
+            "number": "02",
+            "title": "Pflegen",
+            "text": ""
+          }
+        },
+        "step_card_Dg4NPV": {
+          "type": "step_card",
+          "settings": {
+            "number": "03",
+            "title": "Versiegeln",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "included_item_VmqGGA",
+        "included_item_8GQwxP",
+        "included_item_WiVhbR",
+        "included_item_6yBKGU",
+        "step_card_tNVVwa",
+        "step_card_dYDJTM",
+        "step_card_Dg4NPV"
+      ],
+      "name": "ADORA Ritual Offer",
+      "settings": {
+        "eyebrow": "DAS KOMPLETTE RITUAL",
+        "headline": "Das Glass Skin Reset Ritual",
+        "subheadline": "<p>Drei aufeinander abgestimmte Schritte für Haut, die sich gereinigt, gepflegt und natürlich strahlend anfühlt.</p>",
+        "included_heading": "Enthalten im Ritual",
+        "product": "glowy-skin-trio-collection-box",
+        "manual_price_text": "",
+        "compare_price_text": "",
+        "main_image": "shopify://shop_images/1.png",
+        "image_alt": "ADORA Glass Skin Reset Ritual Bundle",
+        "primary_button_label": "Ritual starten",
+        "primary_button_link": "",
+        "secondary_button_label": "Mehr erfahren",
+        "secondary_button_link": "",
+        "microcopy": "Limitiertes Launch-Angebot · solange der Vorrat reicht",
+        "show_price": true,
+        "show_compare_price": true,
+        "show_includes": true,
+        "show_step_cards": true,
+        "background_style": "mist",
+        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 46%, rgba(244, 216, 255, 1) 100%)",
+        "card_background_color": "#ffffff",
+        "text_color": "#805394",
+        "accent_color": "#805394",
+        "button_style": "primary",
+        "padding_desktop": 96,
+        "padding_mobile": 64,
+        "image_position": "left",
+        "layout_style": "classic"
+      }
+    },
+    "adora_problem_reframe_wjxCcH": {
+      "type": "adora-problem-reframe",
+      "blocks": {
+        "problem_solution_card_icKbMf": {
+          "type": "problem_solution_card",
+          "settings": {
+            "problem_text": "Spannungsgefühl nach der Reinigung?",
+            "solution_text": "Beginne mit einer sanften Milk Cleanse, die deine Haut nicht ausgelaugt wirken lässt.",
+            "icon_text": "01",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "problem_solution_card_FrcVHD": {
+          "type": "problem_solution_card",
+          "settings": {
+            "problem_text": "Fahler Look im Alltag?",
+            "solution_text": "Schenke deiner Haut tägliche Feuchtigkeit und ein gepflegtes Hautgefühl.",
+            "icon_text": "02",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "problem_solution_card_b7b36n": {
+          "type": "problem_solution_card",
+          "settings": {
+            "problem_text": "Glow verschwindet zu schnell?",
+            "solution_text": "Versiegle dein Ritual mit einem nährenden Öl-Finish.",
+            "icon_text": "03",
+            "link_label": "",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "problem_solution_card_icKbMf",
+        "problem_solution_card_FrcVHD",
+        "problem_solution_card_b7b36n"
+      ],
+      "name": "ADORA Routine Reset",
+      "settings": {
+        "eyebrow": "DEIN ROUTINE RESET",
+        "headline": "Deine Haut braucht nicht mehr. Sie braucht Rhythmus.",
+        "body": "<p>Überladene Routinen können sich schnell chaotisch anfühlen: zu viele Schritte, zu viele Produkte, zu wenig Klarheit. ADORA bringt deine Pflege zurück auf drei bewusste Momente: sanft reinigen, intensiv pflegen, Glow versiegeln.</p>",
+        "image_alt": "ADORA skincare ritual texture",
+        "layout": "cards_right",
+        "background_style": "cream",
+        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 50%, rgba(244, 216, 255, 1) 100%)",
+        "card_background_color": "#FFFFFF",
+        "text_color": "#805394",
+        "accent_color": "#805394",
+        "padding_desktop": 96,
+        "padding_mobile": 64,
+        "show_image": true,
+        "show_card_numbers": true
       }
     },
     "slideshow_tyrRgz": {
@@ -7203,6 +7260,7 @@
     "adora_hero_reset_ritual_MzeUDF",
     "adora_philosophy_strip_Yd6bJG",
     "adora_featured_ritual_offer_K8iJG3",
+    "adora_problem_reframe_wjxCcH",
     "slideshow_tyrRgz",
     "collection_list_NRwJx3",
     "section_7hRDd8",
