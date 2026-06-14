@@ -44,8 +44,14 @@
         {%- if block.type == 'texture_card' -%}
           {%- liquid
             assign is_large = false
+            assign has_card_copy = false
+
             if block.settings.make_large or forloop.first
               assign is_large = true
+            endif
+
+            if block.settings.label != blank or block.settings.text != blank
+              assign has_card_copy = true
             endif
           -%}
           <article class="adora-sensory-textures__card{% if is_large %} adora-sensory-textures__card--large{% endif %}" {{ block.shopify_attributes }}>
@@ -58,7 +64,7 @@
               <div class="adora-sensory-textures__overlay" aria-hidden="true"></div>
             </div>
 
-            {%- if section.settings.show_labels and (block.settings.label != blank or block.settings.text != blank) -%}
+            {%- if section.settings.show_labels and has_card_copy -%}
               <div class="adora-sensory-textures__copy">
                 {%- if block.settings.label != blank -%}
                   <h3 class="adora-sensory-textures__label">{{ block.settings.label | escape }}</h3>
