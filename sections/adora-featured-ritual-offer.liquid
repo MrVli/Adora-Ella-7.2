@@ -14,8 +14,8 @@
     assign current_price = offer_product.price | money
   endif
 
-  if compare_price == blank and offer_product != blank and offer_product.compare_at_price > offer_product.price
-    assign compare_price = offer_product.compare_at_price | money
+  if compare_price == blank and offer_product != blank and offer_product.compare_at_price_min > offer_product.price
+    assign compare_price = offer_product.compare_at_price_min | money
   endif
 
   case section.settings.background_style
@@ -32,7 +32,7 @@
   class="adora-section adora-featured-ritual adora-featured-ritual--{{ section.settings.layout_style }} adora-featured-ritual--image-{{ image_position }}{% if section.settings.show_step_cards %} adora-featured-ritual--has-steps{% endif %}"
   style="
     --adora-featured-ritual-bg: {{ section_bg }};
-    --adora-featured-ritual-card-bg: {{ section.settings.card_background_color }};
+    --adora-featured-ritual-card-color: {{ section.settings.card_background_color }};
     --adora-featured-ritual-text: {{ section.settings.text_color }};
     --adora-featured-ritual-accent: {{ section.settings.accent_color }};
     --adora-featured-ritual-padding-desktop: {{ section.settings.padding_desktop }}px;
@@ -136,7 +136,8 @@
     gap: 18px;
     padding: 12px;
     overflow: hidden;
-    background: var(--adora-featured-ritual-card-bg);
+    background: rgba(255, 255, 255, 0.72);
+    background: color-mix(in srgb, var(--adora-featured-ritual-card-color) 72%, transparent);
     border: 1px solid rgba(128, 83, 148, 0.16);
     border-radius: 30px;
     box-shadow: 0 24px 80px rgba(58, 35, 81, 0.1);
@@ -427,7 +428,7 @@
     { "type": "header", "content": "Design" },
     { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "mist" },
     { "type": "color_background", "id": "background_color", "label": "Custom background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 46%, #f4d8ff 100%)" },
-    { "type": "color", "id": "card_background_color", "label": "Card background", "default": "rgba(255, 255, 255, 0.72)" },
+    { "type": "color", "id": "card_background_color", "label": "Card background", "default": "#FFFFFF" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#3A2351" },
     { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
     { "type": "select", "id": "button_style", "label": "Primary button style", "options": [{ "value": "primary", "label": "Primary" }, { "value": "secondary", "label": "Secondary" }, { "value": "outline", "label": "Outline" }, { "value": "glass", "label": "Glass" }], "default": "primary" },
