@@ -1,0 +1,17 @@
+{%- liquid
+  assign button_label = label
+  assign button_link = link | default: '#'
+  assign button_style = style | default: 'primary'
+  assign button_class = class
+  assign button_aria_label = aria_label | default: button_label
+-%}
+
+{%- if button_label != blank -%}
+  <a
+    class="adora-button adora-button--{{ button_style | escape }}{% if button_class != blank %} {{ button_class | escape }}{% endif %}"
+    href="{{ button_link }}"
+    aria-label="{{ button_aria_label | escape }}"
+  >
+    {{ button_label | escape }}
+  </a>
+{%- endif -%}
