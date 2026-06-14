@@ -1,0 +1,363 @@
+{%- liquid
+  assign section_bg = section.settings.background_color
+  assign overlay_alpha = section.settings.overlay_opacity | divided_by: 100.0
+
+  case section.settings.background_style
+    when 'cream'
+      assign section_bg = 'var(--adora-cream)'
+    when 'mist'
+      assign section_bg = 'var(--adora-mist)'
+    when 'lilac_gradient'
+      assign section_bg = 'radial-gradient(circle at 12% 18%, rgba(232, 175, 254, 0.42), transparent 34%), linear-gradient(135deg, #fff8ef 0%, #fbf3ff 54%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<section
+  class="adora-section adora-sensory-textures adora-sensory-textures--{{ section.settings.layout }} adora-sensory-textures--text-{{ section.settings.text_position }}{% unless section.settings.show_labels %} adora-sensory-textures--hide-labels{% endunless %}"
+  style="
+    --adora-sensory-textures-bg: {{ section_bg }};
+    --adora-sensory-textures-text: {{ section.settings.text_color }};
+    --adora-sensory-textures-overlay: {{ section.settings.overlay_color }};
+    --adora-sensory-textures-overlay-opacity: {{ overlay_alpha }};
+    --adora-sensory-textures-radius: {{ section.settings.card_radius }}px;
+    --adora-sensory-textures-padding-desktop: {{ section.settings.padding_desktop }}px;
+    --adora-sensory-textures-padding-mobile: {{ section.settings.padding_mobile }}px;
+  "
+>
+  <div class="adora-container adora-sensory-textures__container">
+    <div class="adora-sensory-textures__header" data-adora-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="adora-eyebrow adora-sensory-textures__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.headline != blank -%}
+        <h2 class="adora-heading adora-sensory-textures__headline">{{ section.settings.headline | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.subheadline != blank -%}
+        <div class="adora-richtext adora-subheading adora-sensory-textures__subheadline">{{ section.settings.subheadline }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="adora-sensory-textures__grid" data-adora-reveal>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'texture_card' -%}
+          {%- liquid
+            assign is_large = false
+            if block.settings.make_large or forloop.first
+              assign is_large = true
+            endif
+          -%}
+          <article class="adora-sensory-textures__card{% if is_large %} adora-sensory-textures__card--large{% endif %}" {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}
+              <a class="adora-sensory-textures__card-link" href="{{ block.settings.link }}" aria-label="{{ block.settings.label | default: 'ADORA texture' | escape }}">
+            {%- endif -%}
+
+            <div class="adora-sensory-textures__media">
+              {% render 'adora-image-frame', image: block.settings.image, mobile_image: block.settings.mobile_image, alt: block.settings.image_alt, aspect_ratio: '4 / 5', class: 'adora-sensory-textures__image-frame', loading: 'lazy' %}
+              <div class="adora-sensory-textures__overlay" aria-hidden="true"></div>
+            </div>
+
+            {%- if section.settings.show_labels and (block.settings.label != blank or block.settings.text != blank) -%}
+              <div class="adora-sensory-textures__copy">
+                {%- if block.settings.label != blank -%}
+                  <h3 class="adora-sensory-textures__label">{{ block.settings.label | escape }}</h3>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="adora-sensory-textures__text">{{ block.settings.text | escape }}</p>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.link != blank -%}
+              </a>
+            {%- endif -%}
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} .adora-sensory-textures {
+    padding-block: var(--adora-sensory-textures-padding-mobile);
+    color: var(--adora-sensory-textures-text);
+    background: var(--adora-sensory-textures-bg);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__container {
+    display: grid;
+    gap: 28px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__header {
+    max-width: 760px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-top .adora-sensory-textures__header,
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-overlay .adora-sensory-textures__header {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__eyebrow {
+    color: var(--adora-primary);
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__headline {
+    max-width: 12ch;
+    color: var(--adora-sensory-textures-text);
+    font-size: clamp(2.45rem, 10vw, 4.8rem);
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-top .adora-sensory-textures__headline,
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-overlay .adora-sensory-textures__headline {
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__subheadline {
+    max-width: 56ch;
+    margin-top: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-top .adora-sensory-textures__subheadline,
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-overlay .adora-sensory-textures__subheadline {
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__grid {
+    display: grid;
+    gap: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__card,
+  #shopify-section-{{ section.id }} .adora-sensory-textures__card-link {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+    border-radius: var(--adora-sensory-textures-radius);
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__media {
+    position: relative;
+    min-height: 360px;
+    overflow: hidden;
+    border-radius: var(--adora-sensory-textures-radius);
+    background: linear-gradient(135deg, rgba(255, 248, 239, 0.82), rgba(244, 216, 255, 0.72));
+    box-shadow: 0 22px 70px rgba(58, 35, 81, 0.09);
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__image-frame {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    border-radius: var(--adora-sensory-textures-radius);
+    box-shadow: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--adora-sensory-textures-overlay);
+    opacity: var(--adora-sensory-textures-overlay-opacity);
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__copy {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2;
+    display: grid;
+    gap: 5px;
+    padding: 14px 16px;
+    color: #ffffff;
+    background: rgba(36, 24, 44, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 22px;
+    backdrop-filter: blur(16px);
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__label {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 6vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 0.98;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures__text {
+    max-width: 32ch;
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-left .adora-sensory-textures__container {
+    gap: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-overlay .adora-sensory-textures__container {
+    position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-overlay .adora-sensory-textures__header {
+    position: relative;
+    z-index: 3;
+    padding: 22px;
+    margin-bottom: -110px;
+    color: #ffffff;
+    background: rgba(36, 24, 44, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 28px;
+    backdrop-filter: blur(18px);
+  }
+
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-overlay .adora-sensory-textures__eyebrow,
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-overlay .adora-sensory-textures__headline,
+  #shopify-section-{{ section.id }} .adora-sensory-textures--text-overlay .adora-sensory-textures__subheadline {
+    color: #ffffff;
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .adora-sensory-textures {
+      padding-block: var(--adora-sensory-textures-padding-desktop);
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures__container {
+      gap: clamp(36px, 5vw, 74px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures--text-left .adora-sensory-textures__container {
+      grid-template-columns: minmax(280px, 0.42fr) minmax(0, 1fr);
+      align-items: center;
+      gap: clamp(34px, 5vw, 86px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures__grid {
+      gap: clamp(16px, 2vw, 24px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures--asymmetric_grid .adora-sensory-textures__grid {
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      grid-template-rows: repeat(2, minmax(250px, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures--asymmetric_grid .adora-sensory-textures__card--large {
+      grid-row: span 2;
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures--equal_grid .adora-sensory-textures__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures--stacked_editorial .adora-sensory-textures__grid {
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      align-items: end;
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures--stacked_editorial .adora-sensory-textures__card:nth-child(2) {
+      margin-top: 90px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures--stacked_editorial .adora-sensory-textures__card:nth-child(3) {
+      grid-column: 1 / -1;
+      max-width: 68%;
+      justify-self: center;
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures__media {
+      min-height: clamp(430px, 42vw, 680px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures--asymmetric_grid .adora-sensory-textures__card:not(.adora-sensory-textures__card--large) .adora-sensory-textures__media {
+      min-height: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures--equal_grid .adora-sensory-textures__media {
+      min-height: clamp(420px, 34vw, 560px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures__copy {
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      padding: 18px 20px;
+      border-radius: 26px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures__card-link .adora-image-frame-snippet__image {
+      transition: transform 360ms ease, filter 360ms ease;
+    }
+
+    #shopify-section-{{ section.id }} .adora-sensory-textures__card-link:hover .adora-image-frame-snippet__image {
+      transform: scale(1.025);
+      filter: saturate(1.04) contrast(1.02);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .adora-sensory-textures__card-link .adora-image-frame-snippet__image,
+    #shopify-section-{{ section.id }} .adora-sensory-textures__card-link:hover .adora-image-frame-snippet__image {
+      transition: none;
+      transform: none;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "ADORA Textures",
+  "tag": "section",
+  "class": "adora-sensory-textures-section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "FÜHL DAS RITUAL" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Skincare, die du fast spüren kannst." },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>Milchige Reinigung, cremige Pflege und ein nährendes Öl-Finish — jeder Schritt wurde als sinnlicher Moment entwickelt.</p>" },
+    { "type": "select", "id": "layout", "label": "Layout", "options": [{ "value": "asymmetric_grid", "label": "Asymmetric grid" }, { "value": "equal_grid", "label": "Equal grid" }, { "value": "stacked_editorial", "label": "Stacked editorial" }], "default": "asymmetric_grid" },
+    { "type": "select", "id": "text_position", "label": "Text position", "options": [{ "value": "top", "label": "Top" }, { "value": "left", "label": "Left" }, { "value": "overlay", "label": "Overlay" }], "default": "top" },
+    { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "mist" },
+    { "type": "color_background", "id": "background_color", "label": "Custom background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 48%, #f4d8ff 100%)" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#3A2351" },
+    { "type": "color", "id": "overlay_color", "label": "Image overlay color", "default": "#3A2351" },
+    { "type": "range", "id": "overlay_opacity", "label": "Image overlay opacity", "min": 0, "max": 70, "step": 5, "unit": "%", "default": 18 },
+    { "type": "range", "id": "card_radius", "label": "Card radius", "min": 24, "max": 48, "step": 2, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "checkbox", "id": "show_labels", "label": "Show labels", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "texture_card",
+      "name": "Texture card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Milchige Reinigung" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Sanft, weich, beruhigend." },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" },
+        { "type": "checkbox", "id": "make_large", "label": "Make large", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Textures",
+      "blocks": [
+        { "type": "texture_card", "settings": { "label": "Milchige Reinigung", "text": "Sanft, weich, beruhigend.", "make_large": true } },
+        { "type": "texture_card", "settings": { "label": "Cream Comfort", "text": "Feuchtigkeit, die sich wie Pflege anfühlt." } },
+        { "type": "texture_card", "settings": { "label": "Golden Finish", "text": "Ein nährender Abschluss mit natürlichem Glow." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
