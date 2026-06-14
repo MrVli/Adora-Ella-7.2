@@ -324,7 +324,7 @@
         "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 50%, rgba(244, 216, 255, 1) 100%)",
         "card_background_color": "#E8AFFE",
         "text_color": "#805394",
-        "accent_color": "#805394",
+        "accent_color": "#E8AFFE",
         "padding_desktop": 96,
         "padding_mobile": 64,
         "show_image": true,
