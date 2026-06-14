@@ -322,13 +322,77 @@
         "layout": "cards_right",
         "background_style": "cream",
         "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 50%, rgba(244, 216, 255, 1) 100%)",
-        "card_background_color": "#E8AFFE",
+        "card_background_color": "#e8affe",
         "text_color": "#805394",
-        "accent_color": "#E8AFFE",
+        "accent_color": "#e8affe",
         "padding_desktop": 96,
         "padding_mobile": 64,
         "show_image": true,
         "show_card_numbers": true
+      }
+    },
+    "adora_ritual_steps_FQyGF8": {
+      "type": "adora-ritual-steps",
+      "blocks": {
+        "step_mAjxVK": {
+          "type": "step",
+          "settings": {
+            "number": "01",
+            "title": "Sanft reinigen",
+            "product_name": "Gentle Cleansing Milk",
+            "text": "<p>Der weiche erste Schritt, um den Tag zu entfernen, ohne dass sich deine Haut trocken oder aus dem Gleichgewicht anfühlt.</p>",
+            "image_alt": "",
+            "button_label": "Step ansehen",
+            "button_link": ""
+          }
+        },
+        "step_hpNHrg": {
+          "type": "step",
+          "settings": {
+            "number": "02",
+            "title": "Täglich pflegen",
+            "product_name": "Moisturising Day Cream",
+            "text": "<p>Die komfortable Feuchtigkeitspflege für ein glatteres, gepflegtes und weiches Hautgefühl.</p>",
+            "image_alt": "",
+            "button_label": "Step ansehen",
+            "button_link": ""
+          }
+        },
+        "step_TtT9KP": {
+          "type": "step",
+          "settings": {
+            "number": "03",
+            "title": "Glow versiegeln",
+            "product_name": "Nourishing Facial Oil",
+            "text": "<p>Das nährende Finish, das dein Ritual abrundet und deiner Haut einen natürlich strahlenden Look schenkt.</p>",
+            "image_alt": "",
+            "button_label": "Step ansehen",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "step_mAjxVK",
+        "step_hpNHrg",
+        "step_TtT9KP"
+      ],
+      "name": "ADORA Ritual Steps",
+      "settings": {
+        "eyebrow": "DIE ADORA METHODE",
+        "headline": "Drei Schritte. Ein ruhiger Glow.",
+        "subheadline": "<p>Ein vollständiges Ritual, das deine Pflege einfacher, klarer und sinnlicher macht.</p>",
+        "layout_desktop": "three_columns",
+        "layout_mobile": "stacked",
+        "background_style": "mist",
+        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 48%, rgba(244, 216, 255, 1) 100%)",
+        "card_background_color": "#FFFFFF",
+        "text_color": "#805394",
+        "accent_color": "#805394",
+        "padding_desktop": 96,
+        "padding_mobile": 64,
+        "show_ritual_line": true,
+        "show_buttons": true,
+        "enable_card_hover": true
       }
     },
     "slideshow_tyrRgz": {
@@ -7263,6 +7327,7 @@
     "adora_philosophy_strip_Yd6bJG",
     "adora_featured_ritual_offer_K8iJG3",
     "adora_problem_reframe_wjxCcH",
+    "adora_ritual_steps_FQyGF8",
     "slideshow_tyrRgz",
     "collection_list_NRwJx3",
     "section_7hRDd8",
