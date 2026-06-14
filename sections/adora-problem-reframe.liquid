@@ -1,0 +1,304 @@
+{%- liquid
+  assign section_bg = section.settings.background_color
+  assign layout_mode = section.settings.layout
+
+  case section.settings.background_style
+    when 'cream'
+      assign section_bg = 'var(--adora-cream)'
+    when 'mist'
+      assign section_bg = 'var(--adora-mist)'
+    when 'lilac_gradient'
+      assign section_bg = 'linear-gradient(135deg, #fff8ef 0%, #fbf3ff 48%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<section
+  class="adora-section adora-problem-reframe adora-problem-reframe--{{ layout_mode }}{% unless section.settings.show_image %} adora-problem-reframe--no-image{% endunless %}"
+  style="
+    --adora-problem-reframe-bg: {{ section_bg }};
+    --adora-problem-reframe-card-color: {{ section.settings.card_background_color }};
+    --adora-problem-reframe-text: {{ section.settings.text_color }};
+    --adora-problem-reframe-accent: {{ section.settings.accent_color }};
+    --adora-problem-reframe-padding-desktop: {{ section.settings.padding_desktop }}px;
+    --adora-problem-reframe-padding-mobile: {{ section.settings.padding_mobile }}px;
+  "
+>
+  <div class="adora-container adora-problem-reframe__container">
+    <div class="adora-problem-reframe__intro" data-adora-reveal>
+      {% render 'adora-section-header', eyebrow: section.settings.eyebrow, heading: section.settings.headline, text: section.settings.body, align: 'left', max_width: '760px' %}
+    </div>
+
+    <div class="adora-problem-reframe__content">
+      {%- if section.settings.show_image and layout_mode == 'image_right' -%}
+        <div class="adora-problem-reframe__visual" data-adora-reveal>
+          {% render 'adora-image-frame', image: section.settings.image, mobile_image: section.settings.mobile_image, alt: section.settings.image_alt, aspect_ratio: '4 / 5', class: 'adora-problem-reframe__image-frame', loading: 'lazy' %}
+        </div>
+      {%- endif -%}
+
+      <div class="adora-problem-reframe__cards" data-adora-reveal>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'problem_solution_card' -%}
+            {%- if block.settings.problem_text != blank or block.settings.solution_text != blank or block.settings.icon_text != blank -%}
+              <article class="adora-problem-reframe__card" {{ block.shopify_attributes }}>
+                <div class="adora-problem-reframe__card-topline">
+                  {%- if section.settings.show_card_numbers -%}
+                    <span class="adora-problem-reframe__number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.icon_text != blank -%}
+                    <span class="adora-problem-reframe__icon" aria-hidden="true">{{ block.settings.icon_text | escape }}</span>
+                  {%- endif -%}
+                </div>
+
+                {%- if block.settings.problem_text != blank -%}
+                  <h3 class="adora-problem-reframe__problem">{{ block.settings.problem_text | escape }}</h3>
+                {%- endif -%}
+
+                {%- if block.settings.solution_text != blank -%}
+                  <p class="adora-problem-reframe__solution">{{ block.settings.solution_text | escape }}</p>
+                {%- endif -%}
+
+                {%- if block.settings.link_label != blank -%}
+                  <a class="adora-problem-reframe__link" href="{{ block.settings.link_url | default: '#' }}">
+                    {{ block.settings.link_label | escape }}
+                  </a>
+                {%- endif -%}
+              </article>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} .adora-problem-reframe {
+    padding-block: var(--adora-problem-reframe-padding-mobile);
+    color: var(--adora-problem-reframe-text);
+    background: var(--adora-problem-reframe-bg);
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__container {
+    display: grid;
+    gap: 28px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__intro .adora-section-header__eyebrow {
+    color: var(--adora-problem-reframe-accent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__intro .adora-section-header__heading {
+    max-width: 12ch;
+    color: var(--adora-problem-reframe-text);
+    font-size: clamp(2.3rem, 10vw, 4rem);
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__intro .adora-section-header__text {
+    max-width: 64ch;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__content {
+    display: grid;
+    gap: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__cards {
+    display: grid;
+    gap: 12px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__card {
+    display: grid;
+    gap: 14px;
+    min-height: 210px;
+    padding: 22px;
+    background: rgba(255, 255, 255, 0.72);
+    background: color-mix(in srgb, var(--adora-problem-reframe-card-color) 72%, transparent);
+    border: 1px solid rgba(128, 83, 148, 0.16);
+    border-radius: 28px;
+    box-shadow: 0 18px 56px rgba(58, 35, 81, 0.08);
+    backdrop-filter: blur(16px);
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__card-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 28px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__number {
+    color: var(--adora-problem-reframe-accent);
+    font-family: var(--font-body);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    min-height: 34px;
+    padding-inline: 10px;
+    color: var(--adora-problem-reframe-accent);
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1;
+    background: rgba(232, 175, 254, 0.18);
+    border: 1px solid rgba(128, 83, 148, 0.12);
+    border-radius: 999px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__problem {
+    max-width: 18ch;
+    margin: 0;
+    color: var(--adora-problem-reframe-text);
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 6vw, 1.7rem);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__solution {
+    max-width: 42ch;
+    margin: 0;
+    color: var(--adora-muted);
+    font-size: 0.96rem;
+    line-height: 1.5;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__link {
+    width: fit-content;
+    color: var(--adora-problem-reframe-accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__link:hover,
+  #shopify-section-{{ section.id }} .adora-problem-reframe__link:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-problem-reframe__image-frame {
+    min-height: 420px;
+    border-radius: 28px;
+    box-shadow: 0 20px 64px rgba(58, 35, 81, 0.1);
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .adora-problem-reframe {
+      padding-block: var(--adora-problem-reframe-padding-desktop);
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe__container {
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      align-items: center;
+      gap: clamp(36px, 6vw, 96px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe--cards_below .adora-problem-reframe__container {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe--cards_below .adora-problem-reframe__intro {
+      max-width: 820px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe--cards_below .adora-problem-reframe__cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe__content {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe--image_right .adora-problem-reframe__content {
+      grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.8fr);
+      align-items: stretch;
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe--image_right .adora-problem-reframe__visual {
+      order: 2;
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe--image_right .adora-problem-reframe__cards {
+      order: 1;
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe__cards {
+      gap: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe__card {
+      min-height: 230px;
+      padding: clamp(24px, 2vw, 34px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-problem-reframe__image-frame {
+      height: 100%;
+      min-height: 100%;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "ADORA Routine Reset",
+  "tag": "section",
+  "class": "adora-problem-reframe-section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "DEIN ROUTINE RESET" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Deine Haut braucht nicht mehr. Sie braucht Rhythmus." },
+    { "type": "richtext", "id": "body", "label": "Body", "default": "<p>Überladene Routinen können sich schnell chaotisch anfühlen: zu viele Schritte, zu viele Produkte, zu wenig Klarheit. ADORA bringt deine Pflege zurück auf drei bewusste Momente: sanft reinigen, intensiv pflegen, Glow versiegeln.</p>" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "ADORA skincare ritual texture" },
+    { "type": "select", "id": "layout", "label": "Layout", "options": [{ "value": "cards_right", "label": "Cards right" }, { "value": "image_right", "label": "Image right" }, { "value": "cards_below", "label": "Cards below" }], "default": "cards_right" },
+    { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "cream" },
+    { "type": "color_background", "id": "background_color", "label": "Custom background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 50%, #f4d8ff 100%)" },
+    { "type": "color", "id": "card_background_color", "label": "Card background", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#3A2351" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "checkbox", "id": "show_image", "label": "Show image for image layout", "default": true },
+    { "type": "checkbox", "id": "show_card_numbers", "label": "Show card numbers", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "problem_solution_card",
+      "name": "Problem solution card",
+      "settings": [
+        { "type": "text", "id": "problem_text", "label": "Problem text", "default": "Spannungsgefühl nach der Reinigung?" },
+        { "type": "text", "id": "solution_text", "label": "Solution text", "default": "Beginne mit einer sanften Milk Cleanse, die deine Haut nicht ausgelaugt wirken lässt." },
+        { "type": "text", "id": "icon_text", "label": "Icon text", "default": "01" },
+        { "type": "text", "id": "link_label", "label": "Link label" },
+        { "type": "url", "id": "link_url", "label": "Link URL" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Routine Reset",
+      "blocks": [
+        { "type": "problem_solution_card", "settings": { "problem_text": "Spannungsgefühl nach der Reinigung?", "solution_text": "Beginne mit einer sanften Milk Cleanse, die deine Haut nicht ausgelaugt wirken lässt.", "icon_text": "01" } },
+        { "type": "problem_solution_card", "settings": { "problem_text": "Fahler Look im Alltag?", "solution_text": "Schenke deiner Haut tägliche Feuchtigkeit und ein gepflegtes Hautgefühl.", "icon_text": "02" } },
+        { "type": "problem_solution_card", "settings": { "problem_text": "Glow verschwindet zu schnell?", "solution_text": "Versiegle dein Ritual mit einem nährenden Öl-Finish.", "icon_text": "03" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
