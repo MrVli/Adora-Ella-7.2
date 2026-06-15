@@ -1383,6 +1383,32 @@
         "include_margins": true
       }
     },
+    "adora_final_cta_reset_q4fknY": {
+      "type": "adora-final-cta-reset",
+      "name": "ADORA Final CTA",
+      "settings": {
+        "eyebrow": "BEGINNE DEINEN RESET",
+        "headline": "Beginne dein Glass Skin Reset Ritual.",
+        "subheadline": "<p>Drei bewusste Schritte. Ein vollständiges Ritual. Ein weicher Glow, jeden Tag.</p>",
+        "button_label": "Ritual shoppen",
+        "button_link": "",
+        "microcopy": "Limitiertes Launch-Batch verfügbar",
+        "main_image": "shopify://shop_images/under-eye-patches-for-skincare.jpg",
+        "image_alt": "ADORA Glass Skin Reset Ritual",
+        "background_style": "lilac_gradient",
+        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 50%, rgba(244, 216, 255, 1) 100%)",
+        "panel_background_color": "#FFFFFF",
+        "text_color": "#805394",
+        "accent_color": "#805394",
+        "padding_desktop": 96,
+        "padding_mobile": 64,
+        "layout": "centered",
+        "show_image": true,
+        "show_microcopy": true,
+        "show_glow_veil": true,
+        "product": ""
+      }
+    },
     "collection_list_NRwJx3": {
       "type": "collection-list",
       "blocks": {
@@ -7914,6 +7940,7 @@
     "adora_brand_world_grid_GrHbcp",
     "adora_faq_ritual_Bx63gP",
     "17815382948ef08f33",
+    "adora_final_cta_reset_q4fknY",
     "collection_list_NRwJx3",
     "section_7hRDd8",
     "lookbook_q8nVmX",
