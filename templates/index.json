@@ -1283,12 +1283,75 @@
         "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 48%, rgba(244, 216, 255, 1) 100%)",
         "text_color": "#805394",
         "accent_color": "#805394",
-        "card_background_color": "#FFFFFF",
+        "card_background_color": "#ffffff",
         "padding_desktop": 96,
         "padding_mobile": 64,
         "image_radius": 36,
         "show_captions": true,
         "mobile_layout": "stacked"
+      }
+    },
+    "adora_faq_ritual_Bx63gP": {
+      "type": "adora-faq-ritual",
+      "blocks": {
+        "faq_item_hHVp7E": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Ist das Ritual für eine einfache Routine geeignet?",
+            "answer": "<p>Ja. Das Ritual wurde bewusst auf drei klare Schritte reduziert, damit deine Pflege vollständig wirkt, ohne kompliziert zu werden.</p>"
+          }
+        },
+        "faq_item_eKwiTJ": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Brauche ich wirklich alle drei Produkte?",
+            "answer": "<p>Das vollständige Erlebnis entsteht durch die Reihenfolge: reinigen, pflegen und den Glow mit einem nährenden Finish versiegeln.</p>"
+          }
+        },
+        "faq_item_fNRAwn": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Wann sollte ich das Ritual verwenden?",
+            "answer": "<p>Du kannst es morgens oder abends verwenden — je nachdem, wann deine Haut und dein Alltag diesen Moment am meisten brauchen.</p>"
+          }
+        },
+        "faq_item_8DjM3w": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Ist das Set auch als Geschenk geeignet?",
+            "answer": "<p>Ja. Durch die Premium Ritual Box eignet sich das Set ideal als hochwertiges Selfcare-Geschenk.</p>"
+          }
+        },
+        "faq_item_wiPrfG": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Was unterscheidet das Ritual von einzelnen Produkten?",
+            "answer": "<p>ADORA ist als zusammenhängendes Ritual gedacht. Es geht nicht um zufällige Schritte, sondern um eine klare Pflege-Logik.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_hHVp7E",
+        "faq_item_eKwiTJ",
+        "faq_item_fNRAwn",
+        "faq_item_8DjM3w",
+        "faq_item_wiPrfG"
+      ],
+      "name": "ADORA Ritual FAQ",
+      "settings": {
+        "eyebrow": "BEVOR DU BEGINNST",
+        "headline": "Häufige Fragen zum ADORA Ritual",
+        "subheadline": "<p>Alles, was du wissen solltest, bevor du dein Glass Skin Reset Ritual beginnst.</p>",
+        "layout": "split",
+        "background_style": "mist",
+        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 52%, rgba(244, 216, 255, 1) 100%)",
+        "text_color": "#805394",
+        "accent_color": "#805394",
+        "border_color": "#D9C6E2",
+        "padding_desktop": 96,
+        "padding_mobile": 64,
+        "open_first_item": true,
+        "allow_multiple_open": false
       }
     },
     "collection_list_NRwJx3": {
@@ -7820,6 +7883,7 @@
     "adora_formula_confidence_8yGcNx",
     "adora_bundle_value_panel_rmRMaJ",
     "adora_brand_world_grid_GrHbcp",
+    "adora_faq_ritual_Bx63gP",
     "collection_list_NRwJx3",
     "section_7hRDd8",
     "lookbook_q8nVmX",
