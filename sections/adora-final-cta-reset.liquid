@@ -1,0 +1,285 @@
+{%- liquid
+  assign final_product = section.settings.product
+  assign cta_link = section.settings.button_link
+  assign section_bg = section.settings.background_color
+
+  if cta_link == blank and final_product != blank
+    assign cta_link = final_product.url
+  endif
+
+  case section.settings.background_style
+    when 'cream'
+      assign section_bg = 'var(--adora-cream)'
+    when 'mist'
+      assign section_bg = 'var(--adora-mist)'
+    when 'lilac_gradient'
+      assign section_bg = 'radial-gradient(circle at 18% 12%, rgba(232, 175, 254, 0.48), transparent 34%), radial-gradient(circle at 82% 18%, rgba(255, 248, 239, 0.9), transparent 32%), linear-gradient(135deg, #fff8ef 0%, #fbf3ff 50%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<section
+  class="adora-section adora-final-cta adora-final-cta--{{ section.settings.layout }}{% unless section.settings.show_image %} adora-final-cta--no-image{% endunless %}{% if section.settings.show_glow_veil %} adora-final-cta--glow{% endif %}"
+  style="
+    --adora-final-cta-bg: {{ section_bg }};
+    --adora-final-cta-panel-bg: {{ section.settings.panel_background_color }};
+    --adora-final-cta-text: {{ section.settings.text_color }};
+    --adora-final-cta-accent: {{ section.settings.accent_color }};
+    --adora-final-cta-padding-desktop: {{ section.settings.padding_desktop }}px;
+    --adora-final-cta-padding-mobile: {{ section.settings.padding_mobile }}px;
+  "
+>
+  {%- if section.settings.layout == 'image_background' and section.settings.background_image != blank -%}
+    <div class="adora-final-cta__background-media" aria-hidden="true">
+      {{ section.settings.background_image | image_url: width: 2400 | image_tag: class: 'adora-final-cta__background-image', loading: 'lazy', widths: '900, 1400, 1800, 2400', sizes: '100vw' }}
+    </div>
+  {%- endif -%}
+
+  <div class="adora-container adora-final-cta__container">
+    <div class="adora-final-cta__panel" data-adora-reveal>
+      {%- if section.settings.show_glow_veil -%}
+        <span class="adora-final-cta__glow-veil" aria-hidden="true"></span>
+      {%- endif -%}
+
+      {%- if section.settings.show_image and section.settings.layout != 'image_background' -%}
+        <div class="adora-final-cta__media">
+          {% render 'adora-image-frame', image: section.settings.main_image, mobile_image: section.settings.mobile_image, alt: section.settings.image_alt, aspect_ratio: '4 / 5', class: 'adora-final-cta__image-frame', loading: 'lazy' %}
+        </div>
+      {%- endif -%}
+
+      <div class="adora-final-cta__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="adora-eyebrow adora-final-cta__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.headline != blank -%}
+          <h2 class="adora-heading adora-final-cta__headline">{{ section.settings.headline | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.subheadline != blank -%}
+          <div class="adora-richtext adora-subheading adora-final-cta__subheadline">{{ section.settings.subheadline }}</div>
+        {%- endif -%}
+
+        <div class="adora-final-cta__actions">
+          {% render 'adora-button', label: section.settings.button_label, link: cta_link, style: 'primary', class: 'adora-final-cta__button' %}
+        </div>
+
+        {%- if section.settings.show_microcopy and section.settings.microcopy != blank -%}
+          <p class="adora-final-cta__microcopy">{{ section.settings.microcopy | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} .adora-final-cta {
+    position: relative;
+    padding-block: var(--adora-final-cta-padding-mobile);
+    color: var(--adora-final-cta-text);
+    background: var(--adora-final-cta-bg);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__background-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__background-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 248, 239, 0.72), rgba(251, 243, 255, 0.66) 46%, rgba(58, 35, 81, 0.18));
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__container {
+    position: relative;
+    z-index: 1;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__panel {
+    position: relative;
+    display: grid;
+    gap: 24px;
+    overflow: hidden;
+    padding: 22px;
+    color: var(--adora-final-cta-text);
+    background: rgba(255, 255, 255, 0.68);
+    background: color-mix(in srgb, var(--adora-final-cta-panel-bg) 74%, transparent);
+    border: 1px solid rgba(128, 83, 148, 0.16);
+    border-radius: 34px;
+    box-shadow: 0 28px 90px rgba(58, 35, 81, 0.12);
+    backdrop-filter: blur(18px);
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__glow-veil {
+    position: absolute;
+    inset: auto -18% -38% auto;
+    width: min(560px, 78vw);
+    aspect-ratio: 1;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(232, 175, 254, 0.52), rgba(255, 248, 239, 0.2) 44%, transparent 68%);
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+    max-width: 780px;
+    margin-inline: auto;
+    padding: 18px 4px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__eyebrow {
+    color: var(--adora-final-cta-accent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__headline {
+    max-width: 11ch;
+    margin-inline: auto;
+    color: var(--adora-final-cta-text);
+    font-size: clamp(2.55rem, 11vw, 5.8rem);
+    line-height: 0.92;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__subheadline {
+    max-width: 48ch;
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__button {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__microcopy {
+    margin: -4px 0 0;
+    color: var(--adora-muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__media {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta__image-frame {
+    min-height: 360px;
+    border-radius: 28px;
+    box-shadow: 0 22px 72px rgba(58, 35, 81, 0.1);
+  }
+
+  #shopify-section-{{ section.id }} .adora-final-cta--image_background .adora-final-cta__panel {
+    background: rgba(255, 255, 255, 0.48);
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .adora-final-cta {
+      padding-block: var(--adora-final-cta-padding-desktop);
+    }
+
+    #shopify-section-{{ section.id }} .adora-final-cta__panel {
+      min-height: 560px;
+      padding: clamp(34px, 4vw, 64px);
+      border-radius: 48px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-final-cta--split .adora-final-cta__panel {
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      align-items: center;
+      gap: clamp(34px, 5vw, 82px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-final-cta--split .adora-final-cta__content {
+      justify-items: start;
+      margin-inline: 0;
+      text-align: left;
+    }
+
+    #shopify-section-{{ section.id }} .adora-final-cta--split .adora-final-cta__headline,
+    #shopify-section-{{ section.id }} .adora-final-cta--split .adora-final-cta__subheadline {
+      margin-inline: 0;
+    }
+
+    #shopify-section-{{ section.id }} .adora-final-cta--split .adora-final-cta__actions {
+      justify-content: flex-start;
+    }
+
+    #shopify-section-{{ section.id }} .adora-final-cta--centered .adora-final-cta__panel,
+    #shopify-section-{{ section.id }} .adora-final-cta--image_background .adora-final-cta__panel {
+      place-items: center;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .adora-final-cta__image-frame {
+      min-height: clamp(440px, 40vw, 660px);
+      border-radius: 40px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-final-cta__button {
+      width: auto;
+      min-width: 220px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "ADORA Final Reset CTA",
+  "tag": "section",
+  "class": "adora-final-cta-section",
+  "enabled_on": {
+    "templates": ["index", "page", "product"]
+  },
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "BEGINNE DEINEN RESET" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Beginne dein Glass Skin Reset Ritual." },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>Drei bewusste Schritte. Ein vollständiges Ritual. Ein weicher Glow, jeden Tag.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Ritual shoppen" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "microcopy", "label": "Microcopy", "default": "Limitiertes Launch-Batch verfügbar" },
+    { "type": "image_picker", "id": "main_image", "label": "Main image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "ADORA Glass Skin Reset Ritual" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image" },
+    { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "lilac_gradient" },
+    { "type": "color_background", "id": "background_color", "label": "Custom background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 50%, #f4d8ff 100%)" },
+    { "type": "color", "id": "panel_background_color", "label": "Panel background color", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#3A2351" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "select", "id": "layout", "label": "Layout", "options": [{ "value": "centered", "label": "Centered" }, { "value": "split", "label": "Split" }, { "value": "image_background", "label": "Image background" }], "default": "centered" },
+    { "type": "checkbox", "id": "show_image", "label": "Show image", "default": true },
+    { "type": "checkbox", "id": "show_microcopy", "label": "Show microcopy", "default": true },
+    { "type": "checkbox", "id": "show_glow_veil", "label": "Show glow veil", "default": true },
+    { "type": "product", "id": "product", "label": "Product" }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Final Reset CTA"
+    }
+  ]
+}
+{% endschema %}
