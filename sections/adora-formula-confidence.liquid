@@ -1,0 +1,278 @@
+{%- liquid
+  assign section_bg = section.settings.background_color
+
+  case section.settings.background_style
+    when 'cream'
+      assign section_bg = 'var(--adora-cream)'
+    when 'mist'
+      assign section_bg = 'var(--adora-mist)'
+    when 'lilac_gradient'
+      assign section_bg = 'radial-gradient(circle at 18% 14%, rgba(232, 175, 254, 0.44), transparent 36%), linear-gradient(135deg, #fff8ef 0%, #fbf3ff 52%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<section
+  class="adora-section adora-formula-confidence adora-formula-confidence--{{ section.settings.layout }} adora-formula-confidence--{{ section.settings.badge_style }}{% unless section.settings.show_image %} adora-formula-confidence--no-image{% endunless %}"
+  style="
+    --adora-formula-confidence-bg: {{ section_bg }};
+    --adora-formula-confidence-card-bg: {{ section.settings.card_background_color }};
+    --adora-formula-confidence-text: {{ section.settings.text_color }};
+    --adora-formula-confidence-accent: {{ section.settings.accent_color }};
+    --adora-formula-confidence-padding-desktop: {{ section.settings.padding_desktop }}px;
+    --adora-formula-confidence-padding-mobile: {{ section.settings.padding_mobile }}px;
+  "
+>
+  <div class="adora-container adora-formula-confidence__container">
+    <div class="adora-formula-confidence__copy" data-adora-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="adora-eyebrow adora-formula-confidence__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.headline != blank -%}
+        <h2 class="adora-heading adora-formula-confidence__headline">{{ section.settings.headline | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.subheadline != blank -%}
+        <div class="adora-richtext adora-subheading adora-formula-confidence__subheadline">{{ section.settings.subheadline }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="adora-formula-confidence__content" data-adora-reveal>
+      {%- if section.settings.show_image -%}
+        <div class="adora-formula-confidence__visual">
+          {% render 'adora-image-frame', image: section.settings.image, mobile_image: section.settings.mobile_image, alt: section.settings.image_alt, aspect_ratio: '4 / 5', class: 'adora-formula-confidence__image-frame', loading: 'lazy' %}
+        </div>
+      {%- endif -%}
+
+      <div class="adora-formula-confidence__badges" aria-label="ADORA Qualitätsmerkmale">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'confidence_badge' -%}
+            {%- if block.settings.badge_text != blank or block.settings.icon_text != blank -%}
+              <div class="adora-formula-confidence__badge-card" {{ block.shopify_attributes }}>
+                {% render 'adora-value-badge', text: block.settings.badge_text, icon_text: block.settings.icon_text, class: 'adora-formula-confidence__badge' %}
+                {%- if block.settings.small_text != blank -%}
+                  <p class="adora-formula-confidence__badge-small">{{ block.settings.small_text | escape }}</p>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} .adora-formula-confidence {
+    padding-block: var(--adora-formula-confidence-padding-mobile);
+    color: var(--adora-formula-confidence-text);
+    background: var(--adora-formula-confidence-bg);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__container {
+    display: grid;
+    gap: 28px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__copy {
+    max-width: 760px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence--centered_grid .adora-formula-confidence__copy {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__eyebrow {
+    color: var(--adora-formula-confidence-accent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__headline {
+    max-width: 12ch;
+    color: var(--adora-formula-confidence-text);
+    font-size: clamp(2.35rem, 10vw, 4.7rem);
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence--centered_grid .adora-formula-confidence__headline {
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__subheadline {
+    max-width: 56ch;
+    margin-top: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence--centered_grid .adora-formula-confidence__subheadline {
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__content {
+    display: grid;
+    gap: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__visual {
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__image-frame {
+    min-height: 420px;
+    border-radius: 30px;
+    box-shadow: 0 22px 70px rgba(58, 35, 81, 0.09);
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__badges {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__badge-card {
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence--cards .adora-formula-confidence__badge-card {
+    display: grid;
+    gap: 10px;
+    min-height: 132px;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.72);
+    background: color-mix(in srgb, var(--adora-formula-confidence-card-bg) 74%, transparent);
+    border: 1px solid rgba(128, 83, 148, 0.16);
+    border-radius: 24px;
+    box-shadow: 0 18px 56px rgba(58, 35, 81, 0.07);
+    backdrop-filter: blur(16px);
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence--pills .adora-formula-confidence__badge-card {
+    display: grid;
+    gap: 7px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__badge {
+    width: 100%;
+    min-height: 50px;
+    justify-content: flex-start;
+    color: var(--adora-formula-confidence-text);
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(128, 83, 148, 0.16);
+    box-shadow: 0 14px 44px rgba(58, 35, 81, 0.06);
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence--cards .adora-formula-confidence__badge {
+    min-height: auto;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__badge .adora-value-badge__icon {
+    color: #ffffff;
+    background: var(--adora-formula-confidence-accent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__badge .adora-value-badge__text {
+    font-weight: 800;
+  }
+
+  #shopify-section-{{ section.id }} .adora-formula-confidence__badge-small {
+    margin: 0;
+    color: var(--adora-muted);
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .adora-formula-confidence {
+      padding-block: var(--adora-formula-confidence-padding-desktop);
+    }
+
+    #shopify-section-{{ section.id }} .adora-formula-confidence__container {
+      gap: clamp(36px, 5vw, 80px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-formula-confidence--split .adora-formula-confidence__container {
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      align-items: center;
+    }
+
+    #shopify-section-{{ section.id }} .adora-formula-confidence--image_with_badges .adora-formula-confidence__content {
+      grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1fr);
+      align-items: stretch;
+    }
+
+    #shopify-section-{{ section.id }} .adora-formula-confidence--centered_grid .adora-formula-confidence__badges,
+    #shopify-section-{{ section.id }} .adora-formula-confidence--split .adora-formula-confidence__badges {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .adora-formula-confidence--image_with_badges .adora-formula-confidence__badges {
+      align-content: center;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .adora-formula-confidence__image-frame {
+      min-height: clamp(500px, 42vw, 680px);
+      border-radius: 36px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-formula-confidence--cards .adora-formula-confidence__badge-card {
+      min-height: 150px;
+      padding: clamp(18px, 2vw, 28px);
+      border-radius: 28px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "ADORA Formula Trust",
+  "tag": "section",
+  "class": "adora-formula-confidence-section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "FORMULIERT FÜR HAUTKOMFORT" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Für ein gepflegtes, weiches und strahlendes Hautgefühl." },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>Jeder Schritt des Rituals wurde so kuratiert, dass deine Routine klarer, sinnlicher und vollständiger wird.</p>" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "ADORA formula ritual visual" },
+    { "type": "select", "id": "layout", "label": "Layout", "options": [{ "value": "split", "label": "Split" }, { "value": "centered_grid", "label": "Centered grid" }, { "value": "image_with_badges", "label": "Image with badges" }], "default": "split" },
+    { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "mist" },
+    { "type": "color_background", "id": "background_color", "label": "Custom background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 52%, #f4d8ff 100%)" },
+    { "type": "color", "id": "card_background_color", "label": "Card background", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#3A2351" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "select", "id": "badge_style", "label": "Badge style", "options": [{ "value": "pills", "label": "Pills" }, { "value": "cards", "label": "Cards" }], "default": "pills" },
+    { "type": "checkbox", "id": "show_image", "label": "Show image", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "confidence_badge",
+      "name": "Confidence badge",
+      "settings": [
+        { "type": "text", "id": "badge_text", "label": "Badge text", "default": "Sanftes Reinigungsgefühl" },
+        { "type": "text", "id": "small_text", "label": "Small text" },
+        { "type": "text", "id": "icon_text", "label": "Icon text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Formula Trust",
+      "blocks": [
+        { "type": "confidence_badge", "settings": { "badge_text": "Sanftes Reinigungsgefühl" } },
+        { "type": "confidence_badge", "settings": { "badge_text": "Tägliche Feuchtigkeit" } },
+        { "type": "confidence_badge", "settings": { "badge_text": "Nährendes Finish" } },
+        { "type": "confidence_badge", "settings": { "badge_text": "Vegan" } },
+        { "type": "confidence_badge", "settings": { "badge_text": "Made in Europe" } },
+        { "type": "confidence_badge", "settings": { "badge_text": "Als komplettes Ritual gedacht" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
