@@ -1,0 +1,324 @@
+{%- liquid
+  assign section_bg = section.settings.background_color
+
+  case section.settings.background_style
+    when 'cream'
+      assign section_bg = 'var(--adora-cream)'
+    when 'mist'
+      assign section_bg = 'var(--adora-mist)'
+    when 'lilac_gradient'
+      assign section_bg = 'radial-gradient(circle at 18% 12%, rgba(232, 175, 254, 0.44), transparent 34%), linear-gradient(135deg, #fff8ef 0%, #fbf3ff 52%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<section
+  class="adora-section adora-faq-ritual adora-faq-ritual--{{ section.settings.layout }}"
+  style="
+    --adora-faq-ritual-bg: {{ section_bg }};
+    --adora-faq-ritual-text: {{ section.settings.text_color }};
+    --adora-faq-ritual-accent: {{ section.settings.accent_color }};
+    --adora-faq-ritual-border: {{ section.settings.border_color }};
+    --adora-faq-ritual-padding-desktop: {{ section.settings.padding_desktop }}px;
+    --adora-faq-ritual-padding-mobile: {{ section.settings.padding_mobile }}px;
+  "
+  data-adora-faq-ritual
+  data-allow-multiple-open="{{ section.settings.allow_multiple_open }}"
+>
+  <div class="adora-container adora-faq-ritual__container">
+    <div class="adora-faq-ritual__header" data-adora-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="adora-eyebrow adora-faq-ritual__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.headline != blank -%}
+        <h2 class="adora-heading adora-faq-ritual__headline">{{ section.settings.headline | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.subheadline != blank -%}
+        <div class="adora-richtext adora-subheading adora-faq-ritual__subheadline">{{ section.settings.subheadline }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="adora-faq-ritual__accordion" data-adora-reveal>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq_item' and block.settings.question != blank -%}
+          {%- liquid
+            assign is_open = false
+            if section.settings.open_first_item and forloop.first
+              assign is_open = true
+            endif
+          -%}
+
+          <details class="adora-faq-ritual__item"{% if is_open %} open{% endif %} {{ block.shopify_attributes }}>
+            <summary class="adora-faq-ritual__summary" aria-expanded="{% if is_open %}true{% else %}false{% endif %}">
+              <span class="adora-faq-ritual__question">{{ block.settings.question | escape }}</span>
+              <span class="adora-faq-ritual__icon" aria-hidden="true"></span>
+            </summary>
+
+            {%- if block.settings.answer != blank -%}
+              <div class="adora-richtext adora-faq-ritual__answer">
+                {{ block.settings.answer }}
+              </div>
+            {%- endif -%}
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} .adora-faq-ritual {
+    padding-block: var(--adora-faq-ritual-padding-mobile);
+    color: var(--adora-faq-ritual-text);
+    background: var(--adora-faq-ritual-bg);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__container {
+    display: grid;
+    gap: 28px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__header {
+    display: grid;
+    gap: 14px;
+    max-width: 720px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__eyebrow {
+    color: var(--adora-faq-ritual-accent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__headline {
+    max-width: 12ch;
+    color: var(--adora-faq-ritual-text);
+    font-size: clamp(2.35rem, 10vw, 4.9rem);
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__subheadline {
+    max-width: 54ch;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__accordion {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__item {
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid var(--adora-faq-ritual-border);
+    border-radius: 26px;
+    box-shadow: 0 18px 58px rgba(58, 35, 81, 0.07);
+    backdrop-filter: blur(16px);
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+    padding: 20px;
+    color: var(--adora-faq-ritual-text);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__summary:focus-visible {
+    outline: 2px solid var(--adora-faq-ritual-accent);
+    outline-offset: -5px;
+    border-radius: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__question {
+    font-family: var(--font-display);
+    font-size: clamp(1.08rem, 4.8vw, 1.55rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__icon {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    border: 1px solid rgba(128, 83, 148, 0.2);
+    border-radius: 999px;
+    background: rgba(232, 175, 254, 0.2);
+    transition: transform 180ms ease, background 180ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__icon::before,
+  #shopify-section-{{ section.id }} .adora-faq-ritual__icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 13px;
+    height: 2px;
+    background: var(--adora-faq-ritual-accent);
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+    transition: transform 180ms ease, opacity 180ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__icon::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__item[open] .adora-faq-ritual__icon {
+    background: rgba(128, 83, 148, 0.1);
+    transform: rotate(180deg);
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__item[open] .adora-faq-ritual__icon::after {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__answer {
+    max-width: 68ch;
+    padding: 0 20px 22px;
+    color: var(--adora-muted);
+    font-size: var(--body-size, 1rem);
+    line-height: 1.6;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__answer p {
+    margin-block: 0 0.85em;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual__answer p:last-child {
+    margin-bottom: 0;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual--centered .adora-faq-ritual__header {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual--centered .adora-faq-ritual__headline,
+  #shopify-section-{{ section.id }} .adora-faq-ritual--centered .adora-faq-ritual__subheadline {
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .adora-faq-ritual--centered .adora-faq-ritual__accordion {
+    width: min(100%, 920px);
+    margin-inline: auto;
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .adora-faq-ritual {
+      padding-block: var(--adora-faq-ritual-padding-desktop);
+    }
+
+    #shopify-section-{{ section.id }} .adora-faq-ritual--split .adora-faq-ritual__container {
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      align-items: start;
+      gap: clamp(42px, 6vw, 96px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-faq-ritual__summary {
+      padding: clamp(22px, 2.2vw, 32px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-faq-ritual__answer {
+      padding-inline: clamp(22px, 2.2vw, 32px);
+      padding-bottom: clamp(24px, 2.4vw, 34px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .adora-faq-ritual__icon,
+    #shopify-section-{{ section.id }} .adora-faq-ritual__icon::before,
+    #shopify-section-{{ section.id }} .adora-faq-ritual__icon::after {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<script>
+  (() => {
+    const section = document.currentScript.closest('.shopify-section')?.querySelector('[data-adora-faq-ritual]');
+    if (!section) return;
+
+    const allowMultiple = section.dataset.allowMultipleOpen === 'true';
+    const items = Array.from(section.querySelectorAll('.adora-faq-ritual__item'));
+
+    const syncExpanded = (item) => {
+      const summary = item.querySelector('.adora-faq-ritual__summary');
+      if (summary) summary.setAttribute('aria-expanded', item.open ? 'true' : 'false');
+    };
+
+    items.forEach((item) => {
+      syncExpanded(item);
+      item.addEventListener('toggle', () => {
+        if (item.open && !allowMultiple) {
+          items.forEach((otherItem) => {
+            if (otherItem !== item) {
+              otherItem.open = false;
+              syncExpanded(otherItem);
+            }
+          });
+        }
+        syncExpanded(item);
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "ADORA Ritual FAQ",
+  "tag": "section",
+  "class": "adora-faq-ritual-section",
+  "enabled_on": {
+    "templates": ["index", "page", "product"]
+  },
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "BEVOR DU BEGINNST" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Häufige Fragen zum ADORA Ritual" },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>Alles, was du wissen solltest, bevor du dein Glass Skin Reset Ritual beginnst.</p>" },
+    { "type": "select", "id": "layout", "label": "Layout", "options": [{ "value": "split", "label": "Split" }, { "value": "centered", "label": "Centered" }], "default": "split" },
+    { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "mist" },
+    { "type": "color_background", "id": "background_color", "label": "Custom background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 52%, #f4d8ff 100%)" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#3A2351" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "rgba(128, 83, 148, 0.18)" },
+    { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "checkbox", "id": "open_first_item", "label": "Open first item", "default": true },
+    { "type": "checkbox", "id": "allow_multiple_open", "label": "Allow multiple open", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Ist das Ritual für eine einfache Routine geeignet?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Ja. Das Ritual wurde bewusst auf drei klare Schritte reduziert, damit deine Pflege vollständig wirkt, ohne kompliziert zu werden.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Ritual FAQ",
+      "blocks": [
+        { "type": "faq_item", "settings": { "question": "Ist das Ritual für eine einfache Routine geeignet?", "answer": "<p>Ja. Das Ritual wurde bewusst auf drei klare Schritte reduziert, damit deine Pflege vollständig wirkt, ohne kompliziert zu werden.</p>" } },
+        { "type": "faq_item", "settings": { "question": "Brauche ich wirklich alle drei Produkte?", "answer": "<p>Das vollständige Erlebnis entsteht durch die Reihenfolge: reinigen, pflegen und den Glow mit einem nährenden Finish versiegeln.</p>" } },
+        { "type": "faq_item", "settings": { "question": "Wann sollte ich das Ritual verwenden?", "answer": "<p>Du kannst es morgens oder abends verwenden — je nachdem, wann deine Haut und dein Alltag diesen Moment am meisten brauchen.</p>" } },
+        { "type": "faq_item", "settings": { "question": "Ist das Set auch als Geschenk geeignet?", "answer": "<p>Ja. Durch die Premium Ritual Box eignet sich das Set ideal als hochwertiges Selfcare-Geschenk.</p>" } },
+        { "type": "faq_item", "settings": { "question": "Was unterscheidet das Ritual von einzelnen Produkten?", "answer": "<p>ADORA ist als zusammenhängendes Ritual gedacht. Es geht nicht um zufällige Schritte, sondern um eine klare Pflege-Logik.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
