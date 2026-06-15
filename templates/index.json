@@ -197,17 +197,17 @@
                         "width": 16,
                         "gap": 4,
                         "inherit_color_scheme": true,
-                        "scheme_background": "#FFFFFF",
+                        "scheme_background": "#ffffff",
                         "scheme_background_gradient": "",
                         "scheme_foreground_heading": "#000000",
                         "scheme_foreground": "#000000",
-                        "scheme_primary": "#000F9F",
+                        "scheme_primary": "#000f9f",
                         "scheme_primary_hover": "#000000",
-                        "scheme_border": "#E6E6E6",
+                        "scheme_border": "#e6e6e6",
                         "scheme_shadow": "#000000",
                         "rated_color": "#ffc107",
-                        "unrated_color": "#C2C2C2",
-                        "unrated_border_color": "#C2C2C2",
+                        "unrated_color": "#c2c2c2",
+                        "unrated_border_color": "#c2c2c2",
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
@@ -1048,7 +1048,7 @@
         "layout": "quote_grid",
         "background_style": "mist",
         "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 52%, rgba(244, 216, 255, 1) 100%)",
-        "card_background_color": "#FFFFFF",
+        "card_background_color": "#ffffff",
         "text_color": "#805394",
         "accent_color": "#805394",
         "padding_desktop": 96,
@@ -1056,6 +1056,85 @@
         "show_stars": false,
         "show_author": false,
         "show_source": false
+      }
+    },
+    "adora_formula_confidence_8yGcNx": {
+      "type": "adora-formula-confidence",
+      "blocks": {
+        "confidence_badge_hVyBD9": {
+          "type": "confidence_badge",
+          "settings": {
+            "badge_text": "Sanftes Reinigungsgefühl",
+            "small_text": "",
+            "icon_text": ""
+          }
+        },
+        "confidence_badge_bj3jk9": {
+          "type": "confidence_badge",
+          "settings": {
+            "badge_text": "Tägliche Feuchtigkeit",
+            "small_text": "",
+            "icon_text": ""
+          }
+        },
+        "confidence_badge_4fQKtV": {
+          "type": "confidence_badge",
+          "settings": {
+            "badge_text": "Nährendes Finish",
+            "small_text": "",
+            "icon_text": ""
+          }
+        },
+        "confidence_badge_3FcQij": {
+          "type": "confidence_badge",
+          "settings": {
+            "badge_text": "Vegan",
+            "small_text": "",
+            "icon_text": ""
+          }
+        },
+        "confidence_badge_d7QxzW": {
+          "type": "confidence_badge",
+          "settings": {
+            "badge_text": "Made in Europe",
+            "small_text": "",
+            "icon_text": ""
+          }
+        },
+        "confidence_badge_A9MgLp": {
+          "type": "confidence_badge",
+          "settings": {
+            "badge_text": "Als komplettes Ritual gedacht",
+            "small_text": "",
+            "icon_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "confidence_badge_hVyBD9",
+        "confidence_badge_bj3jk9",
+        "confidence_badge_4fQKtV",
+        "confidence_badge_3FcQij",
+        "confidence_badge_d7QxzW",
+        "confidence_badge_A9MgLp"
+      ],
+      "name": "ADORA Formula Trust",
+      "settings": {
+        "eyebrow": "FORMULIERT FÜR HAUTKOMFORT",
+        "headline": "Für ein gepflegtes, weiches und strahlendes Hautgefühl.",
+        "subheadline": "<p>Jeder Schritt des Rituals wurde so kuratiert, dass deine Routine klarer, sinnlicher und vollständiger wird.</p>",
+        "image": "shopify://shop_images/ChatGPT_Image_31._Mai_2026_15_59_11_1.png",
+        "image_alt": "ADORA formula ritual visual",
+        "layout": "split",
+        "background_style": "mist",
+        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 52%, rgba(244, 216, 255, 1) 100%)",
+        "card_background_color": "#E8AFFE",
+        "text_color": "#805394",
+        "accent_color": "#805394",
+        "padding_desktop": 96,
+        "padding_mobile": 64,
+        "badge_style": "pills",
+        "show_image": false
       }
     },
     "collection_list_NRwJx3": {
@@ -7584,6 +7663,7 @@
     "adora_sensory_textures_Tjte67",
     "adora_routine_transformation_8tz63d",
     "adora_social_proof_editorial_DCkhbb",
+    "adora_formula_confidence_8yGcNx",
     "collection_list_NRwJx3",
     "section_7hRDd8",
     "lookbook_q8nVmX",
