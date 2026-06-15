@@ -1,0 +1,336 @@
+{%- liquid
+  assign section_bg = section.settings.background_color
+
+  case section.settings.background_style
+    when 'cream'
+      assign section_bg = 'var(--adora-cream)'
+    when 'mist'
+      assign section_bg = 'var(--adora-mist)'
+    when 'lilac_gradient'
+      assign section_bg = 'radial-gradient(circle at 16% 12%, rgba(232, 175, 254, 0.46), transparent 36%), linear-gradient(135deg, #fff8ef 0%, #fbf3ff 52%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<section
+  class="adora-section adora-social-proof-editorial adora-social-proof-editorial--{{ section.settings.layout }}"
+  style="
+    --adora-social-proof-editorial-bg: {{ section_bg }};
+    --adora-social-proof-editorial-card-bg: {{ section.settings.card_background_color }};
+    --adora-social-proof-editorial-text: {{ section.settings.text_color }};
+    --adora-social-proof-editorial-accent: {{ section.settings.accent_color }};
+    --adora-social-proof-editorial-padding-desktop: {{ section.settings.padding_desktop }}px;
+    --adora-social-proof-editorial-padding-mobile: {{ section.settings.padding_mobile }}px;
+  "
+>
+  <div class="adora-container adora-social-proof-editorial__container">
+    <div class="adora-social-proof-editorial__header" data-adora-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="adora-eyebrow adora-social-proof-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.headline != blank -%}
+        <h2 class="adora-heading adora-social-proof-editorial__headline">{{ section.settings.headline | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.subheadline != blank -%}
+        <div class="adora-richtext adora-subheading adora-social-proof-editorial__subheadline">{{ section.settings.subheadline }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="adora-social-proof-editorial__quotes" data-adora-reveal>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'quote' -%}
+          <figure class="adora-social-proof-editorial__quote-card{% if forloop.first %} adora-social-proof-editorial__quote-card--featured{% endif %}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <div class="adora-social-proof-editorial__media">
+                {{ block.settings.image | image_url: width: 720 | image_tag: class: 'adora-social-proof-editorial__image', alt: block.settings.image_alt, loading: 'lazy', widths: '320, 480, 720', sizes: '(min-width: 750px) 28vw, 100vw' }}
+              </div>
+            {%- endif -%}
+
+            <div class="adora-social-proof-editorial__content">
+              {%- if block.settings.badge != blank -%}
+                <span class="adora-social-proof-editorial__badge">{{ block.settings.badge | escape }}</span>
+              {%- endif -%}
+
+              {%- if section.settings.show_stars -%}
+                <div class="adora-social-proof-editorial__stars" aria-label="{{ block.settings.rating }} von 5 Sternen">
+                  {%- for index in (1..5) -%}
+                    <span class="adora-social-proof-editorial__star{% if index <= block.settings.rating %} adora-social-proof-editorial__star--filled{% endif %}" aria-hidden="true">★</span>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.quote_text != blank -%}
+                <blockquote class="adora-social-proof-editorial__quote-text">
+                  <span aria-hidden="true">“</span>{{ block.settings.quote_text | escape }}<span aria-hidden="true">”</span>
+                </blockquote>
+              {%- endif -%}
+
+              {%- if section.settings.show_author or section.settings.show_source -%}
+                {%- if block.settings.author_name != blank or block.settings.source != blank -%}
+                  <figcaption class="adora-social-proof-editorial__meta">
+                    {%- if section.settings.show_author and block.settings.author_name != blank -%}
+                      <span class="adora-social-proof-editorial__author">{{ block.settings.author_name | escape }}</span>
+                    {%- endif -%}
+                    {%- if section.settings.show_source and block.settings.source != blank -%}
+                      <span class="adora-social-proof-editorial__source">{{ block.settings.source | escape }}</span>
+                    {%- endif -%}
+                  </figcaption>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          </figure>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial {
+    padding-block: var(--adora-social-proof-editorial-padding-mobile);
+    color: var(--adora-social-proof-editorial-text);
+    background: var(--adora-social-proof-editorial-bg);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__container {
+    display: grid;
+    gap: 30px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__header {
+    max-width: 900px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__eyebrow {
+    color: var(--adora-social-proof-editorial-accent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__headline {
+    max-width: 15ch;
+    margin-inline: auto;
+    color: var(--adora-social-proof-editorial-text);
+    font-size: clamp(2.35rem, 9vw, 4.7rem);
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__subheadline {
+    max-width: 54ch;
+    margin: 16px auto 0;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__quotes {
+    display: grid;
+    gap: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial--carousel_static .adora-social-proof-editorial__quotes {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 2px 18px 16px;
+    margin-inline: -18px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial--carousel_static .adora-social-proof-editorial__quotes::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__quote-card {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--adora-social-proof-editorial-text);
+    background: rgba(255, 255, 255, 0.72);
+    background: color-mix(in srgb, var(--adora-social-proof-editorial-card-bg) 74%, transparent);
+    border: 1px solid rgba(128, 83, 148, 0.16);
+    border-radius: 30px;
+    box-shadow: 0 20px 64px rgba(58, 35, 81, 0.08);
+    backdrop-filter: blur(16px);
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial--carousel_static .adora-social-proof-editorial__quote-card {
+    flex: 0 0 min(84vw, 390px);
+    scroll-snap-align: start;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__media {
+    min-height: 220px;
+    overflow: hidden;
+    margin: 12px 12px 0;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(255, 248, 239, 0.86), rgba(244, 216, 255, 0.7));
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__content {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__badge {
+    width: fit-content;
+    padding: 8px 12px;
+    color: var(--adora-social-proof-editorial-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
+    background: rgba(232, 175, 254, 0.18);
+    border: 1px solid rgba(128, 83, 148, 0.12);
+    border-radius: 999px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__stars {
+    display: inline-flex;
+    gap: 3px;
+    color: rgba(128, 83, 148, 0.24);
+    font-size: 0.92rem;
+    letter-spacing: 0.06em;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__star--filled {
+    color: var(--adora-social-proof-editorial-accent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__quote-text {
+    margin: 0;
+    color: var(--adora-social-proof-editorial-text);
+    font-family: var(--font-display);
+    font-size: clamp(1.55rem, 7vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.055em;
+    line-height: 1.02;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__meta {
+    display: grid;
+    gap: 3px;
+    margin-top: 4px;
+    color: var(--adora-muted);
+    font-size: 0.86rem;
+    line-height: 1.35;
+  }
+
+  #shopify-section-{{ section.id }} .adora-social-proof-editorial__author {
+    color: var(--adora-social-proof-editorial-text);
+    font-weight: 800;
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial {
+      padding-block: var(--adora-social-proof-editorial-padding-desktop);
+    }
+
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial__container {
+      gap: clamp(40px, 5vw, 76px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial__quotes,
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial--carousel_static .adora-social-proof-editorial__quotes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(16px, 2vw, 28px);
+      overflow: visible;
+      padding: 0;
+      margin: 0;
+      scroll-snap-type: none;
+    }
+
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial--featured_quote .adora-social-proof-editorial__quotes {
+      grid-template-columns: minmax(0, 1.16fr) minmax(0, 0.84fr);
+    }
+
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial--featured_quote .adora-social-proof-editorial__quote-card--featured {
+      grid-row: span 2;
+    }
+
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial--featured_quote .adora-social-proof-editorial__quote-card--featured .adora-social-proof-editorial__quote-text {
+      font-size: clamp(2.4rem, 4.6vw, 5.2rem);
+      line-height: 0.95;
+    }
+
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial__quote-card {
+      border-radius: 36px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial__content {
+      padding: clamp(26px, 2.6vw, 40px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial__media {
+      min-height: 260px;
+      border-radius: 28px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-social-proof-editorial__image {
+      min-height: 260px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "ADORA Social Proof",
+  "tag": "section",
+  "class": "adora-social-proof-section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "FÜR DEINE NEUE ROUTINE" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Für Frauen, die Skincare wieder ruhig, schön und einfach erleben wollen." },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>ADORA wurde als Ritual entwickelt — nicht als überfüllte Produktreihe.</p>" },
+    { "type": "select", "id": "layout", "label": "Layout", "options": [{ "value": "quote_grid", "label": "Quote grid" }, { "value": "featured_quote", "label": "Featured quote" }, { "value": "carousel_static", "label": "Static carousel" }], "default": "quote_grid" },
+    { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "mist" },
+    { "type": "color_background", "id": "background_color", "label": "Custom background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 52%, #f4d8ff 100%)" },
+    { "type": "color", "id": "card_background_color", "label": "Card background", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#3A2351" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "checkbox", "id": "show_stars", "label": "Show stars", "default": false },
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false },
+    { "type": "checkbox", "id": "show_source", "label": "Show source", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Quote",
+      "settings": [
+        { "type": "textarea", "id": "quote_text", "label": "Quote text", "default": "Eine Routine, die sich vollständig anfühlt, nicht kompliziert." },
+        { "type": "text", "id": "author_name", "label": "Author name" },
+        { "type": "text", "id": "source", "label": "Source" },
+        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" },
+        { "type": "text", "id": "badge", "label": "Badge" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Social Proof",
+      "blocks": [
+        { "type": "quote", "settings": { "quote_text": "Eine Routine, die sich vollständig anfühlt, nicht kompliziert." } },
+        { "type": "quote", "settings": { "quote_text": "Ein Moment für weiche, gepflegte Haut — ohne 10-Step-Regal." } },
+        { "type": "quote", "settings": { "quote_text": "Skincare, die optisch so hochwertig wirkt, wie sie sich anfühlt." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
