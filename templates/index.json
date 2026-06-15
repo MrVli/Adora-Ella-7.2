@@ -1128,13 +1128,92 @@
         "layout": "split",
         "background_style": "mist",
         "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 52%, rgba(244, 216, 255, 1) 100%)",
-        "card_background_color": "#E8AFFE",
+        "card_background_color": "#e8affe",
         "text_color": "#805394",
         "accent_color": "#805394",
         "padding_desktop": 96,
         "padding_mobile": 64,
         "badge_style": "pills",
         "show_image": false
+      }
+    },
+    "adora_bundle_value_panel_rmRMaJ": {
+      "type": "adora-bundle-value-panel",
+      "blocks": {
+        "included_item_gwEmq7": {
+          "type": "included_item",
+          "settings": {
+            "item_title": "Gentle Cleansing Milk",
+            "item_description": "",
+            "value_text": ""
+          }
+        },
+        "included_item_J4xVaP": {
+          "type": "included_item",
+          "settings": {
+            "item_title": "Moisturising Day Cream",
+            "item_description": "",
+            "value_text": ""
+          }
+        },
+        "included_item_niE87A": {
+          "type": "included_item",
+          "settings": {
+            "item_title": "Nourishing Facial Oil",
+            "item_description": "",
+            "value_text": ""
+          }
+        },
+        "included_item_xenLkT": {
+          "type": "included_item",
+          "settings": {
+            "item_title": "Premium Ritual Box",
+            "item_description": "",
+            "value_text": ""
+          }
+        },
+        "included_item_aNrYRA": {
+          "type": "included_item",
+          "settings": {
+            "item_title": "3-Step Ritual Guide",
+            "item_description": "",
+            "value_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "included_item_gwEmq7",
+        "included_item_J4xVaP",
+        "included_item_niE87A",
+        "included_item_xenLkT",
+        "included_item_aNrYRA"
+      ],
+      "name": "ADORA Bundle Value",
+      "settings": {
+        "eyebrow": "ALLES FÜR DEINEN RESET",
+        "headline": "Alles, was dein Ritual braucht. Nichts, was es überlädt.",
+        "subheadline": "<p>Das ADORA Ritual verbindet drei abgestimmte Pflege-Schritte mit einer Premium Ritual Box — für eine Routine, die vollständig wirkt und sich besonders anfühlt.</p>",
+        "included_heading": "Im Set enthalten",
+        "product": "",
+        "manual_price_text": "",
+        "compare_price_text": "",
+        "main_image": "shopify://shop_images/ChatGPT_Image_31._Mai_2026_15_59_111_1.png",
+        "image_alt": "ADORA Glass Skin Reset Ritual Bundle",
+        "button_label": "Komplettes Ritual shoppen",
+        "button_link": "",
+        "microcopy": "Limitiertes Launch-Batch · solange verfügbar",
+        "show_product_price": true,
+        "show_compare_price": true,
+        "show_image": true,
+        "layout": "text_left",
+        "mobile_order": "text_first",
+        "background_style": "mist",
+        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 50%, rgba(244, 216, 255, 1) 100%)",
+        "panel_background_color": "#FFFFFF",
+        "text_color": "#805394",
+        "accent_color": "#805394",
+        "padding_desktop": 96,
+        "padding_mobile": 64
       }
     },
     "collection_list_NRwJx3": {
@@ -7664,6 +7743,7 @@
     "adora_routine_transformation_8tz63d",
     "adora_social_proof_editorial_DCkhbb",
     "adora_formula_confidence_8yGcNx",
+    "adora_bundle_value_panel_rmRMaJ",
     "collection_list_NRwJx3",
     "section_7hRDd8",
     "lookbook_q8nVmX",
