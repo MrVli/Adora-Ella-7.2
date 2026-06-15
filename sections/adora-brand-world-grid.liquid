@@ -1,0 +1,399 @@
+{%- liquid
+  assign section_bg = section.settings.background_color
+
+  case section.settings.background_style
+    when 'cream'
+      assign section_bg = 'var(--adora-cream)'
+    when 'mist'
+      assign section_bg = 'var(--adora-mist)'
+    when 'lilac_gradient'
+      assign section_bg = 'radial-gradient(circle at 14% 12%, rgba(232, 175, 254, 0.48), transparent 34%), radial-gradient(circle at 82% 24%, rgba(255, 248, 239, 0.84), transparent 30%), linear-gradient(135deg, #fff8ef 0%, #fbf3ff 48%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<section
+  class="adora-section adora-brand-world adora-brand-world--{{ section.settings.layout }} adora-brand-world--text-{{ section.settings.text_placement }} adora-brand-world--mobile-{{ section.settings.mobile_layout }}{% unless section.settings.show_captions %} adora-brand-world--hide-captions{% endunless %}"
+  style="
+    --adora-brand-world-bg: {{ section_bg }};
+    --adora-brand-world-text: {{ section.settings.text_color }};
+    --adora-brand-world-accent: {{ section.settings.accent_color }};
+    --adora-brand-world-card-bg: {{ section.settings.card_background_color }};
+    --adora-brand-world-radius: {{ section.settings.image_radius }}px;
+    --adora-brand-world-padding-desktop: {{ section.settings.padding_desktop }}px;
+    --adora-brand-world-padding-mobile: {{ section.settings.padding_mobile }}px;
+  "
+>
+  <div class="adora-container adora-brand-world__container">
+    {%- if section.settings.text_placement == 'top' -%}
+      <div class="adora-brand-world__header" data-adora-reveal>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="adora-eyebrow adora-brand-world__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.headline != blank -%}
+          <h2 class="adora-heading adora-brand-world__headline">{{ section.settings.headline | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheadline != blank -%}
+          <div class="adora-richtext adora-subheading adora-brand-world__subheadline">{{ section.settings.subheadline }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="adora-brand-world__grid" data-adora-reveal>
+      {%- if section.settings.text_placement == 'inside_grid' -%}
+        <div class="adora-brand-world__text-card">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="adora-eyebrow adora-brand-world__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.headline != blank -%}
+            <h2 class="adora-heading adora-brand-world__headline">{{ section.settings.headline | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheadline != blank -%}
+            <div class="adora-richtext adora-subheading adora-brand-world__subheadline">{{ section.settings.subheadline }}</div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'image_item' -%}
+          {%- liquid
+            assign tile_ratio = '4 / 5'
+
+            case block.settings.size
+              when 'small'
+                assign tile_ratio = '1 / 1'
+              when 'medium'
+                assign tile_ratio = '4 / 5'
+              when 'large'
+                assign tile_ratio = '5 / 6'
+              when 'tall'
+                assign tile_ratio = '3 / 4'
+              when 'wide'
+                assign tile_ratio = '16 / 10'
+            endcase
+          -%}
+
+          <article class="adora-brand-world__tile adora-brand-world__tile--{{ block.settings.size }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}
+              <a class="adora-brand-world__tile-link" href="{{ block.settings.link }}" aria-label="{{ block.settings.caption | default: block.settings.alt_text | default: 'ADORA brand visual' | escape }}">
+            {%- endif -%}
+
+            <div class="adora-brand-world__media">
+              {% render 'adora-image-frame', image: block.settings.image, mobile_image: block.settings.mobile_image, alt: block.settings.alt_text, aspect_ratio: tile_ratio, class: 'adora-brand-world__image-frame', loading: 'lazy' %}
+              <span class="adora-brand-world__reflection" aria-hidden="true"></span>
+            </div>
+
+            {%- if section.settings.show_captions and block.settings.caption != blank -%}
+              <p class="adora-brand-world__caption">{{ block.settings.caption | escape }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.link != blank -%}
+              </a>
+            {%- endif -%}
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.text_placement == 'bottom' -%}
+      <div class="adora-brand-world__header adora-brand-world__header--bottom" data-adora-reveal>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="adora-eyebrow adora-brand-world__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.headline != blank -%}
+          <h2 class="adora-heading adora-brand-world__headline">{{ section.settings.headline | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheadline != blank -%}
+          <div class="adora-richtext adora-subheading adora-brand-world__subheadline">{{ section.settings.subheadline }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} .adora-brand-world {
+    padding-block: var(--adora-brand-world-padding-mobile);
+    color: var(--adora-brand-world-text);
+    background: var(--adora-brand-world-bg);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__container {
+    display: grid;
+    gap: 28px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__header {
+    display: grid;
+    gap: 14px;
+    max-width: 840px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__header--bottom,
+  #shopify-section-{{ section.id }} .adora-brand-world--text-top .adora-brand-world__header {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__eyebrow {
+    color: var(--adora-brand-world-accent);
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__headline {
+    max-width: 12ch;
+    color: var(--adora-brand-world-text);
+    font-size: clamp(2.5rem, 11vw, 5.6rem);
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world--text-top .adora-brand-world__headline,
+  #shopify-section-{{ section.id }} .adora-brand-world__header--bottom .adora-brand-world__headline {
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__subheadline {
+    max-width: 58ch;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world--text-top .adora-brand-world__subheadline,
+  #shopify-section-{{ section.id }} .adora-brand-world__header--bottom .adora-brand-world__subheadline {
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__grid {
+    display: grid;
+    gap: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__tile,
+  #shopify-section-{{ section.id }} .adora-brand-world__tile-link {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__media {
+    position: relative;
+    min-height: 280px;
+    overflow: hidden;
+    border-radius: var(--adora-brand-world-radius);
+    background: linear-gradient(135deg, rgba(255, 248, 239, 0.9), rgba(244, 216, 255, 0.68));
+    box-shadow: 0 24px 80px rgba(58, 35, 81, 0.1);
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__image-frame {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    border-radius: var(--adora-brand-world-radius);
+    box-shadow: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__reflection {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.44), transparent 22%),
+      linear-gradient(135deg, rgba(244, 216, 255, 0.12), rgba(255, 248, 239, 0.06));
+    opacity: 0.72;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__caption {
+    width: fit-content;
+    max-width: calc(100% - 20px);
+    margin: -54px 10px 12px;
+    padding: 9px 13px;
+    color: var(--adora-brand-world-text);
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(128, 83, 148, 0.16);
+    border-radius: 999px;
+    box-shadow: 0 14px 36px rgba(58, 35, 81, 0.08);
+    backdrop-filter: blur(16px);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.2;
+    position: relative;
+    z-index: 2;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world__text-card {
+    display: grid;
+    align-content: end;
+    gap: 12px;
+    min-height: 320px;
+    padding: 24px;
+    color: var(--adora-brand-world-text);
+    background: rgba(255, 255, 255, 0.64);
+    background: color-mix(in srgb, var(--adora-brand-world-card-bg) 76%, transparent);
+    border: 1px solid rgba(128, 83, 148, 0.16);
+    border-radius: var(--adora-brand-world-radius);
+    box-shadow: 0 24px 80px rgba(58, 35, 81, 0.1);
+    backdrop-filter: blur(18px);
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world--mobile-horizontal_scroll .adora-brand-world__grid {
+    display: flex;
+    gap: 14px;
+    margin-inline: calc(var(--page-width-margin, 0px) * -1);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world--mobile-horizontal_scroll .adora-brand-world__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .adora-brand-world--mobile-horizontal_scroll .adora-brand-world__tile,
+  #shopify-section-{{ section.id }} .adora-brand-world--mobile-horizontal_scroll .adora-brand-world__text-card {
+    flex: 0 0 min(82vw, 390px);
+    scroll-snap-align: start;
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .adora-brand-world {
+      padding-block: var(--adora-brand-world-padding-desktop);
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__container {
+      gap: 42px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-auto-flow: dense;
+      align-items: stretch;
+      gap: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world--clean_grid .adora-brand-world__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__tile--small {
+      grid-column: span 3;
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__tile--medium {
+      grid-column: span 4;
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__tile--large {
+      grid-column: span 6;
+      grid-row: span 2;
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__tile--tall {
+      grid-column: span 4;
+      grid-row: span 2;
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__tile--wide {
+      grid-column: span 5;
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world--moodboard .adora-brand-world__tile:first-of-type,
+    #shopify-section-{{ section.id }} .adora-brand-world--editorial_masonry .adora-brand-world__tile:first-of-type {
+      grid-column: span 6;
+      grid-row: span 2;
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world--clean_grid .adora-brand-world__tile,
+    #shopify-section-{{ section.id }} .adora-brand-world--clean_grid .adora-brand-world__tile--small,
+    #shopify-section-{{ section.id }} .adora-brand-world--clean_grid .adora-brand-world__tile--medium,
+    #shopify-section-{{ section.id }} .adora-brand-world--clean_grid .adora-brand-world__tile--large,
+    #shopify-section-{{ section.id }} .adora-brand-world--clean_grid .adora-brand-world__tile--tall,
+    #shopify-section-{{ section.id }} .adora-brand-world--clean_grid .adora-brand-world__tile--wide {
+      grid-column: span 1;
+      grid-row: auto;
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__media {
+      min-height: clamp(320px, 28vw, 520px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__tile--large .adora-brand-world__media,
+    #shopify-section-{{ section.id }} .adora-brand-world__tile--tall .adora-brand-world__media,
+    #shopify-section-{{ section.id }} .adora-brand-world--moodboard .adora-brand-world__tile:first-of-type .adora-brand-world__media,
+    #shopify-section-{{ section.id }} .adora-brand-world--editorial_masonry .adora-brand-world__tile:first-of-type .adora-brand-world__media {
+      min-height: clamp(560px, 52vw, 820px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__tile--wide .adora-brand-world__media {
+      min-height: clamp(300px, 24vw, 420px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world__text-card {
+      grid-column: span 5;
+      min-height: clamp(360px, 32vw, 560px);
+      padding: clamp(26px, 3vw, 44px);
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world--clean_grid .adora-brand-world__text-card {
+      grid-column: span 1;
+    }
+
+    #shopify-section-{{ section.id }} .adora-brand-world--mobile-horizontal_scroll .adora-brand-world__grid {
+      display: grid;
+      margin-inline: 0;
+      overflow: visible;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "ADORA Brand World",
+  "tag": "section",
+  "class": "adora-brand-world-section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "DIE ADORA WELT" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Eine weichere Welt für deine Haut." },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>ADORA steht für ruhige Routinen, warme Sinnlichkeit und Skincare, die sich wie ein Moment der Rückkehr zu dir selbst anfühlt.</p>" },
+    { "type": "select", "id": "layout", "label": "Layout", "options": [{ "value": "moodboard", "label": "Moodboard" }, { "value": "editorial_masonry", "label": "Editorial masonry" }, { "value": "clean_grid", "label": "Clean grid" }], "default": "moodboard" },
+    { "type": "select", "id": "text_placement", "label": "Text placement", "options": [{ "value": "top", "label": "Top" }, { "value": "inside_grid", "label": "Inside grid" }, { "value": "bottom", "label": "Bottom" }], "default": "top" },
+    { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "lilac_gradient" },
+    { "type": "color_background", "id": "background_color", "label": "Custom background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 48%, #f4d8ff 100%)" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#3A2351" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "color", "id": "card_background_color", "label": "Card background color", "default": "#FFFFFF" },
+    { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "image_radius", "label": "Image radius", "min": 24, "max": 48, "step": 2, "unit": "px", "default": 36 },
+    { "type": "checkbox", "id": "show_captions", "label": "Show captions", "default": true },
+    { "type": "select", "id": "mobile_layout", "label": "Mobile layout", "options": [{ "value": "stacked", "label": "Stacked" }, { "value": "horizontal_scroll", "label": "Horizontal scroll" }], "default": "stacked" }
+  ],
+  "blocks": [
+    {
+      "type": "image_item",
+      "name": "Image item",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+        { "type": "text", "id": "caption", "label": "Caption" },
+        { "type": "text", "id": "alt_text", "label": "Alt text" },
+        { "type": "select", "id": "size", "label": "Size", "options": [{ "value": "small", "label": "Small" }, { "value": "medium", "label": "Medium" }, { "value": "large", "label": "Large" }, { "value": "tall", "label": "Tall" }, { "value": "wide", "label": "Wide" }], "default": "medium" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Brand World",
+      "blocks": [
+        { "type": "image_item", "settings": { "caption": "Macro Iris", "alt_text": "Soft lavender macro iris texture", "size": "large" } },
+        { "type": "image_item", "settings": { "caption": "Milky Cleanse", "alt_text": "Milky skincare texture", "size": "medium" } },
+        { "type": "image_item", "settings": { "caption": "Cream Comfort", "alt_text": "Cream skincare texture", "size": "small" } },
+        { "type": "image_item", "settings": { "caption": "Golden Glow", "alt_text": "Golden facial oil glow", "size": "tall" } },
+        { "type": "image_item", "settings": { "caption": "Glass Skin Ritual", "alt_text": "Soft glass skin ritual mood", "size": "wide" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
