@@ -348,9 +348,12 @@
 
 {% schema %}
 {
-  "name": "ADORA Brand World",
+  "name": "ADORA Brand World Grid",
   "tag": "section",
   "class": "adora-brand-world-section",
+  "enabled_on": {
+    "templates": ["index", "page"]
+  },
   "max_blocks": 8,
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "DIE ADORA WELT" },
@@ -385,7 +388,7 @@
   ],
   "presets": [
     {
-      "name": "ADORA Brand World",
+      "name": "ADORA Brand World Grid",
       "blocks": [
         { "type": "image_item", "settings": { "caption": "Macro Iris", "alt_text": "Soft lavender macro iris texture", "size": "large" } },
         { "type": "image_item", "settings": { "caption": "Milky Cleanse", "alt_text": "Milky skincare texture", "size": "medium" } },
