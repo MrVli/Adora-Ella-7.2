@@ -1347,11 +1347,40 @@
         "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 52%, rgba(244, 216, 255, 1) 100%)",
         "text_color": "#805394",
         "accent_color": "#805394",
-        "border_color": "#D9C6E2",
+        "border_color": "#d9c6e2",
         "padding_desktop": 96,
         "padding_mobile": 64,
         "open_first_item": true,
         "allow_multiple_open": false
+      }
+    },
+    "17815382948ef08f33": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_mc8hxk": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Folge dem ADORA Ritual auf Instagram",
+            "title_color": "#805394",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": true,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_mc8hxk"
+      ],
+      "settings": {
+        "include_margins": true
       }
     },
     "collection_list_NRwJx3": {
@@ -7884,6 +7913,7 @@
     "adora_bundle_value_panel_rmRMaJ",
     "adora_brand_world_grid_GrHbcp",
     "adora_faq_ritual_Bx63gP",
+    "17815382948ef08f33",
     "collection_list_NRwJx3",
     "section_7hRDd8",
     "lookbook_q8nVmX",
