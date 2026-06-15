@@ -550,12 +550,72 @@
         "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 50%, rgba(244, 216, 255, 1) 100%)",
         "before_panel_background": "linear-gradient(180deg, rgba(247, 241, 236, 0.86), rgba(255, 255, 255, 0.7) 100%)",
         "after_panel_background": "linear-gradient(135deg, rgba(251, 243, 255, 0.92), rgba(244, 216, 255, 0.72) 50%, rgba(255, 248, 239, 0.88) 100%)",
-        "text_color": "#3A2351",
+        "text_color": "#3a2351",
         "accent_color": "#805394",
         "padding_desktop": 96,
         "padding_mobile": 64,
         "show_cta": true,
         "show_center_marker": true
+      }
+    },
+    "adora_social_proof_editorial_DCkhbb": {
+      "type": "adora-social-proof-editorial",
+      "blocks": {
+        "quote_AxngcR": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "Eine Routine, die sich vollständig anfühlt, nicht kompliziert.",
+            "author_name": "",
+            "source": "",
+            "rating": 5,
+            "image_alt": "",
+            "badge": ""
+          }
+        },
+        "quote_mPc99a": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "Ein Moment für weiche, gepflegte Haut — ohne 10-Step-Regal.",
+            "author_name": "",
+            "source": "",
+            "rating": 5,
+            "image_alt": "",
+            "badge": ""
+          }
+        },
+        "quote_7phNUi": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "Skincare, die optisch so hochwertig wirkt, wie sie sich anfühlt.",
+            "author_name": "",
+            "source": "",
+            "rating": 5,
+            "image_alt": "",
+            "badge": ""
+          }
+        }
+      },
+      "block_order": [
+        "quote_AxngcR",
+        "quote_mPc99a",
+        "quote_7phNUi"
+      ],
+      "name": "ADORA Social Proof",
+      "settings": {
+        "eyebrow": "FÜR DEINE NEUE ROUTINE",
+        "headline": "Für Frauen, die Skincare wieder ruhig, schön und einfach erleben wollen.",
+        "subheadline": "<p>ADORA wurde als Ritual entwickelt — nicht als überfüllte Produktreihe.</p>",
+        "layout": "quote_grid",
+        "background_style": "mist",
+        "background_color": "linear-gradient(135deg, rgba(255, 248, 239, 1), rgba(251, 243, 255, 1) 52%, rgba(244, 216, 255, 1) 100%)",
+        "card_background_color": "#FFFFFF",
+        "text_color": "#805394",
+        "accent_color": "#805394",
+        "padding_desktop": 96,
+        "padding_mobile": 64,
+        "show_stars": false,
+        "show_author": false,
+        "show_source": false
       }
     },
     "slideshow_tyrRgz": {
@@ -7493,6 +7553,7 @@
     "adora_ritual_steps_FQyGF8",
     "adora_sensory_textures_Tjte67",
     "adora_routine_transformation_8tz63d",
+    "adora_social_proof_editorial_DCkhbb",
     "slideshow_tyrRgz",
     "collection_list_NRwJx3",
     "section_7hRDd8",
