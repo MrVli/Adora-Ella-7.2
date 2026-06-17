@@ -120,7 +120,8 @@
 
   #shopify-section-{{ section.id }} .adora-hero-reset__frame {
     position: relative;
-    min-height: var(--adora-hero-reset-height-mobile);
+    min-height: max(var(--adora-hero-reset-height-mobile), 86vh);
+    min-height: max(var(--adora-hero-reset-height-mobile), 86svh);
     overflow: hidden;
     border-radius: 0 0 min(var(--adora-hero-reset-radius), 32px) min(var(--adora-hero-reset-radius), 32px);
     background: radial-gradient(circle at 18% 12%, rgba(232, 175, 254, 0.5), transparent 36%), linear-gradient(135deg, var(--adora-cream) 0%, var(--adora-mist) 50%, var(--adora-soft-lilac) 100%);
@@ -257,7 +258,8 @@
     }
 
     #shopify-section-{{ section.id }} .adora-hero-reset__frame {
-      min-height: var(--adora-hero-reset-height-desktop);
+      min-height: max(var(--adora-hero-reset-height-desktop), 92vh);
+      min-height: max(var(--adora-hero-reset-height-desktop), 92svh);
       border-radius: 0 0 var(--adora-hero-reset-radius) var(--adora-hero-reset-radius);
     }
 
@@ -379,8 +381,8 @@
     { "type": "color_background", "id": "section_bg_color", "label": "Section background", "default": "linear-gradient(135deg, #fff8ef 0%, #fbf3ff 45%, #f4d8ff 100%)" },
     { "type": "range", "id": "container_max_width", "label": "Container max width", "min": 1000, "max": 1800, "step": 20, "unit": "px", "default": 1440 },
     { "type": "range", "id": "container_border_radius", "label": "Container border radius", "min": 20, "max": 56, "step": 2, "unit": "px", "default": 42 },
-    { "type": "range", "id": "hero_height_desktop", "label": "Hero height desktop", "min": 520, "max": 980, "step": 20, "unit": "px", "default": 760 },
-    { "type": "range", "id": "hero_height_mobile", "label": "Hero height mobile", "min": 560, "max": 860, "step": 20, "unit": "px", "default": 720 },
+    { "type": "range", "id": "hero_height_desktop", "label": "Hero height desktop", "min": 620, "max": 1100, "step": 20, "unit": "px", "default": 900 },
+    { "type": "range", "id": "hero_height_mobile", "label": "Hero height mobile", "min": 620, "max": 960, "step": 20, "unit": "px", "default": 820 },
     { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 24 },
     { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 12 },
     { "type": "checkbox", "id": "enable_header_overlay_spacing", "label": "Enable header overlay spacing", "default": false },
