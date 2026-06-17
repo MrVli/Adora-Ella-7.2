@@ -108,20 +108,21 @@
 
 {% style %}
   #shopify-section-{{ section.id }} .adora-hero-reset {
-    padding: var(--adora-hero-reset-padding-mobile);
+    padding: 0;
     background: var(--adora-hero-reset-bg);
   }
 
   #shopify-section-{{ section.id }} .adora-hero-reset__outer {
-    width: min(100%, var(--adora-hero-reset-container));
-    margin-inline: auto;
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
   }
 
   #shopify-section-{{ section.id }} .adora-hero-reset__frame {
     position: relative;
     min-height: var(--adora-hero-reset-height-mobile);
     overflow: hidden;
-    border-radius: min(var(--adora-hero-reset-radius), 32px);
+    border-radius: 0 0 min(var(--adora-hero-reset-radius), 32px) min(var(--adora-hero-reset-radius), 32px);
     background: radial-gradient(circle at 18% 12%, rgba(232, 175, 254, 0.5), transparent 36%), linear-gradient(135deg, var(--adora-cream) 0%, var(--adora-mist) 50%, var(--adora-soft-lilac) 100%);
     box-shadow: 0 24px 80px rgba(58, 35, 81, 0.1);
     isolation: isolate;
@@ -252,12 +253,12 @@
 
   @media screen and (min-width: 750px) {
     #shopify-section-{{ section.id }} .adora-hero-reset {
-      padding: var(--adora-hero-reset-padding-desktop);
+      padding: 0;
     }
 
     #shopify-section-{{ section.id }} .adora-hero-reset__frame {
       min-height: var(--adora-hero-reset-height-desktop);
-      border-radius: var(--adora-hero-reset-radius);
+      border-radius: 0 0 var(--adora-hero-reset-radius) var(--adora-hero-reset-radius);
     }
 
     #shopify-section-{{ section.id }} .adora-hero-reset--header-spacing .adora-hero-reset__frame {
