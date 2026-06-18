@@ -380,8 +380,8 @@
           "type": "mega_menu_2",
           "settings": {
             "menu_item": "SHOP",
-            "grid": "4",
-            "width": "page-width",
+            "grid": "2",
+            "width": "full",
             "megamenu_submenu": "",
             "show_promotion_banner": true,
             "image_border_thickness": 1,
