@@ -26,22 +26,60 @@
 
 .adora-mega-header__announcement {
   display: flex;
-  justify-content: center;
   align-items: center;
   min-height: 34px;
-  padding: 7px 18px;
+  overflow: hidden;
   color: var(--adora-mega-header-announcement-text, #fff);
   background: var(--adora-mega-header-announcement-bg, var(--adora-deep-plum));
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 760;
   letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.adora-mega-header__announcement-track {
+  display: flex;
+  align-items: center;
+  gap: clamp(34px, 6vw, 92px);
+  width: max-content;
+  min-width: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.adora-mega-header__announcement--static {
+  justify-content: center;
+  padding: 7px 18px;
   text-align: center;
 }
 
-.adora-mega-header__announcement a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.adora-mega-header__announcement--static .adora-mega-header__announcement-track {
+  justify-content: center;
+  width: 100%;
+}
+
+.adora-mega-header__announcement--static .adora-mega-header__announcement-item:not(:first-child) {
+  display: none;
+}
+
+.adora-mega-header__announcement--marquee .adora-mega-header__announcement-track {
+  padding: 7px 0;
+  animation: adora-announcement-marquee var(--adora-announcement-speed, 18s) linear infinite;
+}
+
+.adora-mega-header__announcement--pause:hover .adora-mega-header__announcement-track {
+  animation-play-state: paused;
+}
+
+.adora-mega-header__announcement-item {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 18px;
+}
+
+@keyframes adora-announcement-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 .adora-mega-header__bar {
@@ -108,11 +146,34 @@
   min-width: 0;
 }
 
+.adora-mega-header__logo-stack {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+}
+
 .adora-mega-header__logo-image {
+  grid-area: 1 / 1;
   display: block;
   width: var(--adora-mega-header-logo-mobile, 110px);
   max-width: 44vw;
   height: auto;
+  transition: opacity 160ms ease, visibility 160ms ease;
+}
+
+.adora-mega-header__logo-image--transparent {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.adora-mega-header.is-transparent:not(.is-mega-open):not(.is-drawer-open) .adora-mega-header__logo-image--solid {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.adora-mega-header.is-transparent:not(.is-mega-open):not(.is-drawer-open) .adora-mega-header__logo-image--transparent {
+  opacity: 1;
+  visibility: visible;
 }
 
 .adora-mega-header__logo-text {
@@ -120,7 +181,7 @@
   color: inherit;
   font-family: var(--font-display, "Sora", "Inter", sans-serif);
   font-size: clamp(30px, 8vw, 46px);
-  font-weight: 800;
+  font-weight: 850;
   letter-spacing: -0.08em;
   line-height: 0.86;
   text-transform: uppercase;
@@ -199,7 +260,8 @@
 .adora-mega-header__category-tile:focus-visible,
 .adora-mega-header__mobile-category-tab:focus-visible,
 .adora-mega-header__latest-link:focus-visible,
-.adora-mega-header__promo-card:focus-visible {
+.adora-mega-header__promo-card:focus-visible,
+.adora-mega-header__mobile-banner:focus-visible {
   outline: 2px solid var(--adora-mega-header-accent, var(--adora-primary));
   outline-offset: 3px;
 }
@@ -225,13 +287,8 @@
   left: 0;
 }
 
-.adora-mega-header__burger-lines::before {
-  top: -6px;
-}
-
-.adora-mega-header__burger-lines::after {
-  top: 6px;
-}
+.adora-mega-header__burger-lines::before { top: -6px; }
+.adora-mega-header__burger-lines::after { top: 6px; }
 
 .adora-mega-header__cart-count {
   position: absolute;
@@ -312,10 +369,16 @@ body.adora-mega-header-lock {
   color: inherit;
   font-family: var(--font-display, "Sora", sans-serif);
   font-size: 32px;
-  font-weight: 800;
+  font-weight: 850;
   letter-spacing: -0.08em;
   text-decoration: none;
   text-transform: uppercase;
+}
+
+.adora-mega-header__drawer-logo-image {
+  display: block;
+  width: min(132px, 42vw);
+  height: auto;
 }
 
 .adora-mega-header__drawer-scroll {
@@ -354,13 +417,8 @@ body.adora-mega-header-lock {
   display: none;
 }
 
-.adora-mega-header__drawer-plus::before {
-  content: '+';
-}
-
-.adora-mega-header__drawer-details[open] .adora-mega-header__drawer-plus::before {
-  content: '-';
-}
+.adora-mega-header__drawer-plus::before { content: '+'; }
+.adora-mega-header__drawer-details[open] .adora-mega-header__drawer-plus::before { content: '-'; }
 
 .adora-mega-header__mobile-mega {
   display: grid;
@@ -447,7 +505,8 @@ body.adora-mega-header-lock {
 
 .adora-mega-header__mobile-product-media,
 .adora-mega-header__category-media,
-.adora-mega-header__promo-card {
+.adora-mega-header__promo-card,
+.adora-mega-header__mobile-banner {
   overflow: hidden;
   background: linear-gradient(135deg, var(--adora-cream), var(--adora-soft-lilac));
 }
@@ -460,6 +519,7 @@ body.adora-mega-header-lock {
 .adora-mega-header__mobile-product-media img,
 .adora-mega-header__category-media img,
 .adora-mega-header__promo-image,
+.adora-mega-header__mobile-banner-image,
 .adora-mega-header__product-placeholder {
   display: block;
   width: 100%;
@@ -468,7 +528,8 @@ body.adora-mega-header-lock {
 
 .adora-mega-header__mobile-product-media img,
 .adora-mega-header__category-media img,
-.adora-mega-header__promo-image {
+.adora-mega-header__promo-image,
+.adora-mega-header__mobile-banner-image {
   object-fit: cover;
 }
 
@@ -492,6 +553,50 @@ body.adora-mega-header-lock {
   color: var(--adora-muted);
   font-size: 12px;
   line-height: 1.35;
+}
+
+.adora-mega-header__mobile-banner {
+  position: relative;
+  display: block;
+  min-height: 210px;
+  margin-top: 12px;
+  color: #fff;
+  border-radius: 28px;
+  text-decoration: none;
+  isolation: isolate;
+}
+
+.adora-mega-header__mobile-banner-image,
+.adora-mega-header__mobile-banner .adora-mega-header__promo-shade {
+  position: absolute;
+  inset: 0;
+}
+
+.adora-mega-header__mobile-banner-image {
+  z-index: -2;
+}
+
+.adora-mega-header__mobile-banner-content {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  left: 18px;
+  display: grid;
+  gap: 5px;
+}
+
+.adora-mega-header__mobile-banner-content strong {
+  font-family: var(--font-display, "Sora", sans-serif);
+  font-size: 25px;
+  font-weight: 850;
+  letter-spacing: -0.07em;
+  line-height: 0.96;
+}
+
+.adora-mega-header__mobile-banner-content span {
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.2;
 }
 
 .adora-mega-header__drawer-promo {
@@ -778,7 +883,18 @@ body.adora-mega-header-lock {
   .adora-mega-header__drawer,
   .adora-mega-header__drawer-overlay,
   .adora-mega-header__category-media,
-  .adora-mega-header__promo-image {
+  .adora-mega-header__promo-image,
+  .adora-mega-header__logo-image {
     transition: none;
+  }
+
+  .adora-mega-header__announcement--marquee .adora-mega-header__announcement-track {
+    animation: none;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .adora-mega-header__announcement--marquee .adora-mega-header__announcement-item:not(:first-child) {
+    display: none;
   }
 }
