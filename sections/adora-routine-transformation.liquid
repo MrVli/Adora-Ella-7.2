@@ -322,14 +322,14 @@
   "max_blocks": 16,
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "VOM CHAOS ZUM RITUAL" },
-    { "type": "text", "id": "headline", "label": "Headline", "default": "Von überladener Routine zu bewusstem Reset." },
-    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>ADORA reduziert deine Pflege auf das, was sich klar, vollständig und wiederholbar anfühlt.</p>" },
-    { "type": "text", "id": "before_title", "label": "Before title", "default": "Vorher: Überladen" },
-    { "type": "text", "id": "after_title", "label": "After title", "default": "Nachher: Reset" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Von zufälligen Produkten zu einem Ritual, das Sinn ergibt." },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>ADORA reduziert Pflege nicht auf weniger Auswahl, sondern auf klarere Entscheidungen: kuratierte Rituale, gezielte Ergänzungen und ein System, das du wiederholen willst.</p>" },
+    { "type": "text", "id": "before_title", "label": "Before title", "default": "Vorher: Zufällig" },
+    { "type": "text", "id": "after_title", "label": "After title", "default": "Nachher: Kuratiert" },
     { "type": "image_picker", "id": "before_image", "label": "Before image" },
     { "type": "image_picker", "id": "after_image", "label": "After image" },
-    { "type": "text", "id": "image_alt_before", "label": "Before image alt text", "default": "Überladene Skincare Routine" },
-    { "type": "text", "id": "image_alt_after", "label": "After image alt text", "default": "ADORA Reset Ritual" },
+    { "type": "text", "id": "image_alt_before", "label": "Before image alt text", "default": "Einzelprodukte ohne klare Routine" },
+    { "type": "text", "id": "image_alt_after", "label": "After image alt text", "default": "ADORA Ritualsystem" },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Ritual entdecken" },
     { "type": "url", "id": "button_link", "label": "Button link" },
     { "type": "select", "id": "background_style", "label": "Background style", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }], "default": "cream" },
@@ -349,7 +349,7 @@
       "name": "Before item",
       "limit": 8,
       "settings": [
-        { "type": "text", "id": "text", "label": "Text", "default": "Zu viele Schritte" }
+        { "type": "text", "id": "text", "label": "Text", "default": "Einzelprodukte ohne Reihenfolge" }
       ]
     },
     {
@@ -357,7 +357,7 @@
       "name": "After item",
       "limit": 8,
       "settings": [
-        { "type": "text", "id": "text", "label": "Text", "default": "Drei bewusste Schritte" }
+        { "type": "text", "id": "text", "label": "Text", "default": "Kuratierte Rituale" }
       ]
     }
   ],
@@ -365,14 +365,14 @@
     {
       "name": "ADORA Routine Shift",
       "blocks": [
-        { "type": "before_item", "settings": { "text": "Zu viele Schritte" } },
-        { "type": "before_item", "settings": { "text": "Zu viele Produkte" } },
-        { "type": "before_item", "settings": { "text": "Unklare Reihenfolge" } },
-        { "type": "before_item", "settings": { "text": "Pflege fühlt sich wie Aufwand an" } },
-        { "type": "after_item", "settings": { "text": "Drei bewusste Schritte" } },
-        { "type": "after_item", "settings": { "text": "Klare Ritual-Logik" } },
-        { "type": "after_item", "settings": { "text": "Weiches, gepflegtes Hautgefühl" } },
-        { "type": "after_item", "settings": { "text": "Ein Moment, den du wiederholen willst" } }
+        { "type": "before_item", "settings": { "text": "Einzelprodukte ohne Reihenfolge" } },
+        { "type": "before_item", "settings": { "text": "Zu viele Versprechen" } },
+        { "type": "before_item", "settings": { "text": "Keine klare Routine" } },
+        { "type": "before_item", "settings": { "text": "Pflege fühlt sich beliebig an" } },
+        { "type": "after_item", "settings": { "text": "Kuratierte Rituale" } },
+        { "type": "after_item", "settings": { "text": "Klare Pflege-Logik" } },
+        { "type": "after_item", "settings": { "text": "Gezielte Ergänzungen" } },
+        { "type": "after_item", "settings": { "text": "Ein System, das du wiederholen willst" } }
       ]
     }
   ]
