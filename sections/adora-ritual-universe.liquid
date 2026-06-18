@@ -1,0 +1,147 @@
+{%- liquid
+  assign section_bg = section.settings.section_bg_color
+  case section.settings.section_bg_style
+    when 'cream'
+      assign section_bg = 'var(--adora-cream, #fff8ef)'
+    when 'mist'
+      assign section_bg = 'var(--adora-mist, #fbf3ff)'
+    when 'lilac_gradient'
+      assign section_bg = 'radial-gradient(circle at 12% 8%, rgba(232, 175, 254, 0.42), transparent 32%), linear-gradient(135deg, #fff8ef 0%, #fbf3ff 54%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<section class="adora-section adora-ritual-universe adora-ritual-universe--desktop-{{ section.settings.layout_desktop }} adora-ritual-universe--mobile-{{ section.settings.layout_mobile }} adora-ritual-universe--header-{{ section.settings.header_alignment }} adora-ritual-universe--image-{{ section.settings.card_image_mode }}{% if section.settings.enable_glassmorphism %} adora-ritual-universe--glass{% endif %}{% if section.settings.enable_card_hover %} adora-ritual-universe--hover{% endif %}"
+  style="--aru-bg: {{ section_bg }}; --aru-text: {{ section.settings.text_color }}; --aru-accent: {{ section.settings.accent_color }}; --aru-card-bg: {{ section.settings.card_bg_color }}; --aru-card-text: {{ section.settings.card_text_color }}; --aru-card-border: {{ section.settings.card_border_color }}; --aru-pad-d: {{ section.settings.padding_desktop }}px; --aru-pad-m: {{ section.settings.padding_mobile }}px; --aru-max: {{ section.settings.max_width }}px; --aru-radius: {{ section.settings.card_radius }}px;">
+  <div class="adora-ritual-universe__container">
+    <div class="adora-ritual-universe__header">
+      <div class="adora-ritual-universe__copy">
+        {%- if section.settings.eyebrow != blank -%}<p class="adora-eyebrow adora-ritual-universe__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        {%- if section.settings.headline != blank -%}<h2 class="adora-heading adora-ritual-universe__heading">{{ section.settings.headline | escape }}</h2>{%- endif -%}
+        {%- if section.settings.subheadline != blank -%}<div class="adora-richtext adora-ritual-universe__subheadline">{{ section.settings.subheadline }}</div>{%- endif -%}
+      </div>
+      {%- if section.settings.show_section_cta and section.settings.section_cta_label != blank -%}
+        <div class="adora-ritual-universe__section-cta">
+          {%- render 'adora-button', label: section.settings.section_cta_label, link: section.settings.section_cta_link, style: 'secondary', class: 'adora-ritual-universe__section-button', aria_label: section.settings.section_cta_label -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="adora-ritual-universe__grid" role="list" aria-label="{{ section.settings.headline | default: 'ADORA Ritual-Welt' | escape }}">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_bg = block.settings.custom_bg_color
+            assign block_text = block.settings.custom_text_color
+            assign block_accent = block.settings.custom_accent_color
+            assign image_alt = block.settings.image_alt | default: block.settings.title
+            if block_bg == blank
+              assign block_bg = section.settings.card_bg_color
+            endif
+            if block_text == blank
+              assign block_text = section.settings.card_text_color
+            endif
+            if block_accent == blank
+              assign block_accent = section.settings.accent_color
+            endif
+          -%}
+          <li class="adora-ritual-universe__item{% if block.settings.is_featured %} adora-ritual-universe__item--featured{% endif %}" style="--aru-card-bg-local: {{ block_bg }}; --aru-card-text-local: {{ block_text }}; --aru-card-accent-local: {{ block_accent }};" {{ block.shopify_attributes }}>
+            <article class="adora-ritual-universe__card">
+              {%- if section.settings.show_card_images -%}
+                <div class="adora-ritual-universe__media">
+                  {%- render 'adora-image-frame', image: block.settings.image, mobile_image: block.settings.mobile_image, alt: image_alt, aspect_ratio: '4 / 5', class: 'adora-ritual-universe__image-frame', loading: 'lazy' -%}
+                </div>
+              {%- endif -%}
+              <div class="adora-ritual-universe__card-content">
+                <div class="adora-ritual-universe__meta">
+                  {%- if section.settings.show_card_labels and block.settings.label != blank -%}<span class="adora-ritual-universe__label">{{ block.settings.label | escape }}</span>{%- endif -%}
+                  {%- if section.settings.show_featured_badge and block.settings.is_featured and block.settings.badge_text != blank -%}<span class="adora-ritual-universe__featured-badge">{{ block.settings.badge_text | escape }}</span>{%- endif -%}
+                </div>
+                {%- if block.settings.title != blank -%}<h3 class="adora-ritual-universe__card-title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+                {%- if block.settings.text != blank -%}<div class="adora-ritual-universe__card-text">{{ block.settings.text }}</div>{%- endif -%}
+                {%- if section.settings.show_card_ctas and block.settings.cta_label != blank and block.settings.link != blank -%}
+                  <a class="adora-ritual-universe__card-cta" href="{{ block.settings.link }}" aria-label="{{ block.settings.cta_label | escape }}: {{ block.settings.title | escape }}"><span>{{ block.settings.cta_label | escape }}</span><span aria-hidden="true">→</span></a>
+                {%- endif -%}
+              </div>
+            </article>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .adora-ritual-universe{background:var(--aru-bg);color:var(--aru-text);padding:var(--aru-pad-m) 0;overflow:hidden}.adora-ritual-universe__container{width:min(calc(100% - 32px),var(--aru-max));margin:0 auto}.adora-ritual-universe__header{display:grid;gap:24px;margin-bottom:clamp(28px,6vw,56px)}.adora-ritual-universe__copy{max-width:760px}.adora-ritual-universe--header-center .adora-ritual-universe__copy,.adora-ritual-universe--header-center .adora-ritual-universe__section-cta{margin-inline:auto;text-align:center}.adora-ritual-universe__eyebrow{color:var(--aru-accent)}.adora-ritual-universe__heading{max-width:900px;margin:0;color:inherit;font-family:var(--font-display,"Sora","Inter","Helvetica Neue",Arial,sans-serif);font-size:clamp(36px,9vw,64px);line-height:.96;letter-spacing:0}.adora-ritual-universe__subheadline{max-width:650px;margin-top:16px;color:color-mix(in srgb,var(--aru-text) 74%,transparent);font-family:var(--font-body,"Inter","Helvetica Neue",Arial,sans-serif);font-size:clamp(15.5px,3.8vw,18px);line-height:1.55}.adora-ritual-universe--header-center .adora-ritual-universe__subheadline{margin-inline:auto}.adora-ritual-universe__section-cta{align-self:end}.adora-ritual-universe__grid{display:grid;grid-template-columns:1fr;gap:18px;padding:0;margin:0;list-style:none}.adora-ritual-universe--mobile-horizontal_scroll .adora-ritual-universe__grid{display:flex;gap:16px;padding-right:16px;padding-bottom:10px;margin-right:-16px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}.adora-ritual-universe--mobile-horizontal_scroll .adora-ritual-universe__grid::-webkit-scrollbar{display:none}.adora-ritual-universe--mobile-horizontal_scroll .adora-ritual-universe__item{flex:0 0 min(86vw,410px);scroll-snap-align:start}.adora-ritual-universe__card{position:relative;display:grid;min-height:100%;overflow:hidden;color:var(--aru-card-text-local);background:var(--aru-card-bg-local);border:1px solid var(--aru-card-border);border-radius:var(--aru-radius);box-shadow:var(--adora-shadow-soft,0 18px 60px rgba(58,35,81,.08));isolation:isolate}.adora-ritual-universe--glass .adora-ritual-universe__card{background:color-mix(in srgb,var(--aru-card-bg-local) 76%,rgba(255,255,255,.42));backdrop-filter:blur(18px)}.adora-ritual-universe__media{min-height:260px;padding:10px}.adora-ritual-universe__image-frame{width:100%;height:100%;min-height:260px;border-radius:max(20px,calc(var(--aru-radius) - 10px))}.adora-ritual-universe__image-frame img,.adora-ritual-universe__image-frame .adora-image-frame-snippet__image,.adora-ritual-universe__image-frame .adora-image-frame-snippet__placeholder{width:100%;height:100%;min-height:inherit;object-fit:cover;border-radius:inherit}.adora-ritual-universe__card-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;padding:22px}.adora-ritual-universe__meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}.adora-ritual-universe__label,.adora-ritual-universe__featured-badge{display:inline-flex;align-items:center;min-height:30px;padding:7px 12px;color:var(--aru-card-accent-local);background:rgba(255,255,255,.68);border:1px solid color-mix(in srgb,var(--aru-card-accent-local) 20%,transparent);border-radius:999px;font-family:var(--font-body,"Inter","Helvetica Neue",Arial,sans-serif);font-size:12px;font-weight:700;line-height:1}.adora-ritual-universe__featured-badge{color:#fff;background:var(--aru-card-accent-local);border-color:transparent}.adora-ritual-universe__card-title{max-width:12ch;margin:0;color:inherit;font-family:var(--font-display,"Sora","Inter","Helvetica Neue",Arial,sans-serif);font-size:clamp(28px,8vw,44px);font-weight:800;line-height:.98;letter-spacing:0}.adora-ritual-universe__card-text{max-width:38ch;margin-top:14px;color:color-mix(in srgb,currentColor 78%,transparent);font-family:var(--font-body,"Inter","Helvetica Neue",Arial,sans-serif);font-size:15px;line-height:1.5}.adora-ritual-universe__card-text p{margin:0}.adora-ritual-universe__card-cta{display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:12px 18px;margin-top:22px;color:#fff;background:var(--aru-card-accent-local);border:1px solid transparent;border-radius:999px;font-family:var(--font-display,"Sora","Inter","Helvetica Neue",Arial,sans-serif);font-size:14px;font-weight:800;line-height:1;text-decoration:none;box-shadow:0 12px 28px rgba(128,83,148,.16);transition:transform .18s ease,box-shadow .18s ease}.adora-ritual-universe__card-cta:focus-visible{outline:2px solid var(--aru-card-accent-local);outline-offset:4px}.adora-ritual-universe--image-background .adora-ritual-universe__card{min-height:460px;color:#fff;background:#3a2351}.adora-ritual-universe--image-background .adora-ritual-universe__media{position:absolute;inset:0;z-index:0;min-height:100%;padding:0}.adora-ritual-universe--image-background .adora-ritual-universe__media:after{position:absolute;inset:0;content:"";background:linear-gradient(180deg,rgba(36,24,44,.08) 0%,rgba(36,24,44,.68) 100%),radial-gradient(circle at 24% 18%,rgba(232,175,254,.24),transparent 34%);pointer-events:none}.adora-ritual-universe--image-background .adora-ritual-universe__image-frame,.adora-ritual-universe--image-background .adora-ritual-universe__image-frame img,.adora-ritual-universe--image-background .adora-ritual-universe__image-frame .adora-image-frame-snippet__image,.adora-ritual-universe--image-background .adora-ritual-universe__image-frame .adora-image-frame-snippet__placeholder{min-height:100%;border-radius:inherit}.adora-ritual-universe--image-background .adora-ritual-universe__card-content{justify-content:flex-end;min-height:460px;padding:26px}.adora-ritual-universe--image-background .adora-ritual-universe__label{color:#fff;background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.24);backdrop-filter:blur(12px)}.adora-ritual-universe--image-background .adora-ritual-universe__featured-badge{color:var(--aru-card-accent-local);background:rgba(255,255,255,.9)}@media(hover:hover){.adora-ritual-universe--hover .adora-ritual-universe__card{transition:transform .22s ease,box-shadow .22s ease}.adora-ritual-universe--hover .adora-ritual-universe__image-frame img,.adora-ritual-universe--hover .adora-ritual-universe__image-frame .adora-image-frame-snippet__image{transition:transform .42s ease}.adora-ritual-universe--hover .adora-ritual-universe__card:hover{transform:translateY(-4px);box-shadow:0 24px 72px rgba(58,35,81,.12)}.adora-ritual-universe--hover .adora-ritual-universe__card:hover .adora-ritual-universe__image-frame img,.adora-ritual-universe--hover .adora-ritual-universe__card:hover .adora-ritual-universe__image-frame .adora-image-frame-snippet__image{transform:scale(1.035)}}@media(min-width:750px){.adora-ritual-universe{padding:var(--aru-pad-d) 0}.adora-ritual-universe__container{width:min(calc(100% - 56px),var(--aru-max))}.adora-ritual-universe__header{grid-template-columns:minmax(0,1fr) auto;align-items:end}.adora-ritual-universe--header-center .adora-ritual-universe__header{grid-template-columns:1fr}.adora-ritual-universe--desktop-featured_grid .adora-ritual-universe__grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-flow:dense}.adora-ritual-universe--desktop-featured_grid .adora-ritual-universe__item--featured{grid-column:span 2;grid-row:span 2}.adora-ritual-universe--desktop-equal_grid .adora-ritual-universe__grid{grid-template-columns:repeat(3,minmax(0,1fr))}.adora-ritual-universe--desktop-editorial_split .adora-ritual-universe__grid{grid-template-columns:1.1fr .9fr .9fr;align-items:stretch}.adora-ritual-universe--desktop-editorial_split .adora-ritual-universe__item--featured{grid-row:span 2}.adora-ritual-universe__media,.adora-ritual-universe__image-frame{min-height:300px}.adora-ritual-universe__item--featured .adora-ritual-universe__media,.adora-ritual-universe__item--featured .adora-ritual-universe__image-frame{min-height:420px}.adora-ritual-universe__card-content{padding:28px}.adora-ritual-universe__item--featured .adora-ritual-universe__card-title{max-width:13ch;font-size:clamp(38px,4vw,62px)}.adora-ritual-universe--image-background .adora-ritual-universe__card,.adora-ritual-universe--image-background .adora-ritual-universe__card-content{min-height:520px}.adora-ritual-universe--image-background .adora-ritual-universe__item--featured .adora-ritual-universe__card,.adora-ritual-universe--image-background .adora-ritual-universe__item--featured .adora-ritual-universe__card-content{min-height:680px}}@supports not (color:color-mix(in srgb,#000 50%,transparent)){.adora-ritual-universe__subheadline,.adora-ritual-universe__card-text{color:currentColor;opacity:.78}.adora-ritual-universe__label{border-color:rgba(128,83,148,.18)}}@media(prefers-reduced-motion:reduce){.adora-ritual-universe__card,.adora-ritual-universe__card-cta,.adora-ritual-universe__image-frame img,.adora-ritual-universe__image-frame .adora-image-frame-snippet__image{transition:none!important}}
+</style>
+
+{% schema %}
+{
+  "name": "ADORA Ritual Universe",
+  "tag": "section",
+  "class": "section-adora-ritual-universe",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "DIE ADORA RITUAL-WELT" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Wähle dein Ritual. Ergänze gezielt." },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>Starte mit einem kuratierten Set oder finde einzelne Essentials, die deine Routine sinnvoll erweitern — von Glass Skin bis Bodycare.</p>" },
+    { "type": "select", "id": "section_bg_style", "label": "Section background style", "default": "mist", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }] },
+    { "type": "color_background", "id": "section_bg_color", "label": "Custom section background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#3a2351" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "color", "id": "card_bg_color", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "card_text_color", "label": "Card text color", "default": "#3a2351" },
+    { "type": "color", "id": "card_border_color", "label": "Card border color", "default": "rgba(128, 83, 148, 0.18)" },
+    { "type": "range", "id": "padding_desktop", "label": "Padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_mobile", "label": "Padding mobile", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "max_width", "label": "Max width", "min": 1040, "max": 1680, "step": 20, "unit": "px", "default": 1440 },
+    { "type": "select", "id": "header_alignment", "label": "Header alignment", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }] },
+    { "type": "select", "id": "layout_desktop", "label": "Desktop layout", "default": "featured_grid", "options": [{ "value": "featured_grid", "label": "Featured grid" }, { "value": "equal_grid", "label": "Equal grid" }, { "value": "editorial_split", "label": "Editorial split" }] },
+    { "type": "select", "id": "layout_mobile", "label": "Mobile layout", "default": "stacked", "options": [{ "value": "stacked", "label": "Stacked" }, { "value": "horizontal_scroll", "label": "Horizontal scroll" }] },
+    { "type": "select", "id": "card_image_mode", "label": "Card image style", "default": "top", "options": [{ "value": "top", "label": "Image on top" }, { "value": "background", "label": "Image as background" }] },
+    { "type": "checkbox", "id": "show_section_cta", "label": "Show section CTA", "default": true },
+    { "type": "text", "id": "section_cta_label", "label": "Section CTA label", "default": "Alle Rituale ansehen" },
+    { "type": "url", "id": "section_cta_link", "label": "Section CTA link" },
+    { "type": "range", "id": "card_radius", "label": "Card radius", "min": 20, "max": 52, "step": 2, "unit": "px", "default": 36 },
+    { "type": "checkbox", "id": "enable_glassmorphism", "label": "Enable glassmorphism", "default": true },
+    { "type": "checkbox", "id": "enable_card_hover", "label": "Enable subtle card hover", "default": true },
+    { "type": "checkbox", "id": "show_card_labels", "label": "Show card labels", "default": true },
+    { "type": "checkbox", "id": "show_card_ctas", "label": "Show card CTAs", "default": true },
+    { "type": "checkbox", "id": "show_card_images", "label": "Show card images", "default": true },
+    { "type": "checkbox", "id": "show_featured_badge", "label": "Show featured badge", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "ritual_card",
+      "name": "Ritual card",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Glass Skin Reset" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Bestseller Ritual" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Das zentrale 3-Step Set für weiche, gepflegte und sichtbar strahlende Haut.</p>" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Ritual entdecken" },
+        { "type": "checkbox", "id": "is_featured", "label": "Featured card", "default": false },
+        { "type": "text", "id": "badge_text", "label": "Featured badge text", "default": "Featured" },
+        { "type": "color", "id": "custom_bg_color", "label": "Custom background" },
+        { "type": "color", "id": "custom_text_color", "label": "Custom text color" },
+        { "type": "color", "id": "custom_accent_color", "label": "Custom accent color" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Ritual Universe",
+      "blocks": [
+        { "type": "ritual_card", "settings": { "title": "Glass Skin Reset", "label": "Bestseller Ritual", "text": "<p>Das zentrale 3-Step Set für weiche, gepflegte und sichtbar strahlende Haut.</p>", "cta_label": "Ritual entdecken", "is_featured": true, "badge_text": "Featured" } },
+        { "type": "ritual_card", "settings": { "title": "Hydration Rituals", "label": "Feuchtigkeit", "text": "<p>Pflege für Haut, die sich weich, komfortabel und genährt anfühlen soll.</p>", "cta_label": "Entdecken" } },
+        { "type": "ritual_card", "settings": { "title": "Glow Finish", "label": "Oil & Finish", "text": "<p>Nährende Finishes für den letzten Glow-Moment deiner Routine.</p>", "cta_label": "Entdecken", "custom_accent_color": "#d89a35" } },
+        { "type": "ritual_card", "settings": { "title": "Body Rituals", "label": "Bodycare", "text": "<p>Selfcare für den Körper — weich, sinnlich und visuell hochwertig.</p>", "cta_label": "Entdecken" } },
+        { "type": "ritual_card", "settings": { "title": "Gift Rituals", "label": "Geschenksets", "text": "<p>Kuratierte Sets, die sich besonders anfühlen — vom ersten Blick bis zum Auspacken.</p>", "cta_label": "Entdecken" } },
+        { "type": "ritual_card", "settings": { "title": "Single Essentials", "label": "Nachkauf & Ergänzung", "text": "<p>Einzelprodukte für gezielte Ergänzungen oder deinen nächsten Ritual-Schritt.</p>", "cta_label": "Entdecken" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
