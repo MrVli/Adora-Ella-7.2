@@ -283,7 +283,7 @@
         "announcement_text": "Kostenloser Versand ab 100 EUR",
         "announcement_link": "",
         "announcement_mode": "marquee",
-        "announcement_marquee_speed": 18,
+        "announcement_marquee_speed": 26,
         "announcement_pause_on_hover": true,
         "show_search": true,
         "search_label": "Suche",
