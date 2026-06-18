@@ -11,84 +11,6 @@
   "name": "Header group",
   "type": "header",
   "sections": {
-    "announcement_bar_4tGfEp": {
-      "type": "announcement-bar",
-      "blocks": {
-        "group_announcement_bar_PeTpTw": {
-          "type": "_group-announcement-bar",
-          "settings": {
-            "padding_top": 0,
-            "padding_right": 0,
-            "padding_bottom": 0,
-            "padding_left": 0,
-            "content_direction": "row",
-            "wrap": "wrap",
-            "align_items": "start",
-            "justify_content": "start",
-            "gap_x": 0,
-            "gap_y": 0,
-            "show_line_separator": false,
-            "inherit_color_scheme": false,
-            "scheme_background": "#000000",
-            "scheme_background_gradient": "",
-            "scheme_foreground_heading": "#000000",
-            "scheme_foreground": "#ffffff",
-            "scheme_primary": "#ffffff",
-            "scheme_primary_hover": "#000000",
-            "scheme_border": "#e6e6e6",
-            "scheme_shadow": "#000000"
-          },
-          "blocks": {
-            "group_announcement_9yj6cq": {
-              "type": "_group-announcement",
-              "settings": {
-                "width_grid_item": 100,
-                "autoplay": false,
-                "autoplay_speed": 3,
-                "inherit_color_scheme": true,
-                "scheme_background": "#ffffff",
-                "scheme_background_gradient": "",
-                "scheme_foreground_heading": "#000000",
-                "scheme_foreground": "#000000",
-                "scheme_primary": "#000f9f",
-                "scheme_primary_hover": "#000000",
-                "scheme_border": "#e6e6e6",
-                "scheme_shadow": "#000000"
-              },
-              "blocks": {
-                "announcement_text_BXhKCE": {
-                  "type": "_announcement-text",
-                  "settings": {
-                    "text": "End of season sale up to 50% off. <a href=\"/collections\" title=\"All collections\">Shop Now</a>",
-                    "font": "body",
-                    "font_size": "1.4rem",
-                    "font_weight": "default",
-                    "text_align": "center"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "announcement_text_BXhKCE"
-              ]
-            }
-          },
-          "block_order": [
-            "group_announcement_9yj6cq"
-          ]
-        }
-      },
-      "block_order": [
-        "group_announcement_bar_PeTpTw"
-      ],
-      "name": "t:names.announcement_bar",
-      "settings": {
-        "color_scheme": "scheme-7",
-        "margin_bottom": 0,
-        "padding_top": 12,
-        "padding_bottom": 12
-      }
-    },
     "header_mobile_MqfLk9": {
       "type": "header_mobile",
       "blocks": {
@@ -345,101 +267,24 @@
     },
     "adora_mega_header_BJUwPk": {
       "type": "adora-mega-header",
-      "blocks": {
-        "mega_tab_6rBJLF": {
-          "type": "mega_tab",
-          "settings": {
-            "title": "Ritual",
-            "tab_key": "ritual"
-          }
-        },
-        "mega_tab_Db4jUM": {
-          "type": "mega_tab",
-          "settings": {
-            "title": "Cleanse",
-            "tab_key": "cleanse"
-          }
-        },
-        "mega_tab_3DJRYq": {
-          "type": "mega_tab",
-          "settings": {
-            "title": "Hydrate",
-            "tab_key": "hydrate"
-          }
-        },
-        "mega_tab_WdtETm": {
-          "type": "mega_tab",
-          "settings": {
-            "title": "Glow",
-            "tab_key": "glow"
-          }
-        },
-        "mega_product_kAAwfH": {
-          "type": "mega_product",
-          "settings": {
-            "tab_key": "ritual",
-            "product": "",
-            "custom_title": "Glass Skin Reset Ritual",
-            "custom_text": "Das komplette ADORA Set",
-            "badge": "Bundle",
-            "link": ""
-          }
-        },
-        "mega_product_H4XN7h": {
-          "type": "mega_product",
-          "settings": {
-            "tab_key": "cleanse",
-            "product": "",
-            "custom_title": "Gentle Cleansing Milk",
-            "custom_text": "Sanfte Reinigung",
-            "badge": "",
-            "link": ""
-          }
-        },
-        "mega_product_jB6Aec": {
-          "type": "mega_product",
-          "settings": {
-            "tab_key": "hydrate",
-            "product": "",
-            "custom_title": "Moisturising Day Cream",
-            "custom_text": "Tägliche Feuchtigkeit",
-            "badge": "",
-            "link": ""
-          }
-        },
-        "mega_product_8jLk79": {
-          "type": "mega_product",
-          "settings": {
-            "tab_key": "glow",
-            "product": "",
-            "custom_title": "Nourishing Facial Oil",
-            "custom_text": "Nährendes Finish",
-            "badge": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "mega_tab_6rBJLF",
-        "mega_tab_Db4jUM",
-        "mega_tab_3DJRYq",
-        "mega_tab_WdtETm",
-        "mega_product_kAAwfH",
-        "mega_product_H4XN7h",
-        "mega_product_jB6Aec",
-        "mega_product_8jLk79"
-      ],
       "name": "ADORA Mega Header",
       "settings": {
         "enable_sticky": true,
+        "enable_transparent_on_homepage": true,
+        "scroll_threshold": 20,
         "menu": "main-menu",
         "mega_trigger_label": "SHOP",
+        "transparent_logo_image": "shopify://shop_images/Adora_Logo_Fin.png",
+        "logo_image": "shopify://shop_images/Adora_Logo_Trans.png",
         "logo_text": "ADORA",
-        "logo_width_desktop": 148,
+        "logo_width_desktop": 236,
         "logo_width_mobile": 112,
         "show_announcement": true,
         "announcement_text": "Kostenloser Versand ab 100 EUR",
         "announcement_link": "",
+        "announcement_mode": "marquee",
+        "announcement_marquee_speed": 18,
+        "announcement_pause_on_hover": true,
         "show_search": true,
         "search_label": "Suche",
         "show_account": true,
@@ -448,22 +293,27 @@
         "cart_label": "Warenkorb",
         "show_cart_count": true,
         "mega_eyebrow": "SHOP",
-        "feature_eyebrow": "ADORA Ritual",
-        "feature_heading": "Cleanse. Hydrate. Seal the Glow.",
-        "feature_text": "Ein klarer 3-Step Reset für weiche, gepflegte und sichtbar strahlende Haut.",
-        "feature_link_label": "Ritual entdecken",
-        "feature_link": "",
+        "collection_card_text": "ADORA Collection",
+        "latest_link_label": "Neueste Erscheinungen",
+        "latest_link_url": "",
+        "promo_badge": "Bestseller",
+        "mega_banner_badge": "ADORA Edit",
+        "mega_banner_heading": "Glass Skin Ritual",
+        "mega_banner_text": "Entdecke den kompletten ADORA Reset.",
+        "mega_banner_link": "",
+        "show_mobile_banner": true,
         "mobile_drawer_position": "left",
         "mobile_promo_text": "Beginne dein ADORA Ritual mit drei bewussten Schritten.",
-        "header_bg_color": "#FFF8EF",
-        "header_text_color": "#3A2351",
+        "transparent_text_color": "#ffffff",
+        "header_bg_color": "#fff8ef",
+        "header_text_color": "#3a2351",
         "accent_color": "#805394",
-        "border_color": "#E7D7EF",
-        "mega_menu_bg_color": "#FBF3FF",
-        "drawer_bg_color": "#FFF8EF",
-        "drawer_text_color": "#3A2351",
-        "announcement_bg_color": "#3A2351",
-        "announcement_text_color": "#FFFFFF",
+        "border_color": "#e7d7ef",
+        "mega_menu_bg_color": "#fbf3ff",
+        "drawer_bg_color": "#fff8ef",
+        "drawer_text_color": "#3a2351",
+        "announcement_bg_color": "#3a2351",
+        "announcement_text_color": "#ffffff",
         "header_height_desktop": 82,
         "header_height_mobile": 72,
         "nav_font_size": 13,
@@ -472,7 +322,6 @@
     }
   },
   "order": [
-    "announcement_bar_4tGfEp",
     "header_mobile_MqfLk9",
     "adora_mega_header_BJUwPk"
   ]
