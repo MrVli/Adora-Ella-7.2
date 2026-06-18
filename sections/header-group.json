@@ -402,7 +402,7 @@
           "type": "mega_menu_3",
           "settings": {
             "menu_item": "SHOP",
-            "grid": "6",
+            "grid": "4",
             "width": "full",
             "megamenu_submenu": "main-menu",
             "product_collection": "bestseller",
