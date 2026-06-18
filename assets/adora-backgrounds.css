@@ -1,0 +1,198 @@
+/*
+  ADORA Background System
+  Central background normalization for a calmer white-first storefront.
+  Keep this file loaded after the theme and ADORA section styles.
+*/
+
+:root {
+  --adora-bg: #ffffff;
+  --adora-white: #ffffff;
+  --adora-highlight-soft-lavender: #f6effa;
+  --adora-highlight-light-lilac: #e8affe;
+  --adora-highlight-deep-purple: #805394;
+  --adora-highlight-soft-blush: #fff7fb;
+
+  /* Compatibility aliases for older ADORA sections. */
+  --adora-cream: #ffffff;
+  --adora-porcelain: #ffffff;
+  --adora-mist: #f6effa;
+  --adora-soft-lilac: #e8affe;
+}
+
+html,
+body,
+#MainContent,
+.content-for-layout,
+.template-index,
+.template-product,
+.template-collection,
+.template-cart,
+.template-page,
+.template-search,
+.shopify-section,
+.section,
+.page,
+.page-width,
+.collection,
+.collection-hero,
+.product,
+.main-product,
+.cart,
+.cart-page,
+.cart__contents,
+.cart-items,
+.cart-drawer,
+.drawer,
+.drawer__inner,
+.facets-container,
+.predictive-search,
+.shopify-section-group-footer-group,
+.footer,
+.footer__content-top,
+.footer__content-bottom {
+  background: #ffffff;
+  background-color: #ffffff;
+}
+
+/* Default: all ADORA custom sections sit on a clean white page background. */
+.adora-section,
+section.adora-section,
+[id^="shopify-section-template"] > .adora-section {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+/* Soft, intentional editorial highlights only. */
+.adora-section[class*="adora-philosophy"],
+.adora-section[class*="adora-sensory-textures"],
+.adora-section[class*="adora-brand-world"] {
+  background: #f6effa !important;
+  background-color: #f6effa !important;
+}
+
+.adora-section[class*="adora-routine-transformation"],
+.adora-section[class*="adora-social-proof"],
+.adora-section[class*="adora-final-cta"] {
+  background: #fff7fb !important;
+  background-color: #fff7fb !important;
+}
+
+/* Keep cards premium and quiet without introducing random beige/grey surfaces. */
+.adora-card,
+.adora-section [class*="__card"],
+.adora-section [class*="__panel"],
+.adora-section [class*="__item"],
+.adora-section [class*="__accordion"],
+.adora-section [class*="__faq"],
+.card,
+.card-wrapper,
+.product-card-wrapper,
+.product-item,
+.collection-list__item,
+.article-card,
+.multicolumn-card,
+.testimonial-card {
+  background-color: rgba(255, 255, 255, 0.86);
+}
+
+.adora-section [class*="__panel"],
+.adora-section [class*="__card"],
+.adora-section [class*="__item"] {
+  border-color: rgba(128, 83, 148, 0.16);
+}
+
+/* Older placeholders and image wells now use only approved ADORA highlight colors. */
+.adora-image-frame,
+.adora-image-frame__placeholder,
+.adora-image-frame-snippet__placeholder,
+.adora-section [class*="__image-frame"],
+.adora-section [class*="__placeholder"],
+.adora-mega-header__product-placeholder,
+.adora-mega-header__collection-placeholder,
+.media,
+.product__media,
+.product-media-container,
+.card__media,
+.product-card-wrapper .media {
+  background: linear-gradient(135deg, #ffffff 0%, #f6effa 100%) !important;
+  background-color: #ffffff !important;
+}
+
+/* Header and mega menu: transparent on hero can remain, solid states become white. */
+.adora-mega-header:not(.is-transparent) .adora-mega-header__bar,
+.adora-mega-header.is-scrolled .adora-mega-header__bar,
+.adora-mega-header.is-mega-open .adora-mega-header__bar,
+.adora-mega-header__mega,
+.adora-mega-header__mega-inner,
+.adora-mega-header__drawer,
+.adora-mega-header__drawer-panel,
+.adora-header,
+.adora-header--solid,
+.adora-header--scrolled,
+.adora-header__drawer {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+.adora-mega-header__announcement,
+.adora-header__announcement {
+  background: #805394 !important;
+  background-color: #805394 !important;
+  color: #ffffff !important;
+}
+
+.adora-mega-header__promo-badge,
+.adora-badge--strong,
+.adora-value-badge--strong {
+  background: #805394 !important;
+  background-color: #805394 !important;
+  color: #ffffff !important;
+}
+
+.adora-badge,
+.adora-value-badge,
+.adora-button--secondary,
+.adora-button--glass {
+  background-color: rgba(232, 175, 254, 0.18);
+}
+
+/* Footer/cart readability after white normalization. */
+.footer,
+.footer a,
+.footer p,
+.footer li,
+.footer small,
+.cart,
+.cart a,
+.cart p,
+.cart-item,
+.cart-drawer,
+.drawer,
+.product,
+.product a,
+.product p {
+  color: var(--adora-ink, #24182c);
+}
+
+/* Theme editor inline colors can still exist; these keep the page-wide feel consistent. */
+[style*="#fff8ef"],
+[style*="#FFF8EF"],
+[style*="#fbf3ff"],
+[style*="#FBF3FF"],
+[style*="#f7f1ec"],
+[style*="#F7F1EC"],
+[style*="#f4d8ff"],
+[style*="#F4D8FF"] {
+  background-color: #ffffff !important;
+}
+
+@media (max-width: 749px) {
+  .adora-section[class*="adora-philosophy"],
+  .adora-section[class*="adora-sensory-textures"],
+  .adora-section[class*="adora-brand-world"],
+  .adora-section[class*="adora-routine-transformation"],
+  .adora-section[class*="adora-social-proof"],
+  .adora-section[class*="adora-final-cta"] {
+    background-image: none !important;
+  }
+}
