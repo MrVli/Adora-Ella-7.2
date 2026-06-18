@@ -11,7 +11,32 @@
     const drawerOverlay = header.querySelector('[data-adora-mega-drawer-overlay]');
     const drawerOpeners = header.querySelectorAll('[data-adora-mega-drawer-open]');
     const drawerClosers = header.querySelectorAll('[data-adora-mega-drawer-close]');
+    const transparentOnHomepage = header.dataset.transparentHomepage === 'true';
+    const isHomepage = header.dataset.pageType === 'index';
+    const scrollThreshold = Number.parseInt(header.dataset.scrollThreshold || '20', 10);
+    const canOverlay = transparentOnHomepage && isHomepage;
     let closeTimer;
+    let ticking = false;
+
+    const updateScrollState = () => {
+      const isTop = window.scrollY <= scrollThreshold;
+      const shouldBeTransparent = canOverlay && isTop && !header.classList.contains('is-mega-open') && !header.classList.contains('is-drawer-open');
+
+      header.classList.toggle('is-overlay', canOverlay);
+      header.classList.toggle('is-transparent', shouldBeTransparent);
+      header.classList.toggle('is-scrolled', !shouldBeTransparent);
+      ticking = false;
+    };
+
+    const requestScrollState = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateScrollState);
+    };
+
+    updateScrollState();
+    window.addEventListener('scroll', requestScrollState, { passive: true });
+    window.addEventListener('resize', requestScrollState);
 
     const openMega = () => {
       if (!trigger || !mega || window.matchMedia('(max-width: 989px)').matches) return;
@@ -19,6 +44,7 @@
       header.classList.add('is-mega-open');
       trigger.setAttribute('aria-expanded', 'true');
       mega.setAttribute('aria-hidden', 'false');
+      updateScrollState();
     };
 
     const closeMega = () => {
@@ -26,6 +52,7 @@
       header.classList.remove('is-mega-open');
       trigger.setAttribute('aria-expanded', 'false');
       mega.setAttribute('aria-hidden', 'true');
+      updateScrollState();
     };
 
     const queueCloseMega = () => {
@@ -63,6 +90,8 @@
     };
 
     header.querySelectorAll('[data-adora-mega-tab]').forEach((tab) => {
+      tab.addEventListener('mouseenter', () => activateTab(tab));
+      tab.addEventListener('focus', () => activateTab(tab));
       tab.addEventListener('click', () => activateTab(tab));
       tab.addEventListener('keydown', (event) => {
         if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
@@ -81,6 +110,7 @@
       drawer.setAttribute('aria-hidden', 'false');
       drawerOpeners.forEach((button) => button.setAttribute('aria-expanded', 'true'));
       document.body.classList.add('adora-mega-header-lock');
+      updateScrollState();
       const firstFocusable = drawer.querySelector('button, a, summary, input, [tabindex]:not([tabindex="-1"])');
       if (firstFocusable) firstFocusable.focus({ preventScroll: true });
     };
@@ -91,6 +121,7 @@
       drawer.setAttribute('aria-hidden', 'true');
       drawerOpeners.forEach((button) => button.setAttribute('aria-expanded', 'false'));
       document.body.classList.remove('adora-mega-header-lock');
+      updateScrollState();
     };
 
     drawerOpeners.forEach((button) => button.addEventListener('click', openDrawer));
