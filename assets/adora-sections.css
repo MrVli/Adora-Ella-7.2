@@ -1,6 +1,9 @@
 :root {
-  --font-display: "Sora", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Nunito Sans", "Quicksand", "Helvetica Neue", Arial, sans-serif;
   --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-heading-family: var(--font-display);
+  --font-body-family: var(--font-body);
+  --font-subheading-family: var(--font-body);
 
   --adora-primary: #805394;
   --adora-secondary: #e8affe;
@@ -26,18 +29,105 @@
   --adora-shadow-soft: 0 18px 60px rgba(58, 35, 81, 0.08);
   --adora-container: 1440px;
 
-  --hero-heading-size: clamp(64px, 7vw, 108px);
-  --section-heading-size: clamp(34px, 3vw, 52px);
-  --body-size: 16px;
-  --button-size: 14px;
+  --hero-heading-size: clamp(34px, 10vw, 42px);
+  --page-heading-size: clamp(34px, 9.6vw, 42px);
+  --section-heading-size: clamp(26px, 7.4vw, 32px);
+  --card-heading-size: clamp(21px, 5.8vw, 24px);
+  --body-size: clamp(15.5px, 3.9vw, 16.5px);
+  --small-size: clamp(12.5px, 3.4vw, 13.5px);
+  --button-size: clamp(14px, 3.7vw, 15px);
+  --nav-size: clamp(14px, 3.5vw, 15px);
+
+  --adora-heading-weight: 700;
+  --adora-ui-weight: 700;
+  --adora-body-weight: 400;
+  --adora-heading-letter-spacing: -0.032em;
+  --adora-tight-letter-spacing: -0.018em;
+  --adora-label-letter-spacing: 0.08em;
+  --adora-heading-line-height: 1.04;
+  --adora-body-line-height: 1.62;
 }
 
-@media (max-width: 749px) {
+@media (min-width: 750px) {
   :root {
-    --hero-heading-size: clamp(42px, 13vw, 62px);
-    --section-heading-size: clamp(28px, 8vw, 38px);
-    --body-size: 14px;
+    --hero-heading-size: clamp(48px, 4.6vw, 64px);
+    --page-heading-size: clamp(44px, 4vw, 58px);
+    --section-heading-size: clamp(36px, 3.1vw, 44px);
+    --card-heading-size: clamp(24px, 2.1vw, 30px);
+    --body-size: clamp(16px, 1.16vw, 18px);
+    --small-size: clamp(13px, 0.95vw, 14px);
+    --button-size: clamp(14px, 0.95vw, 16px);
+    --nav-size: clamp(14px, 0.95vw, 16px);
+    --adora-heading-letter-spacing: -0.026em;
   }
+}
+
+html,
+body {
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  line-height: var(--adora-body-line-height);
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h0,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.title,
+.heading,
+.card__heading,
+.product__title,
+.product-title,
+.collection-hero__title,
+.main-page-title,
+.footer-block__heading {
+  font-family: var(--font-display);
+  font-weight: var(--adora-heading-weight);
+  letter-spacing: var(--adora-heading-letter-spacing);
+  line-height: var(--adora-heading-line-height);
+  text-wrap: balance;
+}
+
+p,
+.rte,
+.product__description,
+.product-description,
+.cart-item__details,
+.footer-block__details-content,
+.accordion__content,
+.faqs-item-content {
+  font-family: var(--font-body);
+  font-weight: var(--adora-body-weight);
+  line-height: var(--adora-body-line-height);
+}
+
+button,
+.button,
+.shopify-payment-button__button,
+.product-form__submit,
+.quick-add__submit,
+.cart__checkout-button,
+.menu-drawer__menu-item,
+.header__menu-item,
+.header__inline-menu a,
+.header__heading-link,
+.pagination__item,
+.price,
+.card-product__title,
+.card__heading a {
+  font-family: var(--font-display);
 }
 
 .adora-section,
@@ -52,7 +142,7 @@
   background: var(--adora-cream);
   font-family: var(--font-body);
   font-size: var(--body-size);
-  line-height: 1.55;
+  line-height: var(--adora-body-line-height);
 }
 
 .adora-section a {
@@ -67,11 +157,11 @@
 .adora-eyebrow {
   margin: 0 0 12px;
   color: var(--adora-primary);
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  line-height: 1.2;
+  font-family: var(--font-display);
+  font-size: var(--small-size);
+  font-weight: var(--adora-ui-weight);
+  letter-spacing: var(--adora-label-letter-spacing);
+  line-height: 1.18;
   text-transform: uppercase;
 }
 
@@ -80,9 +170,10 @@
   color: var(--adora-deep-plum);
   font-family: var(--font-display);
   font-size: var(--section-heading-size);
-  font-weight: 700;
-  letter-spacing: -0.055em;
-  line-height: 0.96;
+  font-weight: var(--adora-heading-weight);
+  letter-spacing: var(--adora-heading-letter-spacing);
+  line-height: var(--adora-heading-line-height);
+  text-wrap: balance;
 }
 
 .adora-subheading {
@@ -91,14 +182,14 @@
   color: var(--adora-muted);
   font-family: var(--font-body);
   font-size: var(--body-size);
-  line-height: 1.55;
+  line-height: var(--adora-body-line-height);
 }
 
 .adora-richtext {
   color: var(--adora-muted);
   font-family: var(--font-body);
   font-size: var(--body-size);
-  line-height: 1.65;
+  line-height: var(--adora-body-line-height);
 }
 
 .adora-richtext > :first-child {
@@ -117,10 +208,10 @@
   padding: 14px 26px;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: var(--button-size);
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: var(--adora-ui-weight);
+  letter-spacing: 0;
   line-height: 1;
   text-align: center;
   text-decoration: none;
@@ -215,10 +306,10 @@
   background: rgba(232, 175, 254, 0.2);
   border: 1px solid rgba(128, 83, 148, 0.16);
   border-radius: var(--radius-pill);
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-family: var(--font-display);
+  font-size: var(--small-size);
+  font-weight: var(--adora-ui-weight);
+  letter-spacing: 0.04em;
   line-height: 1;
   text-decoration: none;
   text-transform: uppercase;
@@ -283,9 +374,9 @@
   color: rgba(58, 35, 81, 0.22);
   background: radial-gradient(circle at 20% 10%, rgba(232, 175, 254, 0.58), transparent 36%), linear-gradient(135deg, var(--adora-cream) 0%, var(--adora-mist) 52%, var(--adora-soft-lilac) 100%);
   font-family: var(--font-display);
-  font-size: clamp(2.8rem, 12vw, 8rem);
-  font-weight: 800;
-  letter-spacing: -0.065em;
+  font-size: clamp(42px, 18vw, 96px);
+  font-weight: 700;
+  letter-spacing: var(--adora-heading-letter-spacing);
   line-height: 1;
 }
 
@@ -310,9 +401,9 @@
   background: rgba(255, 255, 255, 0.58);
   border: 1px solid var(--adora-border);
   border-radius: var(--radius-pill);
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: var(--small-size);
+  font-weight: var(--adora-ui-weight);
   line-height: 1;
   box-shadow: 0 12px 34px rgba(58, 35, 81, 0.06);
   backdrop-filter: blur(14px);
@@ -360,28 +451,29 @@
   background: rgba(232, 175, 254, 0.2);
   border: 1px solid rgba(128, 83, 148, 0.16);
   border-radius: var(--radius-pill);
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: var(--adora-ui-weight);
 }
 
 .adora-ritual-step-card__title {
   margin: 0;
   color: var(--adora-deep-plum);
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 4.8vw, 1.8rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  font-size: var(--card-heading-size);
+  font-weight: var(--adora-heading-weight);
+  letter-spacing: var(--adora-heading-letter-spacing);
+  line-height: 1.05;
+  text-wrap: balance;
 }
 
 .adora-ritual-step-card__product {
   margin: 0;
   color: var(--adora-primary);
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-family: var(--font-display);
+  font-size: var(--small-size);
+  font-weight: var(--adora-ui-weight);
+  letter-spacing: var(--adora-label-letter-spacing);
   line-height: 1.2;
   text-transform: uppercase;
 }
@@ -403,6 +495,123 @@
 .adora-reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.adora-section :where(h1, h2, h3, h4, .adora-heading, [class$="__heading"], [class$="__title"]) {
+  font-family: var(--font-display) !important;
+  font-weight: var(--adora-heading-weight) !important;
+  letter-spacing: var(--adora-heading-letter-spacing) !important;
+  line-height: var(--adora-heading-line-height) !important;
+  text-wrap: balance;
+  overflow-wrap: normal;
+}
+
+.adora-section :where(p, li, .adora-richtext, .adora-subheading, [class$="__text"], [class$="__body"], [class$="__copy"]) {
+  font-family: var(--font-body) !important;
+  font-size: var(--body-size);
+  line-height: var(--adora-body-line-height);
+}
+
+.adora-hero-reset__heading,
+.adora-hero-reset h1,
+.adora-hero-reset [class$="__headline"] {
+  max-width: 14ch;
+  font-size: var(--hero-heading-size) !important;
+  line-height: 1 !important;
+  letter-spacing: -0.034em !important;
+}
+
+.adora-section :where(h2, .adora-heading, [class$="__heading"]) {
+  font-size: var(--section-heading-size) !important;
+}
+
+.adora-section :where(h3, [class$="__title"]) {
+  font-size: var(--card-heading-size) !important;
+}
+
+.adora-section :where(.adora-button, button, [class*="button"], [class$="__link"], [class$="__action"]) {
+  font-family: var(--font-display) !important;
+  font-size: var(--button-size);
+  font-weight: var(--adora-ui-weight);
+  letter-spacing: 0;
+}
+
+.adora-mega-header,
+.adora-mega-header :where(a, button, summary, strong, span) {
+  font-family: var(--font-display);
+}
+
+.adora-mega-header :where(.adora-mega-header__announcement, .adora-mega-header__promo-text, .adora-mega-header__mobile-product-text, .adora-mega-header__drawer-promo p) {
+  font-family: var(--font-body);
+}
+
+.product__title,
+.product-title,
+.productView-title,
+.productView-title h1,
+.main-product h1,
+.card__heading,
+.card-product__title,
+.product-card-title,
+.cart-item__name,
+.cart-item__name a,
+.price,
+.price-item,
+.footer-block__heading,
+.accordion__title,
+.faqs-item-title {
+  font-family: var(--font-display) !important;
+  font-weight: var(--adora-heading-weight);
+  letter-spacing: var(--adora-tight-letter-spacing);
+  line-height: 1.12;
+}
+
+.product__title,
+.productView-title,
+.productView-title h1,
+.main-product h1 {
+  font-size: clamp(34px, 8vw, 42px);
+}
+
+.card__heading,
+.card-product__title,
+.product-card-title,
+.cart-item__name,
+.cart-item__name a {
+  font-size: clamp(16px, 4.5vw, 19px);
+}
+
+.product__description,
+.productView-desc,
+.productView-info,
+.cart-item__details,
+.cart__contents,
+.footer,
+.footer p,
+.footer li,
+.footer a,
+.accordion__content,
+.faqs-item-content {
+  font-family: var(--font-body) !important;
+  font-size: var(--body-size);
+  line-height: var(--adora-body-line-height);
+}
+
+.header__menu-item,
+.menu-drawer__menu-item,
+.adora-mega-header__nav-link,
+.adora-mega-header__nav-button,
+.adora-mega-header__utility,
+.button,
+.shopify-payment-button__button,
+.product-form__submit,
+.cart__checkout-button,
+.quick-add__submit {
+  font-family: var(--font-display) !important;
+  font-size: var(--nav-size);
+  font-weight: var(--adora-ui-weight);
+  letter-spacing: 0.01em;
+  line-height: 1.15;
 }
 
 @media (hover: hover) {
@@ -446,6 +655,21 @@
   .adora-ritual-step-card__content {
     padding: 8px 8px 10px;
   }
+
+  .product__title,
+  .productView-title,
+  .productView-title h1,
+  .main-product h1 {
+    font-size: clamp(42px, 3.9vw, 56px);
+  }
+
+  .card__heading,
+  .card-product__title,
+  .product-card-title,
+  .cart-item__name,
+  .cart-item__name a {
+    font-size: clamp(17px, 1.35vw, 21px);
+  }
 }
 
 @media screen and (max-width: 749px) {
@@ -454,7 +678,13 @@
   }
 
   .adora-heading {
-    letter-spacing: -0.045em;
+    letter-spacing: -0.024em;
+  }
+
+  .adora-section :where(h1, h2, h3, .adora-heading, [class$="__heading"], [class$="__title"]) {
+    max-width: 100%;
+    word-break: normal;
+    hyphens: auto;
   }
 
   .adora-button {
