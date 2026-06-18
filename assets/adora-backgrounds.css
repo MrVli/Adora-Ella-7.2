@@ -32,6 +32,7 @@ body,
 .template-cart,
 .template-page,
 .template-search,
+.shopify-section,
 .section,
 .page,
 .page-width,
@@ -86,7 +87,11 @@ section.adora-section,
 [style*="#f7f1ec"],
 [style*="#F7F1EC"],
 [style*="#f4d8ff"],
-[style*="#F4D8FF"] {
+[style*="#F4D8FF"],
+[style*="255, 248, 239"],
+[style*="251, 243, 255"],
+[style*="247, 241, 236"],
+[style*="244, 216, 255"] {
   background: #ffffff !important;
   background-color: #ffffff !important;
 }
