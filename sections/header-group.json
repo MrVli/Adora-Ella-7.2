@@ -350,7 +350,7 @@
           "type": "mega_menu_1",
           "settings": {
             "grid": "3",
-            "menu_item": "theme demo",
+            "menu_item": "SHOP",
             "width": "full",
             "show_promotion_banner": true,
             "promotion_banner_layout": "right",
@@ -379,7 +379,7 @@
         "mega_menu_2_UWAbGf": {
           "type": "mega_menu_2",
           "settings": {
-            "menu_item": "SHOP",
+            "menu_item": "",
             "grid": "4",
             "width": "page-width",
             "megamenu_submenu": "",
