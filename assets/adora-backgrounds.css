@@ -62,6 +62,19 @@ section.adora-section,
   background-color: #ffffff !important;
 }
 
+/* Theme editor inline colors can still exist; these keep the page-wide feel consistent. */
+[style*="#fff8ef"],
+[style*="#FFF8EF"],
+[style*="#fbf3ff"],
+[style*="#FBF3FF"],
+[style*="#f7f1ec"],
+[style*="#F7F1EC"],
+[style*="#f4d8ff"],
+[style*="#F4D8FF"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
 /* Soft, intentional editorial highlights only. */
 .adora-section[class*="adora-philosophy"],
 .adora-section[class*="adora-sensory-textures"],
@@ -172,18 +185,6 @@ section.adora-section,
 .product a,
 .product p {
   color: var(--adora-ink, #24182c);
-}
-
-/* Theme editor inline colors can still exist; these keep the page-wide feel consistent. */
-[style*="#fff8ef"],
-[style*="#FFF8EF"],
-[style*="#fbf3ff"],
-[style*="#FBF3FF"],
-[style*="#f7f1ec"],
-[style*="#F7F1EC"],
-[style*="#f4d8ff"],
-[style*="#F4D8FF"] {
-  background-color: #ffffff !important;
 }
 
 @media (max-width: 749px) {
