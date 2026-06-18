@@ -9,6 +9,145 @@
  */
 {
   "sections": {
+    "adora_ritual_universe_U84JRj": {
+      "type": "adora-ritual-universe",
+      "blocks": {
+        "ritual_card_gfr9yQ": {
+          "type": "ritual_card",
+          "settings": {
+            "title": "Glass Skin Reset",
+            "label": "Bestseller Ritual",
+            "text": "<p>Das zentrale 3-Step Set für weiche, gepflegte und sichtbar strahlende Haut.</p>",
+            "image_alt": "",
+            "link": "",
+            "cta_label": "Ritual entdecken",
+            "is_featured": true,
+            "badge_text": "Featured",
+            "custom_bg_color": "",
+            "custom_text_color": "",
+            "custom_accent_color": ""
+          }
+        },
+        "ritual_card_7FyE7p": {
+          "type": "ritual_card",
+          "settings": {
+            "title": "Hydration Rituals",
+            "label": "Feuchtigkeit",
+            "text": "<p>Pflege für Haut, die sich weich, komfortabel und genährt anfühlen soll.</p>",
+            "image_alt": "",
+            "link": "",
+            "cta_label": "Entdecken",
+            "is_featured": false,
+            "badge_text": "Featured",
+            "custom_bg_color": "",
+            "custom_text_color": "",
+            "custom_accent_color": ""
+          }
+        },
+        "ritual_card_PU9mhL": {
+          "type": "ritual_card",
+          "settings": {
+            "title": "Glow Finish",
+            "label": "Oil & Finish",
+            "text": "<p>Nährende Finishes für den letzten Glow-Moment deiner Routine.</p>",
+            "image_alt": "",
+            "link": "",
+            "cta_label": "Entdecken",
+            "is_featured": false,
+            "badge_text": "Featured",
+            "custom_bg_color": "",
+            "custom_text_color": "",
+            "custom_accent_color": "#d89a35"
+          }
+        },
+        "ritual_card_p6qKAJ": {
+          "type": "ritual_card",
+          "settings": {
+            "title": "Body Rituals",
+            "label": "Bodycare",
+            "text": "<p>Selfcare für den Körper — weich, sinnlich und visuell hochwertig.</p>",
+            "image_alt": "",
+            "link": "",
+            "cta_label": "Entdecken",
+            "is_featured": false,
+            "badge_text": "Featured",
+            "custom_bg_color": "",
+            "custom_text_color": "",
+            "custom_accent_color": ""
+          }
+        },
+        "ritual_card_haGi9n": {
+          "type": "ritual_card",
+          "settings": {
+            "title": "Gift Rituals",
+            "label": "Geschenksets",
+            "text": "<p>Kuratierte Sets, die sich besonders anfühlen — vom ersten Blick bis zum Auspacken.</p>",
+            "image_alt": "",
+            "link": "",
+            "cta_label": "Entdecken",
+            "is_featured": false,
+            "badge_text": "Featured",
+            "custom_bg_color": "",
+            "custom_text_color": "",
+            "custom_accent_color": ""
+          }
+        },
+        "ritual_card_ffaMay": {
+          "type": "ritual_card",
+          "settings": {
+            "title": "Single Essentials",
+            "label": "Nachkauf & Ergänzung",
+            "text": "<p>Einzelprodukte für gezielte Ergänzungen oder deinen nächsten Ritual-Schritt.</p>",
+            "image_alt": "",
+            "link": "",
+            "cta_label": "Entdecken",
+            "is_featured": false,
+            "badge_text": "Featured",
+            "custom_bg_color": "",
+            "custom_text_color": "",
+            "custom_accent_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "ritual_card_gfr9yQ",
+        "ritual_card_7FyE7p",
+        "ritual_card_PU9mhL",
+        "ritual_card_p6qKAJ",
+        "ritual_card_haGi9n",
+        "ritual_card_ffaMay"
+      ],
+      "name": "ADORA Ritual Universe",
+      "settings": {
+        "eyebrow": "DIE ADORA RITUAL-WELT",
+        "headline": "Wähle dein Ritual. Ergänze gezielt.",
+        "subheadline": "<p>Starte mit einem kuratierten Set oder finde einzelne Essentials, die deine Routine sinnvoll erweitern — von Glass Skin bis Bodycare.</p>",
+        "section_bg_style": "mist",
+        "section_bg_color": "#ffffff",
+        "text_color": "#3a2351",
+        "accent_color": "#805394",
+        "card_bg_color": "#ffffff",
+        "card_text_color": "#3a2351",
+        "card_border_color": "rgba(128, 83, 148, 0.18)",
+        "padding_desktop": 96,
+        "padding_mobile": 64,
+        "max_width": 1440,
+        "header_alignment": "left",
+        "layout_desktop": "featured_grid",
+        "layout_mobile": "stacked",
+        "card_image_mode": "top",
+        "show_section_cta": true,
+        "section_cta_label": "Alle Rituale ansehen",
+        "section_cta_link": "",
+        "card_radius": 36,
+        "enable_glassmorphism": true,
+        "enable_card_hover": true,
+        "show_card_labels": true,
+        "show_card_ctas": true,
+        "show_card_images": true,
+        "show_featured_badge": true
+      }
+    },
     "adora_hero_reset_ritual_MzeUDF": {
       "type": "adora-hero-reset-ritual",
       "blocks": {
@@ -1269,6 +1408,7 @@
     "adora_formula_confidence_8yGcNx",
     "adora_bundle_value_panel_rmRMaJ",
     "adora_brand_world_grid_GrHbcp",
+    "adora_ritual_universe_U84JRj",
     "adora_faq_ritual_Bx63gP",
     "17815382948ef08f33",
     "adora_final_cta_reset_q4fknY",
