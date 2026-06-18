@@ -5,6 +5,12 @@
   assign is_homepage = false
   assign use_transparent = false
   assign mega_link = blank
+  assign solid_logo = section.settings.logo_image
+  assign transparent_logo = section.settings.transparent_logo_image
+
+  if transparent_logo == blank
+    assign transparent_logo = solid_logo
+  endif
 
   if request.page_type == 'index'
     assign is_homepage = true
@@ -53,14 +59,21 @@
     --adora-mega-header-logo-mobile: {{ section.settings.logo_width_mobile }}px;
     --adora-mega-header-nav-size: {{ section.settings.nav_font_size }}px;
     --adora-mega-header-nav-spacing: {{ section.settings.nav_letter_spacing | divided_by: 100.0 }}em;
+    --adora-announcement-speed: {{ section.settings.announcement_marquee_speed }}s;
   "
 >
   {%- if section.settings.show_announcement and section.settings.announcement_text != blank -%}
-    <div class="adora-mega-header__announcement">
+    <div class="adora-mega-header__announcement adora-mega-header__announcement--{{ section.settings.announcement_mode }}{% if section.settings.announcement_pause_on_hover %} adora-mega-header__announcement--pause{% endif %}">
+      {%- capture announcement_items -%}
+        <span class="adora-mega-header__announcement-item">{{ section.settings.announcement_text | escape }}</span>
+        <span class="adora-mega-header__announcement-item" aria-hidden="true">{{ section.settings.announcement_text | escape }}</span>
+        <span class="adora-mega-header__announcement-item" aria-hidden="true">{{ section.settings.announcement_text | escape }}</span>
+        <span class="adora-mega-header__announcement-item" aria-hidden="true">{{ section.settings.announcement_text | escape }}</span>
+      {%- endcapture -%}
       {%- if section.settings.announcement_link != blank -%}
-        <a href="{{ section.settings.announcement_link }}">{{ section.settings.announcement_text | escape }}</a>
+        <a class="adora-mega-header__announcement-track" href="{{ section.settings.announcement_link }}">{{ announcement_items }}</a>
       {%- else -%}
-        <span>{{ section.settings.announcement_text | escape }}</span>
+        <div class="adora-mega-header__announcement-track">{{ announcement_items }}</div>
       {%- endif -%}
     </div>
   {%- endif -%}
@@ -91,8 +104,15 @@
     </nav>
 
     <a class="adora-mega-header__logo" href="{{ routes.root_url }}" aria-label="{{ section.settings.logo_text | default: shop.name | escape }}">
-      {%- if section.settings.logo_image != blank -%}
-        {{ section.settings.logo_image | image_url: width: 420 | image_tag: class: 'adora-mega-header__logo-image', loading: 'eager', widths: '120, 180, 240, 320, 420', sizes: '(min-width: 990px) 180px, 44vw' }}
+      {%- if solid_logo != blank or transparent_logo != blank -%}
+        <span class="adora-mega-header__logo-stack">
+          {%- if solid_logo != blank -%}
+            {{ solid_logo | image_url: width: 420 | image_tag: class: 'adora-mega-header__logo-image adora-mega-header__logo-image--solid', loading: 'eager', widths: '120, 180, 240, 320, 420', sizes: '(min-width: 990px) 180px, 44vw' }}
+          {%- endif -%}
+          {%- if transparent_logo != blank -%}
+            {{ transparent_logo | image_url: width: 420 | image_tag: class: 'adora-mega-header__logo-image adora-mega-header__logo-image--transparent', loading: 'eager', widths: '120, 180, 240, 320, 420', sizes: '(min-width: 990px) 180px, 44vw' }}
+          {%- endif -%}
+        </span>
       {%- else -%}
         <span class="adora-mega-header__logo-text">{{ section.settings.logo_text | default: 'ADORA' | escape }}</span>
       {%- endif -%}
@@ -183,61 +203,57 @@
               {%- assign panel_key = category_link.title | handleize -%}
               <div class="adora-mega-header__panel{% if forloop.first %} is-active{% endif %}" data-adora-mega-panel="{{ panel_key }}">
                 <div class="adora-mega-header__promo-grid">
-                  {%- if category_link.links.size > 0 -%}
-                    {%- for product_link in category_link.links limit: 2 -%}
-                      {%- liquid
-                        assign linked_object = product_link.object
-                        assign card_title = product_link.title
-                        assign card_url = product_link.url | default: '#'
-                        assign card_image = blank
-                        assign card_text = category_link.title
-                        if linked_object.featured_image != blank
-                          assign card_image = linked_object.featured_image
-                        elsif linked_object.image != blank
-                          assign card_image = linked_object.image
-                        endif
-                        if linked_object.type != blank
-                          assign card_text = linked_object.type
-                        elsif linked_object.vendor != blank
-                          assign card_text = linked_object.vendor
-                        endif
-                      -%}
-                      <a class="adora-mega-header__promo-card" href="{{ card_url }}">
-                        {%- if card_image != blank -%}
-                          {{ card_image | image_url: width: 780 | image_tag: class: 'adora-mega-header__promo-image', loading: 'lazy', widths: '360, 520, 780', sizes: '26vw', alt: card_title }}
-                        {%- else -%}
-                          <span class="adora-mega-header__promo-image adora-mega-header__product-placeholder" aria-hidden="true"></span>
-                        {%- endif -%}
-                        <span class="adora-mega-header__promo-shade" aria-hidden="true"></span>
-                        {%- if forloop.first and section.settings.promo_badge != blank -%}<span class="adora-mega-header__promo-badge">{{ section.settings.promo_badge | escape }}</span>{%- endif -%}
-                        <span class="adora-mega-header__promo-content">
-                          <strong class="adora-mega-header__promo-title">{{ card_title | escape }}</strong>
-                          <span class="adora-mega-header__promo-text">{{ card_text | escape }}</span>
-                        </span>
-                        <svg class="adora-mega-header__promo-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"></path><path d="m13 5 7 7-7 7"></path></svg>
-                      </a>
-                    {%- endfor -%}
-                  {%- else -%}
-                    {%- liquid
-                      assign linked_object = category_link.object
-                      assign card_image = blank
-                      if linked_object.featured_image != blank
-                        assign card_image = linked_object.featured_image
-                      elsif linked_object.image != blank
-                        assign card_image = linked_object.image
-                      endif
-                    -%}
-                    <a class="adora-mega-header__promo-card" href="{{ category_link.url | default: '#' }}">
-                      {%- if card_image != blank -%}
-                        {{ card_image | image_url: width: 780 | image_tag: class: 'adora-mega-header__promo-image', loading: 'lazy', widths: '360, 520, 780', sizes: '26vw', alt: category_link.title }}
-                      {%- else -%}
-                        <span class="adora-mega-header__promo-image adora-mega-header__product-placeholder" aria-hidden="true"></span>
-                      {%- endif -%}
-                      <span class="adora-mega-header__promo-shade" aria-hidden="true"></span>
-                      <span class="adora-mega-header__promo-content"><strong class="adora-mega-header__promo-title">{{ category_link.title | escape }}</strong><span class="adora-mega-header__promo-text">{{ section.settings.collection_card_text | escape }}</span></span>
-                      <svg class="adora-mega-header__promo-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"></path><path d="m13 5 7 7-7 7"></path></svg>
-                    </a>
-                  {%- endif -%}
+                  {%- liquid
+                    assign primary_link = category_link
+                    if category_link.links.size > 0
+                      assign primary_link = category_link.links.first
+                    endif
+                    assign linked_object = primary_link.object
+                    assign card_title = primary_link.title
+                    assign card_url = primary_link.url | default: '#'
+                    assign card_image = blank
+                    assign card_text = category_link.title
+                    if linked_object.featured_image != blank
+                      assign card_image = linked_object.featured_image
+                    elsif linked_object.image != blank
+                      assign card_image = linked_object.image
+                    endif
+                    if linked_object.type != blank
+                      assign card_text = linked_object.type
+                    elsif linked_object.vendor != blank
+                      assign card_text = linked_object.vendor
+                    endif
+                    assign banner_link = section.settings.mega_banner_link | default: mega_link.url | default: '#'
+                  -%}
+                  <a class="adora-mega-header__promo-card" href="{{ card_url }}">
+                    {%- if card_image != blank -%}
+                      {{ card_image | image_url: width: 780 | image_tag: class: 'adora-mega-header__promo-image', loading: 'lazy', widths: '360, 520, 780', sizes: '26vw', alt: card_title }}
+                    {%- else -%}
+                      <span class="adora-mega-header__promo-image adora-mega-header__product-placeholder" aria-hidden="true"></span>
+                    {%- endif -%}
+                    <span class="adora-mega-header__promo-shade" aria-hidden="true"></span>
+                    {%- if section.settings.promo_badge != blank -%}<span class="adora-mega-header__promo-badge">{{ section.settings.promo_badge | escape }}</span>{%- endif -%}
+                    <span class="adora-mega-header__promo-content">
+                      <strong class="adora-mega-header__promo-title">{{ card_title | escape }}</strong>
+                      <span class="adora-mega-header__promo-text">{{ card_text | escape }}</span>
+                    </span>
+                    <svg class="adora-mega-header__promo-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"></path><path d="m13 5 7 7-7 7"></path></svg>
+                  </a>
+
+                  <a class="adora-mega-header__promo-card adora-mega-header__promo-card--banner" href="{{ banner_link }}">
+                    {%- if section.settings.mega_banner_image != blank -%}
+                      {{ section.settings.mega_banner_image | image_url: width: 780 | image_tag: class: 'adora-mega-header__promo-image', loading: 'lazy', widths: '360, 520, 780', sizes: '26vw', alt: section.settings.mega_banner_heading }}
+                    {%- else -%}
+                      <span class="adora-mega-header__promo-image adora-mega-header__product-placeholder" aria-hidden="true"></span>
+                    {%- endif -%}
+                    <span class="adora-mega-header__promo-shade" aria-hidden="true"></span>
+                    {%- if section.settings.mega_banner_badge != blank -%}<span class="adora-mega-header__promo-badge">{{ section.settings.mega_banner_badge | escape }}</span>{%- endif -%}
+                    <span class="adora-mega-header__promo-content">
+                      <strong class="adora-mega-header__promo-title">{{ section.settings.mega_banner_heading | escape }}</strong>
+                      <span class="adora-mega-header__promo-text">{{ section.settings.mega_banner_text | escape }}</span>
+                    </span>
+                    <svg class="adora-mega-header__promo-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"></path><path d="m13 5 7 7-7 7"></path></svg>
+                  </a>
                 </div>
               </div>
             {%- endfor -%}
@@ -250,7 +266,13 @@
   <div class="adora-mega-header__drawer-overlay" data-adora-mega-drawer-overlay></div>
   <aside class="adora-mega-header__drawer" id="adora-mega-drawer-{{ section.id }}" aria-hidden="true" data-adora-mega-drawer>
     <div class="adora-mega-header__drawer-head">
-      <a class="adora-mega-header__drawer-logo" href="{{ routes.root_url }}">{{ section.settings.logo_text | default: 'ADORA' | escape }}</a>
+      <a class="adora-mega-header__drawer-logo" href="{{ routes.root_url }}">
+        {%- if solid_logo != blank -%}
+          {{ solid_logo | image_url: width: 320 | image_tag: class: 'adora-mega-header__drawer-logo-image', loading: 'eager', widths: '120, 180, 240, 320', sizes: '132px' }}
+        {%- else -%}
+          {{ section.settings.logo_text | default: 'ADORA' | escape }}
+        {%- endif -%}
+      </a>
       <button class="adora-mega-header__icon-button" type="button" aria-label="Menü schließen" data-adora-mega-drawer-close>
         <svg class="adora-mega-header__svg" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12"></path><path d="M18 6 6 18"></path></svg>
       </button>
@@ -315,6 +337,17 @@
                           </a>
                         {%- endif -%}
                       </div>
+                      {%- if section.settings.show_mobile_banner -%}
+                        <a class="adora-mega-header__mobile-banner" href="{{ section.settings.mega_banner_link | default: mega_link.url | default: '#' }}">
+                          {%- if section.settings.mega_banner_image != blank -%}
+                            {{ section.settings.mega_banner_image | image_url: width: 620 | image_tag: class: 'adora-mega-header__mobile-banner-image', loading: 'lazy', widths: '320, 480, 620', sizes: '86vw', alt: section.settings.mega_banner_heading }}
+                          {%- else -%}
+                            <span class="adora-mega-header__mobile-banner-image adora-mega-header__product-placeholder" aria-hidden="true"></span>
+                          {%- endif -%}
+                          <span class="adora-mega-header__promo-shade" aria-hidden="true"></span>
+                          <span class="adora-mega-header__mobile-banner-content"><strong>{{ section.settings.mega_banner_heading | escape }}</strong><span>{{ section.settings.mega_banner_text | escape }}</span></span>
+                        </a>
+                      {%- endif -%}
                     </div>
                   {%- endfor -%}
                 </div>
@@ -351,13 +384,17 @@
     { "type": "range", "id": "scroll_threshold", "label": "White background after scroll", "min": 0, "max": 180, "step": 5, "unit": "px", "default": 20 },
     { "type": "link_list", "id": "menu", "label": "Main menu" },
     { "type": "text", "id": "mega_trigger_label", "label": "Mega menu trigger label", "default": "Collections" },
-    { "type": "image_picker", "id": "logo_image", "label": "Logo image" },
-    { "type": "text", "id": "logo_text", "label": "Logo text", "default": "ADORA" },
+    { "type": "image_picker", "id": "transparent_logo_image", "label": "Logo image transparent header" },
+    { "type": "image_picker", "id": "logo_image", "label": "Logo image solid header" },
+    { "type": "text", "id": "logo_text", "label": "Logo text fallback", "default": "ADORA" },
     { "type": "range", "id": "logo_width_desktop", "label": "Logo width desktop", "min": 80, "max": 260, "step": 4, "unit": "px", "default": 148 },
     { "type": "range", "id": "logo_width_mobile", "label": "Logo width mobile", "min": 72, "max": 180, "step": 4, "unit": "px", "default": 112 },
     { "type": "checkbox", "id": "show_announcement", "label": "Show announcement", "default": true },
     { "type": "text", "id": "announcement_text", "label": "Announcement text", "default": "Kostenloser Versand ab 100 EUR" },
     { "type": "url", "id": "announcement_link", "label": "Announcement link" },
+    { "type": "select", "id": "announcement_mode", "label": "Announcement behavior", "options": [{ "value": "static", "label": "Static" }, { "value": "marquee", "label": "Moving marquee" }], "default": "marquee" },
+    { "type": "range", "id": "announcement_marquee_speed", "label": "Announcement marquee speed", "min": 8, "max": 40, "step": 1, "unit": "s", "default": 18 },
+    { "type": "checkbox", "id": "announcement_pause_on_hover", "label": "Pause announcement on hover", "default": true },
     { "type": "checkbox", "id": "show_search", "label": "Show search icon", "default": true },
     { "type": "text", "id": "search_label", "label": "Search aria label", "default": "Suche" },
     { "type": "checkbox", "id": "show_account", "label": "Show account icon", "default": true },
@@ -369,7 +406,13 @@
     { "type": "text", "id": "collection_card_text", "label": "Fallback card text", "default": "ADORA Collection" },
     { "type": "text", "id": "latest_link_label", "label": "Bottom mega link label", "default": "Neueste Erscheinungen" },
     { "type": "url", "id": "latest_link_url", "label": "Bottom mega link" },
-    { "type": "text", "id": "promo_badge", "label": "Promo badge", "default": "Bestseller" },
+    { "type": "text", "id": "promo_badge", "label": "Dynamic promo badge", "default": "Bestseller" },
+    { "type": "image_picker", "id": "mega_banner_image", "label": "Right banner image" },
+    { "type": "text", "id": "mega_banner_badge", "label": "Right banner badge", "default": "ADORA Edit" },
+    { "type": "text", "id": "mega_banner_heading", "label": "Right banner heading", "default": "Glass Skin Ritual" },
+    { "type": "text", "id": "mega_banner_text", "label": "Right banner text", "default": "Entdecke den kompletten ADORA Reset." },
+    { "type": "url", "id": "mega_banner_link", "label": "Right banner link" },
+    { "type": "checkbox", "id": "show_mobile_banner", "label": "Show banner in mobile drawer", "default": true },
     { "type": "select", "id": "mobile_drawer_position", "label": "Mobile drawer position", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }], "default": "left" },
     { "type": "text", "id": "mobile_promo_text", "label": "Mobile promo text", "default": "Beginne dein ADORA Ritual mit drei bewussten Schritten." },
     { "type": "color", "id": "transparent_text_color", "label": "Transparent text/icon color", "default": "#FFFFFF" },
