@@ -135,24 +135,56 @@
   {%- if has_mega_menu -%}
     <div class="adora-mega-header__mega" id="adora-mega-menu-{{ section.id }}" aria-hidden="true" data-adora-mega-menu>
       <div class="adora-mega-header__mega-inner" data-adora-mega-tab-scope>
-        <div class="adora-mega-header__mega-grid">
-          <div>
-            <p class="adora-mega-header__mega-kicker">{{ section.settings.mega_eyebrow | escape }}</p>
-            <div class="adora-mega-header__tab-list" role="tablist" aria-label="Collections Kategorien">
-              {%- for category_link in mega_link.links -%}
-                {%- assign tab_key = category_link.title | handleize -%}
-                <button class="adora-mega-header__tab" type="button" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-adora-mega-tab="{{ tab_key }}">{{ category_link.title | escape }}</button>
+        <div class="adora-mega-header__mega-layout">
+          <div class="adora-mega-header__mega-left">
+            <div class="adora-mega-header__category-grid" role="tablist" aria-label="Collections Kategorien">
+              {%- for category_link in mega_link.links limit: 6 -%}
+                {%- liquid
+                  assign tab_key = category_link.title | handleize
+                  assign category_object = category_link.object
+                  assign category_image = blank
+                  if category_object.featured_image != blank
+                    assign category_image = category_object.featured_image
+                  elsif category_object.image != blank
+                    assign category_image = category_object.image
+                  endif
+                  if category_image == blank and category_link.links.size > 0
+                    for child_link in category_link.links limit: 1
+                      assign child_object = child_link.object
+                      if child_object.featured_image != blank
+                        assign category_image = child_object.featured_image
+                      elsif child_object.image != blank
+                        assign category_image = child_object.image
+                      endif
+                    endfor
+                  endif
+                -%}
+                <a class="adora-mega-header__category-tile" href="{{ category_link.url | default: '#' }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-adora-mega-tab="{{ tab_key }}">
+                  <span class="adora-mega-header__category-media">
+                    {%- if category_image != blank -%}
+                      {{ category_image | image_url: width: 420 | image_tag: loading: 'lazy', widths: '180, 280, 420', sizes: '14vw', alt: category_link.title }}
+                    {%- else -%}
+                      <span class="adora-mega-header__product-placeholder" aria-hidden="true"></span>
+                    {%- endif -%}
+                  </span>
+                  <span class="adora-mega-header__category-title">{{ category_link.title | escape }}</span>
+                </a>
               {%- endfor -%}
             </div>
+
+            <a class="adora-mega-header__latest-link" href="{{ section.settings.latest_link_url | default: mega_link.url | default: '#' }}">
+              <span>{{ section.settings.latest_link_label | escape }}</span>
+              <svg class="adora-mega-header__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"></path><path d="m13 5 7 7-7 7"></path></svg>
+            </a>
           </div>
 
-          <div>
-            {%- for category_link in mega_link.links -%}
+          <div class="adora-mega-header__promo-panels">
+            {%- for category_link in mega_link.links limit: 6 -%}
               {%- assign panel_key = category_link.title | handleize -%}
               <div class="adora-mega-header__panel{% if forloop.first %} is-active{% endif %}" data-adora-mega-panel="{{ panel_key }}">
-                <div class="adora-mega-header__mega-products">
+                <div class="adora-mega-header__promo-grid">
                   {%- if category_link.links.size > 0 -%}
-                    {%- for product_link in category_link.links limit: 8 -%}
+                    {%- for product_link in category_link.links limit: 2 -%}
                       {%- liquid
                         assign linked_object = product_link.object
                         assign card_title = product_link.title
@@ -170,18 +202,19 @@
                           assign card_text = linked_object.vendor
                         endif
                       -%}
-                      <a class="adora-mega-header__product-card" href="{{ card_url }}">
-                        <span class="adora-mega-header__product-media">
-                          {%- if card_image != blank -%}
-                            {{ card_image | image_url: width: 520 | image_tag: loading: 'lazy', widths: '220, 360, 520', sizes: '22vw', alt: card_title }}
-                          {%- else -%}
-                            <span class="adora-mega-header__product-placeholder" aria-hidden="true"></span>
-                          {%- endif -%}
+                      <a class="adora-mega-header__promo-card" href="{{ card_url }}">
+                        {%- if card_image != blank -%}
+                          {{ card_image | image_url: width: 780 | image_tag: class: 'adora-mega-header__promo-image', loading: 'lazy', widths: '360, 520, 780', sizes: '26vw', alt: card_title }}
+                        {%- else -%}
+                          <span class="adora-mega-header__promo-image adora-mega-header__product-placeholder" aria-hidden="true"></span>
+                        {%- endif -%}
+                        <span class="adora-mega-header__promo-shade" aria-hidden="true"></span>
+                        {%- if forloop.first and section.settings.promo_badge != blank -%}<span class="adora-mega-header__promo-badge">{{ section.settings.promo_badge | escape }}</span>{%- endif -%}
+                        <span class="adora-mega-header__promo-content">
+                          <strong class="adora-mega-header__promo-title">{{ card_title | escape }}</strong>
+                          <span class="adora-mega-header__promo-text">{{ card_text | escape }}</span>
                         </span>
-                        <span>
-                          <strong class="adora-mega-header__product-title">{{ card_title | escape }}</strong>
-                          <span class="adora-mega-header__product-text">{{ card_text | escape }}</span>
-                        </span>
+                        <svg class="adora-mega-header__promo-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"></path><path d="m13 5 7 7-7 7"></path></svg>
                       </a>
                     {%- endfor -%}
                   {%- else -%}
@@ -194,30 +227,20 @@
                         assign card_image = linked_object.image
                       endif
                     -%}
-                    <a class="adora-mega-header__product-card" href="{{ category_link.url | default: '#' }}">
-                      <span class="adora-mega-header__product-media">
-                        {%- if card_image != blank -%}
-                          {{ card_image | image_url: width: 520 | image_tag: loading: 'lazy', widths: '220, 360, 520', sizes: '22vw', alt: category_link.title }}
-                        {%- else -%}
-                          <span class="adora-mega-header__product-placeholder" aria-hidden="true"></span>
-                        {%- endif -%}
-                      </span>
-                      <span>
-                        <strong class="adora-mega-header__product-title">{{ category_link.title | escape }}</strong>
-                        <span class="adora-mega-header__product-text">{{ section.settings.collection_card_text | escape }}</span>
-                      </span>
+                    <a class="adora-mega-header__promo-card" href="{{ category_link.url | default: '#' }}">
+                      {%- if card_image != blank -%}
+                        {{ card_image | image_url: width: 780 | image_tag: class: 'adora-mega-header__promo-image', loading: 'lazy', widths: '360, 520, 780', sizes: '26vw', alt: category_link.title }}
+                      {%- else -%}
+                        <span class="adora-mega-header__promo-image adora-mega-header__product-placeholder" aria-hidden="true"></span>
+                      {%- endif -%}
+                      <span class="adora-mega-header__promo-shade" aria-hidden="true"></span>
+                      <span class="adora-mega-header__promo-content"><strong class="adora-mega-header__promo-title">{{ category_link.title | escape }}</strong><span class="adora-mega-header__promo-text">{{ section.settings.collection_card_text | escape }}</span></span>
+                      <svg class="adora-mega-header__promo-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"></path><path d="m13 5 7 7-7 7"></path></svg>
                     </a>
                   {%- endif -%}
                 </div>
               </div>
             {%- endfor -%}
-          </div>
-
-          <div class="adora-mega-header__feature">
-            <p class="adora-mega-header__mega-kicker">{{ section.settings.feature_eyebrow | escape }}</p>
-            <h3 class="adora-mega-header__feature-title">{{ section.settings.feature_heading | escape }}</h3>
-            <p class="adora-mega-header__feature-text">{{ section.settings.feature_text | escape }}</p>
-            <a class="adora-mega-header__feature-link" href="{{ section.settings.feature_link | default: mega_link.url | default: '#' }}">{{ section.settings.feature_link_label | escape }}</a>
           </div>
         </div>
       </div>
@@ -240,19 +263,23 @@
             {%- if link_title_downcase == trigger_label and has_mega_menu -%}
               <details class="adora-mega-header__drawer-details" open>
                 <summary class="adora-mega-header__drawer-summary">{{ link.title | escape }}<span class="adora-mega-header__drawer-plus" aria-hidden="true"></span></summary>
-                <div data-adora-mega-tab-scope>
-                  <div class="adora-mega-header__mobile-tabs" role="tablist" aria-label="Mobile Collections Kategorien">
-                    {%- for category_link in mega_link.links -%}
+                <div class="adora-mega-header__mobile-mega" data-adora-mega-tab-scope>
+                  <div class="adora-mega-header__mobile-category-tabs" role="tablist" aria-label="Mobile Collections Kategorien">
+                    {%- for category_link in mega_link.links limit: 6 -%}
                       {%- assign mobile_tab_key = category_link.title | handleize -%}
-                      <button class="adora-mega-header__tab" type="button" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-adora-mega-tab="mobile-{{ mobile_tab_key }}">{{ category_link.title | escape }}</button>
+                      <button class="adora-mega-header__mobile-category-tab" type="button" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-adora-mega-tab="mobile-{{ mobile_tab_key }}">{{ category_link.title | escape }}</button>
                     {%- endfor -%}
                   </div>
-                  {%- for category_link in mega_link.links -%}
+                  {%- for category_link in mega_link.links limit: 6 -%}
                     {%- assign mobile_panel_key = category_link.title | handleize -%}
                     <div class="adora-mega-header__mobile-panel{% if forloop.first %} is-active{% endif %}" data-adora-mega-panel="mobile-{{ mobile_panel_key }}">
+                      <a class="adora-mega-header__mobile-view-all" href="{{ category_link.url | default: '#' }}">
+                        <span>{{ category_link.title | escape }}</span>
+                        <svg class="adora-mega-header__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"></path><path d="m13 5 7 7-7 7"></path></svg>
+                      </a>
                       <div class="adora-mega-header__mobile-products">
                         {%- if category_link.links.size > 0 -%}
-                          {%- for product_link in category_link.links limit: 8 -%}
+                          {%- for product_link in category_link.links limit: 4 -%}
                             {%- liquid
                               assign mobile_object = product_link.object
                               assign mobile_title = product_link.title
@@ -273,18 +300,18 @@
                             <a class="adora-mega-header__mobile-product" href="{{ mobile_url }}">
                               <span class="adora-mega-header__mobile-product-media">
                                 {%- if mobile_image != blank -%}
-                                  {{ mobile_image | image_url: width: 180 | image_tag: loading: 'lazy', widths: '120, 180', sizes: '72px', alt: mobile_title }}
+                                  {{ mobile_image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120, 180, 240', sizes: '92px', alt: mobile_title }}
                                 {%- else -%}
                                   <span class="adora-mega-header__product-placeholder" aria-hidden="true"></span>
                                 {%- endif -%}
                               </span>
-                              <span><strong class="adora-mega-header__mobile-product-title">{{ mobile_title | escape }}</strong><span class="adora-mega-header__mobile-product-text">{{ mobile_text | escape }}</span></span>
+                              <span class="adora-mega-header__mobile-product-copy"><strong class="adora-mega-header__mobile-product-title">{{ mobile_title | escape }}</strong><span class="adora-mega-header__mobile-product-text">{{ mobile_text | escape }}</span></span>
                             </a>
                           {%- endfor -%}
                         {%- else -%}
                           <a class="adora-mega-header__mobile-product" href="{{ category_link.url | default: '#' }}">
                             <span class="adora-mega-header__mobile-product-media"><span class="adora-mega-header__product-placeholder" aria-hidden="true"></span></span>
-                            <span><strong class="adora-mega-header__mobile-product-title">{{ category_link.title | escape }}</strong><span class="adora-mega-header__mobile-product-text">{{ section.settings.collection_card_text | escape }}</span></span>
+                            <span class="adora-mega-header__mobile-product-copy"><strong class="adora-mega-header__mobile-product-title">{{ category_link.title | escape }}</strong><span class="adora-mega-header__mobile-product-text">{{ section.settings.collection_card_text | escape }}</span></span>
                           </a>
                         {%- endif -%}
                       </div>
@@ -340,11 +367,9 @@
     { "type": "checkbox", "id": "show_cart_count", "label": "Show cart count", "default": true },
     { "type": "text", "id": "mega_eyebrow", "label": "Mega menu eyebrow", "default": "Shop by ritual" },
     { "type": "text", "id": "collection_card_text", "label": "Fallback card text", "default": "ADORA Collection" },
-    { "type": "text", "id": "feature_eyebrow", "label": "Feature eyebrow", "default": "ADORA Ritual" },
-    { "type": "text", "id": "feature_heading", "label": "Feature heading", "default": "Cleanse. Hydrate. Seal the Glow." },
-    { "type": "text", "id": "feature_text", "label": "Feature text", "default": "Ein klarer 3-Step Reset für weiche, gepflegte und sichtbar strahlende Haut." },
-    { "type": "text", "id": "feature_link_label", "label": "Feature link label", "default": "Ritual entdecken" },
-    { "type": "url", "id": "feature_link", "label": "Feature link" },
+    { "type": "text", "id": "latest_link_label", "label": "Bottom mega link label", "default": "Neueste Erscheinungen" },
+    { "type": "url", "id": "latest_link_url", "label": "Bottom mega link" },
+    { "type": "text", "id": "promo_badge", "label": "Promo badge", "default": "Bestseller" },
     { "type": "select", "id": "mobile_drawer_position", "label": "Mobile drawer position", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }], "default": "left" },
     { "type": "text", "id": "mobile_promo_text", "label": "Mobile promo text", "default": "Beginne dein ADORA Ritual mit drei bewussten Schritten." },
     { "type": "color", "id": "transparent_text_color", "label": "Transparent text/icon color", "default": "#FFFFFF" },
@@ -352,7 +377,7 @@
     { "type": "color", "id": "header_text_color", "label": "Scrolled header text", "default": "#3A2351" },
     { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
     { "type": "color", "id": "border_color", "label": "Border color", "default": "#E7D7EF" },
-    { "type": "color", "id": "mega_menu_bg_color", "label": "Mega menu background", "default": "#FBF3FF" },
+    { "type": "color", "id": "mega_menu_bg_color", "label": "Mega menu background", "default": "#F7F1EC" },
     { "type": "color", "id": "drawer_bg_color", "label": "Drawer background", "default": "#FFF8EF" },
     { "type": "color", "id": "drawer_text_color", "label": "Drawer text", "default": "#3A2351" },
     { "type": "color", "id": "announcement_bg_color", "label": "Announcement background", "default": "#3A2351" },
