@@ -1,0 +1,308 @@
+{%- liquid
+  assign header_menu = section.settings.menu
+  assign trigger_label = section.settings.mega_trigger_label | default: 'Collections' | downcase
+  assign cart_count = cart.item_count | default: 0
+-%}
+
+<header
+  class="adora-mega-header adora-mega-header--drawer-{{ section.settings.mobile_drawer_position }}"
+  data-adora-mega-header
+  data-sticky="{{ section.settings.enable_sticky }}"
+  style="
+    --adora-mega-header-bg: {{ section.settings.header_bg_color }};
+    --adora-mega-header-text: {{ section.settings.header_text_color }};
+    --adora-mega-header-accent: {{ section.settings.accent_color }};
+    --adora-mega-header-border: {{ section.settings.border_color }};
+    --adora-mega-header-menu-bg: {{ section.settings.mega_menu_bg_color }};
+    --adora-mega-header-drawer-bg: {{ section.settings.drawer_bg_color }};
+    --adora-mega-header-drawer-text: {{ section.settings.drawer_text_color }};
+    --adora-mega-header-announcement-bg: {{ section.settings.announcement_bg_color }};
+    --adora-mega-header-announcement-text: {{ section.settings.announcement_text_color }};
+    --adora-mega-header-height-desktop: {{ section.settings.header_height_desktop }}px;
+    --adora-mega-header-height: {{ section.settings.header_height_mobile }}px;
+    --adora-mega-header-logo-desktop: {{ section.settings.logo_width_desktop }}px;
+    --adora-mega-header-logo-mobile: {{ section.settings.logo_width_mobile }}px;
+    --adora-mega-header-nav-size: {{ section.settings.nav_font_size }}px;
+    --adora-mega-header-nav-spacing: {{ section.settings.nav_letter_spacing | divided_by: 100.0 }}em;
+  "
+>
+  {%- if section.settings.show_announcement and section.settings.announcement_text != blank -%}
+    <div class="adora-mega-header__announcement">
+      {%- if section.settings.announcement_link != blank -%}
+        <a href="{{ section.settings.announcement_link }}">{{ section.settings.announcement_text | escape }}</a>
+      {%- else -%}
+        <span>{{ section.settings.announcement_text | escape }}</span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="adora-mega-header__bar">
+    <div class="adora-mega-header__mobile-left">
+      <button class="adora-mega-header__icon-button" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="adora-mega-drawer-{{ section.id }}" data-adora-mega-drawer-open>
+        <span class="adora-mega-header__burger-lines" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <nav class="adora-mega-header__nav" aria-label="Hauptnavigation">
+      {%- if header_menu != blank and header_menu.links.size > 0 -%}
+        {%- for link in header_menu.links -%}
+          {%- assign link_title_downcase = link.title | downcase -%}
+          {%- if link_title_downcase == trigger_label -%}
+            <button class="adora-mega-header__nav-button" type="button" aria-expanded="false" aria-controls="adora-mega-menu-{{ section.id }}" data-adora-mega-trigger>{{ link.title | escape }}</button>
+          {%- else -%}
+            <a class="adora-mega-header__nav-link" href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        <a class="adora-mega-header__nav-link" href="/">Home</a>
+        <button class="adora-mega-header__nav-button" type="button" aria-expanded="false" aria-controls="adora-mega-menu-{{ section.id }}" data-adora-mega-trigger>Collections</button>
+        <a class="adora-mega-header__nav-link" href="/collections/all">Shop</a>
+        <a class="adora-mega-header__nav-link" href="/blogs/news">Journal</a>
+      {%- endif -%}
+    </nav>
+
+    <a class="adora-mega-header__logo" href="{{ routes.root_url }}" aria-label="{{ section.settings.logo_text | default: shop.name | escape }}">
+      {%- if section.settings.logo_image != blank -%}
+        {{ section.settings.logo_image | image_url: width: 420 | image_tag: class: 'adora-mega-header__logo-image', loading: 'eager', widths: '120, 180, 240, 320, 420', sizes: '(min-width: 990px) 180px, 44vw' }}
+      {%- else -%}
+        <span class="adora-mega-header__logo-text">{{ section.settings.logo_text | default: 'ADORA' | escape }}</span>
+      {%- endif -%}
+    </a>
+
+    <div class="adora-mega-header__utilities" aria-label="Shop Links">
+      {%- if section.settings.show_search -%}<a class="adora-mega-header__utility" href="{{ routes.search_url }}">{{ section.settings.search_label | escape }}</a>{%- endif -%}
+      {%- if section.settings.show_account -%}<a class="adora-mega-header__utility" href="{{ routes.account_url }}">{{ section.settings.account_label | escape }}</a>{%- endif -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'utility_link' and block.settings.show_desktop and block.settings.label != blank -%}
+          <a class="adora-mega-header__utility" href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if section.settings.show_cart -%}
+        <a class="adora-mega-header__utility" href="{{ routes.cart_url }}">
+          {{ section.settings.cart_label | escape }}{%- if section.settings.show_cart_count -%}<span class="adora-mega-header__cart-count">{{ cart_count }}</span>{%- endif -%}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="adora-mega-header__mobile-right">
+      {%- if section.settings.show_cart -%}
+        <a class="adora-mega-header__icon-button" href="{{ routes.cart_url }}" aria-label="Warenkorb">
+          <span aria-hidden="true">Bag</span>{%- if section.settings.show_cart_count -%}<span class="adora-mega-header__cart-count">{{ cart_count }}</span>{%- endif -%}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="adora-mega-header__mega" id="adora-mega-menu-{{ section.id }}" aria-hidden="true" data-adora-mega-menu>
+    <div class="adora-mega-header__mega-inner" data-adora-mega-tab-scope>
+      <div class="adora-mega-header__mega-grid">
+        <div>
+          <p class="adora-mega-header__mega-kicker">{{ section.settings.mega_eyebrow | escape }}</p>
+          <div class="adora-mega-header__tab-list" role="tablist" aria-label="Collections Kategorien">
+            {%- assign tab_index = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'mega_tab' and block.settings.title != blank -%}
+                {%- assign tab_index = tab_index | plus: 1 -%}
+                {%- assign tab_key = block.settings.tab_key | default: block.settings.title | handleize -%}
+                <button class="adora-mega-header__tab" type="button" role="tab" aria-selected="{% if tab_index == 1 %}true{% else %}false{% endif %}" data-adora-mega-tab="{{ tab_key }}" {{ block.shopify_attributes }}>{{ block.settings.title | escape }}</button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div>
+          {%- assign panel_index = 0 -%}
+          {%- for tab in section.blocks -%}
+            {%- if tab.type == 'mega_tab' and tab.settings.title != blank -%}
+              {%- assign panel_index = panel_index | plus: 1 -%}
+              {%- assign panel_key = tab.settings.tab_key | default: tab.settings.title | handleize -%}
+              <div class="adora-mega-header__panel{% if panel_index == 1 %} is-active{% endif %}" data-adora-mega-panel="{{ panel_key }}">
+                <div class="adora-mega-header__mega-products">
+                  {%- for block in section.blocks -%}
+                    {%- if block.type == 'mega_product' -%}
+                      {%- assign product_tab_key = block.settings.tab_key | handleize -%}
+                      {%- if product_tab_key == panel_key -%}
+                        {%- liquid
+                          assign card_product = block.settings.product
+                          assign card_title = block.settings.custom_title | default: card_product.title | default: 'ADORA Ritual Step'
+                          assign card_text = block.settings.custom_text | default: card_product.type | default: 'Soft Lavender Luxury'
+                          assign card_url = block.settings.link | default: card_product.url | default: '#'
+                          assign card_image = block.settings.custom_image | default: card_product.featured_image
+                        -%}
+                        <a class="adora-mega-header__product-card" href="{{ card_url }}" {{ block.shopify_attributes }}>
+                          <span class="adora-mega-header__product-media">
+                            {%- if card_image != blank -%}
+                              {{ card_image | image_url: width: 520 | image_tag: loading: 'lazy', widths: '220, 360, 520', sizes: '22vw', alt: card_title }}
+                            {%- endif -%}
+                          </span>
+                          {%- if block.settings.badge != blank -%}<span class="adora-mega-header__product-badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
+                          <span>
+                            <strong class="adora-mega-header__product-title">{{ card_title | escape }}</strong>
+                            <span class="adora-mega-header__product-text">{{ card_text | escape }}</span>
+                          </span>
+                        </a>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <div class="adora-mega-header__feature">
+          <p class="adora-mega-header__mega-kicker">{{ section.settings.feature_eyebrow | escape }}</p>
+          <h3 class="adora-mega-header__feature-title">{{ section.settings.feature_heading | escape }}</h3>
+          <p class="adora-mega-header__feature-text">{{ section.settings.feature_text | escape }}</p>
+          <a class="adora-mega-header__feature-link" href="{{ section.settings.feature_link | default: '#' }}">{{ section.settings.feature_link_label | escape }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="adora-mega-header__drawer-overlay" data-adora-mega-drawer-overlay></div>
+  <aside class="adora-mega-header__drawer" id="adora-mega-drawer-{{ section.id }}" aria-hidden="true" data-adora-mega-drawer>
+    <div class="adora-mega-header__drawer-head">
+      <a class="adora-mega-header__drawer-logo" href="{{ routes.root_url }}">{{ section.settings.logo_text | default: 'ADORA' | escape }}</a>
+      <button class="adora-mega-header__icon-button" type="button" aria-label="Menü schließen" data-adora-mega-drawer-close>Close</button>
+    </div>
+    <div class="adora-mega-header__drawer-scroll">
+      <nav class="adora-mega-header__drawer-nav" aria-label="Mobile Navigation">
+        {%- if header_menu != blank and header_menu.links.size > 0 -%}
+          {%- for link in header_menu.links -%}
+            {%- assign link_title_downcase = link.title | downcase -%}
+            {%- if link_title_downcase == trigger_label -%}
+              <details class="adora-mega-header__drawer-details" open>
+                <summary class="adora-mega-header__drawer-summary">{{ link.title | escape }}<span class="adora-mega-header__drawer-plus" aria-hidden="true"></span></summary>
+                <div data-adora-mega-tab-scope>
+                  <div class="adora-mega-header__mobile-tabs" role="tablist">
+                    {%- assign mobile_tab_index = 0 -%}
+                    {%- for block in section.blocks -%}
+                      {%- if block.type == 'mega_tab' and block.settings.title != blank -%}
+                        {%- assign mobile_tab_index = mobile_tab_index | plus: 1 -%}
+                        {%- assign mobile_tab_key = block.settings.tab_key | default: block.settings.title | handleize -%}
+                        <button class="adora-mega-header__tab" type="button" aria-selected="{% if mobile_tab_index == 1 %}true{% else %}false{% endif %}" data-adora-mega-tab="mobile-{{ mobile_tab_key }}">{{ block.settings.title | escape }}</button>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                  {%- assign mobile_panel_index = 0 -%}
+                  {%- for tab in section.blocks -%}
+                    {%- if tab.type == 'mega_tab' and tab.settings.title != blank -%}
+                      {%- assign mobile_panel_index = mobile_panel_index | plus: 1 -%}
+                      {%- assign mobile_panel_key = tab.settings.tab_key | default: tab.settings.title | handleize -%}
+                      <div class="adora-mega-header__mobile-panel{% if mobile_panel_index == 1 %} is-active{% endif %}" data-adora-mega-panel="mobile-{{ mobile_panel_key }}">
+                        <div class="adora-mega-header__mobile-products">
+                          {%- for block in section.blocks -%}
+                            {%- if block.type == 'mega_product' -%}
+                              {%- assign mobile_product_key = block.settings.tab_key | handleize -%}
+                              {%- if mobile_product_key == mobile_panel_key -%}
+                                {%- liquid
+                                  assign mobile_product = block.settings.product
+                                  assign mobile_title = block.settings.custom_title | default: mobile_product.title | default: 'ADORA Ritual Step'
+                                  assign mobile_text = block.settings.custom_text | default: mobile_product.type | default: 'Soft Lavender Luxury'
+                                  assign mobile_url = block.settings.link | default: mobile_product.url | default: '#'
+                                  assign mobile_image = block.settings.custom_image | default: mobile_product.featured_image
+                                -%}
+                                <a class="adora-mega-header__mobile-product" href="{{ mobile_url }}">
+                                  <span class="adora-mega-header__mobile-product-media">
+                                    {%- if mobile_image != blank -%}{{ mobile_image | image_url: width: 180 | image_tag: loading: 'lazy', widths: '120, 180', sizes: '72px', alt: mobile_title }}{%- endif -%}
+                                  </span>
+                                  <span><strong class="adora-mega-header__mobile-product-title">{{ mobile_title | escape }}</strong><span class="adora-mega-header__mobile-product-text">{{ mobile_text | escape }}</span></span>
+                                </a>
+                              {%- endif -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </details>
+            {%- else -%}
+              <a class="adora-mega-header__drawer-link" href="{{ link.url }}">{{ link.title | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          <a class="adora-mega-header__drawer-link" href="/">Home</a>
+          <a class="adora-mega-header__drawer-link" href="/collections/all">Shop</a>
+          <a class="adora-mega-header__drawer-link" href="/blogs/news">Journal</a>
+        {%- endif -%}
+        {%- if section.settings.show_search -%}<a class="adora-mega-header__drawer-link" href="{{ routes.search_url }}">{{ section.settings.search_label | escape }}</a>{%- endif -%}
+        {%- if section.settings.show_account -%}<a class="adora-mega-header__drawer-link" href="{{ routes.account_url }}">{{ section.settings.account_label | escape }}</a>{%- endif -%}
+      </nav>
+      {%- if section.settings.mobile_promo_text != blank -%}
+        <div class="adora-mega-header__drawer-promo"><p>{{ section.settings.mobile_promo_text | escape }}</p></div>
+      {%- endif -%}
+    </div>
+  </aside>
+</header>
+
+{% schema %}
+{
+  "name": "ADORA Mega Header",
+  "tag": "section",
+  "class": "adora-mega-header-section",
+  "enabled_on": { "groups": ["header"] },
+  "max_blocks": 24,
+  "settings": [
+    { "type": "checkbox", "id": "enable_sticky", "label": "Sticky header", "default": true },
+    { "type": "link_list", "id": "menu", "label": "Main menu" },
+    { "type": "text", "id": "mega_trigger_label", "label": "Mega menu trigger label", "default": "Collections" },
+    { "type": "image_picker", "id": "logo_image", "label": "Logo image" },
+    { "type": "text", "id": "logo_text", "label": "Logo text", "default": "ADORA" },
+    { "type": "range", "id": "logo_width_desktop", "label": "Logo width desktop", "min": 80, "max": 260, "step": 4, "unit": "px", "default": 148 },
+    { "type": "range", "id": "logo_width_mobile", "label": "Logo width mobile", "min": 72, "max": 180, "step": 4, "unit": "px", "default": 112 },
+    { "type": "checkbox", "id": "show_announcement", "label": "Show announcement", "default": true },
+    { "type": "text", "id": "announcement_text", "label": "Announcement text", "default": "Kostenloser Versand ab 100 EUR" },
+    { "type": "url", "id": "announcement_link", "label": "Announcement link" },
+    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
+    { "type": "text", "id": "search_label", "label": "Search label", "default": "Suche" },
+    { "type": "checkbox", "id": "show_account", "label": "Show account", "default": true },
+    { "type": "text", "id": "account_label", "label": "Account label", "default": "Account" },
+    { "type": "checkbox", "id": "show_cart", "label": "Show cart", "default": true },
+    { "type": "text", "id": "cart_label", "label": "Cart label", "default": "Warenkorb" },
+    { "type": "checkbox", "id": "show_cart_count", "label": "Show cart count", "default": true },
+    { "type": "text", "id": "mega_eyebrow", "label": "Mega menu eyebrow", "default": "Shop by ritual" },
+    { "type": "text", "id": "feature_eyebrow", "label": "Feature eyebrow", "default": "ADORA Ritual" },
+    { "type": "text", "id": "feature_heading", "label": "Feature heading", "default": "Cleanse. Hydrate. Seal the Glow." },
+    { "type": "text", "id": "feature_text", "label": "Feature text", "default": "Ein klarer 3-Step Reset für weiche, gepflegte und sichtbar strahlende Haut." },
+    { "type": "text", "id": "feature_link_label", "label": "Feature link label", "default": "Ritual entdecken" },
+    { "type": "url", "id": "feature_link", "label": "Feature link" },
+    { "type": "select", "id": "mobile_drawer_position", "label": "Mobile drawer position", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }], "default": "left" },
+    { "type": "text", "id": "mobile_promo_text", "label": "Mobile promo text", "default": "Beginne dein ADORA Ritual mit drei bewussten Schritten." },
+    { "type": "color", "id": "header_bg_color", "label": "Header background", "default": "#FFF8EF" },
+    { "type": "color", "id": "header_text_color", "label": "Header text", "default": "#3A2351" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#E7D7EF" },
+    { "type": "color", "id": "mega_menu_bg_color", "label": "Mega menu background", "default": "#FBF3FF" },
+    { "type": "color", "id": "drawer_bg_color", "label": "Drawer background", "default": "#FFF8EF" },
+    { "type": "color", "id": "drawer_text_color", "label": "Drawer text", "default": "#3A2351" },
+    { "type": "color", "id": "announcement_bg_color", "label": "Announcement background", "default": "#3A2351" },
+    { "type": "color", "id": "announcement_text_color", "label": "Announcement text", "default": "#FFFFFF" },
+    { "type": "range", "id": "header_height_desktop", "label": "Header height desktop", "min": 64, "max": 120, "step": 2, "unit": "px", "default": 82 },
+    { "type": "range", "id": "header_height_mobile", "label": "Header height mobile", "min": 58, "max": 92, "step": 2, "unit": "px", "default": 72 },
+    { "type": "range", "id": "nav_font_size", "label": "Nav font size", "min": 10, "max": 16, "step": 1, "unit": "px", "default": 13 },
+    { "type": "range", "id": "nav_letter_spacing", "label": "Nav letter spacing", "min": 0, "max": 16, "step": 1, "unit": "%", "default": 6 }
+  ],
+  "blocks": [
+    { "type": "mega_tab", "name": "Mega tab", "settings": [{ "type": "text", "id": "title", "label": "Title", "default": "Gesicht" }, { "type": "text", "id": "tab_key", "label": "Tab key", "default": "gesicht" }] },
+    { "type": "mega_product", "name": "Mega product", "settings": [{ "type": "text", "id": "tab_key", "label": "Tab key", "default": "gesicht" }, { "type": "product", "id": "product", "label": "Product" }, { "type": "image_picker", "id": "custom_image", "label": "Custom image" }, { "type": "text", "id": "custom_title", "label": "Custom title", "default": "Glass Skin Reset Ritual" }, { "type": "text", "id": "custom_text", "label": "Custom text", "default": "Komplettes 3-Step Ritual" }, { "type": "text", "id": "badge", "label": "Badge" }, { "type": "url", "id": "link", "label": "Custom link" }] },
+    { "type": "utility_link", "name": "Utility link", "settings": [{ "type": "text", "id": "label", "label": "Label" }, { "type": "url", "id": "url", "label": "URL" }, { "type": "checkbox", "id": "show_desktop", "label": "Show desktop", "default": true }] }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Mega Header",
+      "blocks": [
+        { "type": "mega_tab", "settings": { "title": "Ritual", "tab_key": "ritual" } },
+        { "type": "mega_tab", "settings": { "title": "Cleanse", "tab_key": "cleanse" } },
+        { "type": "mega_tab", "settings": { "title": "Hydrate", "tab_key": "hydrate" } },
+        { "type": "mega_tab", "settings": { "title": "Glow", "tab_key": "glow" } },
+        { "type": "mega_product", "settings": { "tab_key": "ritual", "custom_title": "Glass Skin Reset Ritual", "custom_text": "Das komplette ADORA Set", "badge": "Bundle" } },
+        { "type": "mega_product", "settings": { "tab_key": "cleanse", "custom_title": "Gentle Cleansing Milk", "custom_text": "Sanfte Reinigung" } },
+        { "type": "mega_product", "settings": { "tab_key": "hydrate", "custom_title": "Moisturising Day Cream", "custom_text": "Tägliche Feuchtigkeit" } },
+        { "type": "mega_product", "settings": { "tab_key": "glow", "custom_title": "Nourishing Facial Oil", "custom_text": "Nährendes Finish" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
