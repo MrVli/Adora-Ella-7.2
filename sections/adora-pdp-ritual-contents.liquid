@@ -1,0 +1,70 @@
+{%- liquid
+  assign items = product.metafields.adora.value_points.value
+-%}
+
+<section class="adora-pdp-ritual-contents" style="--adora-pdp-accent: {{ section.settings.accent_color }}; --adora-pdp-text: {{ section.settings.text_color }}; --adora-pdp-bg: {{ section.settings.background_color }};">
+  <div class="adora-pdp-ritual-contents__inner">
+    <div class="adora-pdp-ritual-contents__header">
+      {%- if section.settings.eyebrow != blank -%}<p>{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2>{{ section.settings.headline | escape }}</h2>
+      {%- if section.settings.subheadline != blank -%}<div>{{ section.settings.subheadline }}</div>{%- endif -%}
+    </div>
+    <div class="adora-pdp-ritual-contents__panel">
+      {%- if section.settings.image != blank -%}
+        {%- render 'adora-image-frame', image: section.settings.image, mobile_image: section.settings.mobile_image, alt: section.settings.image_alt, aspect_ratio: '4 / 5', class: 'adora-pdp-ritual-contents__image' -%}
+      {%- endif -%}
+      <div class="adora-pdp-ritual-contents__list">
+        {%- if items != blank -%}
+          {%- for item in items limit: 8 -%}<div class="adora-pdp-ritual-contents__item"><span>{{ forloop.index | prepend: '0' }}</span><strong>{{ item | escape }}</strong></div>{%- endfor -%}
+        {%- elsif section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}<div class="adora-pdp-ritual-contents__item" {{ block.shopify_attributes }}><span>{{ forloop.index | prepend: '0' }}</span><strong>{{ block.settings.title | escape }}</strong>{% if block.settings.text != blank %}<small>{{ block.settings.text | escape }}</small>{% endif %}</div>{%- endfor -%}
+        {%- else -%}
+          {%- assign fallback_items = section.settings.fallback_items | split: '|' -%}
+          {%- for item in fallback_items limit: 8 -%}{%- if item != blank -%}<div class="adora-pdp-ritual-contents__item"><span>{{ forloop.index | prepend: '0' }}</span><strong>{{ item | strip | escape }}</strong></div>{%- endif -%}{%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .adora-pdp-ritual-contents { background: var(--adora-pdp-bg); color: var(--adora-pdp-text); padding: clamp(46px, 7vw, 110px) 16px; font-family: var(--font-body, Inter, sans-serif); }
+  .adora-pdp-ritual-contents__inner { width: min(100%, 1380px); margin: 0 auto; display: grid; gap: 24px; }
+  .adora-pdp-ritual-contents__header { max-width: 760px; }
+  .adora-pdp-ritual-contents__header p { margin: 0 0 10px; color: var(--adora-pdp-accent); font: 850 12px/1 var(--font-display, Inter, sans-serif); letter-spacing: .14em; text-transform: uppercase; }
+  .adora-pdp-ritual-contents__header h2 { margin: 0; font: 850 clamp(30px, 5vw, 58px)/.96 var(--font-display, Inter, sans-serif); letter-spacing: -.045em; }
+  .adora-pdp-ritual-contents__header div { margin-top: 14px; max-width: 620px; color: rgba(36,24,44,.68); font-size: 16px; line-height: 1.55; }
+  .adora-pdp-ritual-contents__panel { display: grid; gap: 18px; border: 1px solid rgba(128,83,148,.16); border-radius: 34px; background: rgba(255,255,255,.78); box-shadow: 0 18px 60px rgba(58,35,81,.08); padding: clamp(16px, 3vw, 34px); }
+  .adora-pdp-ritual-contents__list { display: grid; gap: 12px; }
+  .adora-pdp-ritual-contents__item { display: grid; grid-template-columns: auto 1fr; gap: 12px 14px; align-items: start; border: 1px solid rgba(128,83,148,.14); border-radius: 22px; background: rgba(251,243,255,.74); padding: 16px; }
+  .adora-pdp-ritual-contents__item span { color: var(--adora-pdp-accent); font: 850 13px/1 var(--font-display, Inter, sans-serif); }
+  .adora-pdp-ritual-contents__item strong { font: 850 17px/1.2 var(--font-display, Inter, sans-serif); }
+  .adora-pdp-ritual-contents__item small { grid-column: 2; color: rgba(36,24,44,.66); font-size: 14px; line-height: 1.45; }
+  @media (min-width: 900px) { .adora-pdp-ritual-contents__inner { grid-template-columns: .78fr 1.22fr; align-items: center; } .adora-pdp-ritual-contents__panel { grid-template-columns: .85fr 1.15fr; } }
+</style>
+
+{% schema %}
+{
+  "name": "ADORA PDP Ritual Contents",
+  "tag": "section",
+  "class": "section-adora-pdp-ritual-contents",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "IM RITUAL ENTHALTEN" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Alles, was dein Ritual klarer macht." },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>Zeige hier Set-Inhalte, Produktrollen oder Value Points ohne Sale-Box-Optik.</p>" },
+    { "type": "textarea", "id": "fallback_items", "label": "Fallback items separated by |", "default": "Gentle Cleansing Milk|Moisturising Day Cream|Nourishing Facial Oil|Premium Ritual Box|3-Step Ritual Guide" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "ADORA Ritual" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#24182c" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" }
+  ],
+  "blocks": [
+    { "type": "item", "name": "Ritual item", "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "Ritual Step" }, { "type": "text", "id": "text", "label": "Text", "default": "Kurzer Value-Text für diesen Bestandteil." } ] }
+  ],
+  "presets": [
+    { "name": "ADORA PDP Ritual Contents", "blocks": [ { "type": "item", "settings": { "title": "Gentle Cleansing Milk", "text": "Sanfte Reinigung ohne trockenes Hautgefühl." } }, { "type": "item", "settings": { "title": "Moisturising Day Cream", "text": "Tägliche Feuchtigkeit und Komfort." } }, { "type": "item", "settings": { "title": "Nourishing Facial Oil", "text": "Nährendes Finish für sichtbaren Glow." } } ] }
+  ]
+}
+{% endschema %}
