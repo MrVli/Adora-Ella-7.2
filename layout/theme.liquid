@@ -65,6 +65,7 @@
     {{ 'adora-mega-header.css' | asset_url | stylesheet_tag }}
     {{ 'adora-backgrounds.css' | asset_url | stylesheet_tag }}
     {{ 'adora-footer.css' | asset_url | stylesheet_tag }}
+    {{ 'adora-pdp.css' | asset_url | stylesheet_tag }}
     {%- render 'global-script' -%}
 
     {{ content_for_header }}
@@ -118,5 +119,6 @@
     {% render 'halo-global' %}
     <script src="{{ 'adora-sections.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'adora-mega-header.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'adora-pdp.js' | asset_url }}" defer="defer"></script>
   </body>
 </html>
