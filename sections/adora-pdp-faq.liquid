@@ -1,0 +1,52 @@
+<section class="adora-pdp-faq" style="--adora-pdp-accent: {{ section.settings.accent_color }}; --adora-pdp-text: {{ section.settings.text_color }}; --adora-pdp-bg: {{ section.settings.background_color }};">
+  <div class="adora-pdp-faq__inner">
+    <div class="adora-pdp-faq__header">
+      {%- if section.settings.eyebrow != blank -%}<p>{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2>{{ section.settings.headline | escape }}</h2>
+      {%- if section.settings.subheadline != blank -%}<div>{{ section.settings.subheadline }}</div>{%- endif -%}
+    </div>
+    <div class="adora-pdp-faq__list">
+      {%- for block in section.blocks -%}
+        <details class="adora-pdp-faq__item" {% if forloop.first and section.settings.open_first %}open{% endif %} {{ block.shopify_attributes }}>
+          <summary><span>{{ block.settings.question | escape }}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+          <div>{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .adora-pdp-faq { background: var(--adora-pdp-bg); color: var(--adora-pdp-text); padding: clamp(46px, 7vw, 104px) 16px; font-family: var(--font-body, Inter, sans-serif); }
+  .adora-pdp-faq__inner { width: min(100%, 1240px); margin: 0 auto; display: grid; gap: 24px; }
+  .adora-pdp-faq__header p { margin: 0 0 10px; color: var(--adora-pdp-accent); font: 850 12px/1 var(--font-display, Inter, sans-serif); letter-spacing: .14em; text-transform: uppercase; }
+  .adora-pdp-faq__header h2 { margin: 0; max-width: 700px; font: 850 clamp(30px, 5vw, 56px)/.96 var(--font-display, Inter, sans-serif); letter-spacing: -.045em; }
+  .adora-pdp-faq__header div { margin-top: 14px; max-width: 620px; color: rgba(36,24,44,.68); line-height: 1.55; }
+  .adora-pdp-faq__list { display: grid; gap: 10px; }
+  .adora-pdp-faq__item { border: 1px solid rgba(128,83,148,.15); border-radius: 24px; background: rgba(255,255,255,.82); box-shadow: 0 12px 42px rgba(58,35,81,.055); overflow: hidden; }
+  .adora-pdp-faq__item summary { display: flex; justify-content: space-between; gap: 18px; align-items: center; padding: 20px; cursor: pointer; font: 850 clamp(17px, 2vw, 22px)/1.14 var(--font-display, Inter, sans-serif); list-style: none; }
+  .adora-pdp-faq__item summary::-webkit-details-marker { display: none; }
+  .adora-pdp-faq__item svg { width: 20px; height: 20px; flex: 0 0 auto; stroke: var(--adora-pdp-accent); stroke-width: 2; stroke-linecap: round; }
+  .adora-pdp-faq__item[open] svg { transform: rotate(45deg); }
+  .adora-pdp-faq__item div { padding: 0 20px 22px; color: rgba(36,24,44,.7); line-height: 1.58; }
+  @media (min-width: 900px) { .adora-pdp-faq__inner { grid-template-columns: .82fr 1.18fr; align-items: start; } }
+</style>
+
+{% schema %}
+{
+  "name": "ADORA PDP FAQ",
+  "tag": "section",
+  "class": "section-adora-pdp-faq",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "FAQ" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Fragen, bevor du es deinem Ritual hinzufügst?" },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>Ruhiges Objection Handling ohne Standard-Accordion-Optik.</p>" },
+    { "type": "checkbox", "id": "open_first", "label": "Open first item", "default": true },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#24182c" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" }
+  ],
+  "blocks": [ { "type": "faq_item", "name": "FAQ item", "settings": [ { "type": "text", "id": "question", "label": "Question", "default": "Ist das Ritual für meine Routine geeignet?" }, { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Ja. ADORA ist als klare, ruhige Ritual-Logik gedacht. Bei sehr reaktiver Haut langsam einführen.</p>" } ] } ],
+  "presets": [ { "name": "ADORA PDP FAQ", "blocks": [ { "type": "faq_item", "settings": { "question": "Ist das Ritual für eine einfache Routine geeignet?", "answer": "<p>Ja. ADORA reduziert Pflege bewusst auf klare, wiederholbare Schritte.</p>" } }, { "type": "faq_item", "settings": { "question": "Wann sollte ich es verwenden?", "answer": "<p>Je nach Produkt morgens oder abends als passenden Schritt im Ritual verwenden.</p>" } }, { "type": "faq_item", "settings": { "question": "Kann ich es mit anderen ADORA Produkten kombinieren?", "answer": "<p>Ja. Die Produkte sind als zusammenhängende Ritual-Schritte gedacht.</p>" } } ] } ]
+}
+{% endschema %}
