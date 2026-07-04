@@ -1,0 +1,300 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_form_id = 'AdoraPdpForm-' | append: section.id
+  assign sticky_form_id = 'AdoraPdpStickyForm-' | append: section.id
+
+  assign eyebrow = product.metafields.adora.eyebrow.value | default: section.settings.eyebrow
+  assign hero_headline = product.metafields.adora.hero_headline.value | default: section.settings.hero_headline | default: product.title
+  assign hero_subheadline = product.metafields.adora.hero_subheadline.value | default: section.settings.hero_subheadline | default: product.description
+  assign cta_text = product.metafields.adora.cta_text.value | default: section.settings.cta_text
+  assign guarantee_text = product.metafields.adora.guarantee_text.value | default: section.settings.guarantee_text
+  assign skin_concern = product.metafields.adora.skin_concern.value | default: section.settings.skin_concern
+  assign visible_result = product.metafields.adora.visible_result.value | default: section.settings.visible_result
+  assign texture = product.metafields.adora.texture.value | default: section.settings.texture
+  assign finish = product.metafields.adora.finish.value | default: section.settings.finish
+  assign ritual_role = product.metafields.adora.ritual_role.value | default: section.settings.ritual_role
+  assign what_it_does = product.metafields.adora.what_it_does.value | default: section.settings.what_it_does
+  assign how_it_feels = product.metafields.adora.how_it_feels.value | default: section.settings.how_it_feels
+  assign why_it_matters = product.metafields.adora.why_it_matters.value | default: section.settings.why_it_matters
+  assign formula_logic = product.metafields.adora.formula_logic.value | default: section.settings.formula_logic
+  assign how_to_use_morning = product.metafields.adora.how_to_use_morning.value | default: section.settings.how_to_use_morning
+  assign how_to_use_evening = product.metafields.adora.how_to_use_evening.value | default: section.settings.how_to_use_evening
+  assign ritual_note = product.metafields.adora.ritual_note.value | default: section.settings.ritual_note
+  assign announcement_text = section.settings.announcement_text
+-%}
+
+<section class="adora-pdp" data-adora-pdp-section data-section-id="{{ section.id }}">
+  <div class="adora-pdp__mobile-sticky" data-adora-pdp-sticky hidden>
+    <div class="adora-pdp__sticky-copy">
+      <strong>{{ product.title | escape }}</strong>
+      <span data-adora-pdp-sticky-price>{{ current_variant.price | money }}</span>
+      <small>{{ guarantee_text | escape }} · Secure Checkout</small>
+    </div>
+    {%- form 'product', product, id: sticky_form_id, class: 'adora-pdp__sticky-form' -%}
+      <input type="hidden" name="id" value="{{ current_variant.id }}" data-adora-pdp-sticky-variant>
+      <button class="adora-pdp__sticky-button" type="submit" {% unless current_variant.available %}disabled{% endunless %}>{{ cta_text | escape }}</button>
+    {%- endform -%}
+  </div>
+
+  {%- if section.settings.show_announcement -%}
+    <div class="adora-pdp__announcement">{{ announcement_text | escape }}</div>
+  {%- endif -%}
+
+  <div class="adora-pdp__hero" data-adora-pdp-hero>
+    <div class="adora-pdp__media-shell">
+      <div class="adora-pdp__media-grid">
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media limit: 5 -%}
+            <div class="adora-pdp__media-card {% if forloop.first %}adora-pdp__media-card--main{% endif %}">
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  {{ media | image_url: width: 1400 | image_tag: loading: forloop.first | default: 'eager', class: 'adora-pdp__image', alt: media.alt | default: product.title }}
+                {%- when 'video' -%}
+                  {{ media | video_tag: image_size: '1200x', autoplay: false, loop: true, muted: true, controls: true, class: 'adora-pdp__image' }}
+                {%- else -%}
+                  {{ media | media_tag: class: 'adora-pdp__image' }}
+              {%- endcase -%}
+            </div>
+          {%- endfor -%}
+        {%- elsif product.featured_image != blank -%}
+          <div class="adora-pdp__media-card adora-pdp__media-card--main">
+            {{ product.featured_image | image_url: width: 1400 | image_tag: loading: 'eager', class: 'adora-pdp__image', alt: product.title }}
+          </div>
+        {%- else -%}
+          <div class="adora-pdp__media-card adora-pdp__media-card--main adora-pdp__placeholder"><span>ADORA</span></div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="adora-pdp__purchase-panel">
+      {%- if eyebrow != blank -%}<p class="adora-pdp__eyebrow">{{ eyebrow | escape }}</p>{%- endif -%}
+      <h1 class="adora-pdp__title">{{ hero_headline | escape }}</h1>
+      {%- if hero_subheadline != blank -%}<div class="adora-pdp__subheadline">{{ hero_subheadline }}</div>{%- endif -%}
+
+      <div class="adora-pdp__signal-grid">
+        {%- if skin_concern != blank -%}<div><span>For</span><strong>{{ skin_concern | escape }}</strong></div>{%- endif -%}
+        {%- if visible_result != blank -%}<div><span>Result</span><strong>{{ visible_result | escape }}</strong></div>{%- endif -%}
+        {%- if ritual_role != blank -%}<div><span>Ritual role</span><strong>{{ ritual_role | escape }}</strong></div>{%- endif -%}
+      </div>
+
+      <ul class="adora-pdp__benefit-list" role="list">
+        {%- assign benefit_meta = product.metafields.adora.primary_benefits.value -%}
+        {%- if benefit_meta != blank -%}
+          {%- for item in benefit_meta limit: 5 -%}<li>{{ item | escape }}</li>{%- endfor -%}
+        {%- else -%}
+          {%- assign fallback_benefits = section.settings.primary_benefits | split: '|' -%}
+          {%- for item in fallback_benefits limit: 5 -%}{%- if item != blank -%}<li>{{ item | strip | escape }}</li>{%- endif -%}{%- endfor -%}
+        {%- endif -%}
+      </ul>
+
+      <div class="adora-pdp__price-row">
+        <span data-adora-pdp-price>{{ current_variant.price | money }}</span>
+        {%- if current_variant.compare_at_price > current_variant.price -%}<s data-adora-pdp-compare>{{ current_variant.compare_at_price | money }}</s>{%- endif -%}
+      </div>
+
+      {%- form 'product', product, id: product_form_id, class: 'adora-pdp__form' -%}
+        {%- if product.has_only_default_variant -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}" data-adora-pdp-main-variant>
+        {%- else -%}
+          <label class="adora-pdp__label" for="AdoraVariant-{{ section.id }}">Choose your ritual option</label>
+          <select id="AdoraVariant-{{ section.id }}" class="adora-pdp__select" name="id" data-adora-pdp-variant-select>
+            {%- for variant in product.variants -%}
+              <option value="{{ variant.id }}" data-price="{{ variant.price | money }}" data-compare="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}" {% if variant == current_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}{% unless variant.available %} - Sold out{% endunless %}</option>
+            {%- endfor -%}
+          </select>
+        {%- endif -%}
+        <div class="adora-pdp__quantity-row">
+          <label class="adora-pdp__label" for="AdoraQuantity-{{ section.id }}">Quantity</label>
+          <input id="AdoraQuantity-{{ section.id }}" class="adora-pdp__quantity" type="number" name="quantity" min="1" value="1">
+        </div>
+        <button class="adora-pdp__add-button" type="submit" data-adora-pdp-hero-cta {% unless current_variant.available %}disabled{% endunless %}>{{ cta_text | escape }}</button>
+      {%- endform -%}
+
+      <p class="adora-pdp__microcopy">{{ guarantee_text | escape }} · Secure checkout</p>
+      <div class="adora-pdp__trust-row"><span>Premium ritual care</span><span>{{ guarantee_text | escape }}</span><span>Secure checkout</span></div>
+    </div>
+  </div>
+
+  <div class="adora-pdp__section adora-pdp__section--problem">
+    <div class="adora-pdp__section-header">
+      <p class="adora-pdp__eyebrow">{{ section.settings.problem_eyebrow | escape }}</p>
+      <h2>{{ section.settings.problem_headline | escape }}</h2>
+      <p>{{ section.settings.problem_transition | escape }}</p>
+    </div>
+    <div class="adora-pdp__cards adora-pdp__cards--three">
+      {%- assign problem_meta = product.metafields.adora.problem_points.value -%}
+      {%- if problem_meta != blank -%}
+        {%- for point in problem_meta limit: 3 -%}<article class="adora-pdp__card"><h3>{{ point.title | default: point | escape }}</h3>{% if point.text != blank %}<p>{{ point.text | escape }}</p>{% endif %}</article>{%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}{%- if block.type == 'problem_point' -%}<article class="adora-pdp__card" {{ block.shopify_attributes }}><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p></article>{%- endif -%}{%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="adora-pdp__section">
+    <div class="adora-pdp__section-header"><p class="adora-pdp__eyebrow">{{ section.settings.ritual_eyebrow | escape }}</p><h2>The role of this ritual</h2></div>
+    <div class="adora-pdp__cards adora-pdp__cards--three">
+      <article class="adora-pdp__card"><span>01</span><h3>What it does</h3><p>{{ what_it_does | escape }}</p></article>
+      <article class="adora-pdp__card"><span>02</span><h3>How it feels</h3><p>{{ how_it_feels | escape }}</p></article>
+      <article class="adora-pdp__card"><span>03</span><h3>Why it matters</h3><p>{{ why_it_matters | escape }}</p></article>
+    </div>
+  </div>
+
+  <div class="adora-pdp__section adora-pdp__section--benefits">
+    <div class="adora-pdp__section-header"><p class="adora-pdp__eyebrow">RITUAL BENEFITS</p><h2>What changes when this becomes part of your ritual</h2></div>
+    <div class="adora-pdp__cards adora-pdp__cards--four">
+      {%- assign benefit_cards_meta = product.metafields.adora.benefit_cards.value -%}
+      {%- if benefit_cards_meta != blank -%}
+        {%- for card in benefit_cards_meta limit: 4 -%}<article class="adora-pdp__card"><h3>{{ card.title | default: card | escape }}</h3>{% if card.text != blank %}<p>{{ card.text | escape }}</p>{% endif %}</article>{%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}{%- if block.type == 'benefit_card' -%}<article class="adora-pdp__card" {{ block.shopify_attributes }}><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p></article>{%- endif -%}{%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="adora-pdp__section adora-pdp__texture">
+    <div class="adora-pdp__section-header"><p class="adora-pdp__eyebrow">SENSORIAL CARE</p><h2>The texture experience</h2><p>A refined texture designed to feel like care — not another heavy layer.</p></div>
+    <div class="adora-pdp__texture-grid">
+      <article><span>Texture</span><strong>{{ texture | escape }}</strong></article>
+      <article><span>Finish</span><strong>{{ finish | escape }}</strong></article>
+      <article><span>Best used</span><strong>{{ ritual_role | escape }}</strong></article>
+    </div>
+  </div>
+
+  <div class="adora-pdp__section">
+    <div class="adora-pdp__section-header"><p class="adora-pdp__eyebrow">FORMULA CONFIDENCE</p><h2>Formula logic, not ingredient noise</h2><p>{{ formula_logic | escape }}</p></div>
+    <div class="adora-pdp__cards adora-pdp__cards--three">
+      <article class="adora-pdp__card"><h3>Designed for the main concern</h3><p>{{ skin_concern | escape }}</p></article>
+      <article class="adora-pdp__card"><h3>Built for daily ritual use</h3><p>Created as a calm cosmetic step for repeatable daily care.</p></article>
+      <article class="adora-pdp__card"><h3>Pairs with ADORA</h3><p>Made to fit into the wider ADORA routine without adding noise.</p></article>
+    </div>
+  </div>
+
+  <div class="adora-pdp__section adora-pdp__howto">
+    <div class="adora-pdp__section-header"><p class="adora-pdp__eyebrow">HOW TO USE</p><h2>How to use it in your ADORA ritual</h2></div>
+    <div class="adora-pdp__cards adora-pdp__cards--two">
+      <article class="adora-pdp__card"><h3>Morning</h3><p>{{ how_to_use_morning | escape }}</p></article>
+      <article class="adora-pdp__card"><h3>Evening</h3><p>{{ how_to_use_evening | escape }}</p></article>
+    </div>
+    {%- if ritual_note != blank -%}<p class="adora-pdp__ritual-note">{{ ritual_note | escape }}</p>{%- endif -%}
+    <button class="adora-pdp__add-button adora-pdp__add-button--inline" type="submit" form="{{ product_form_id }}">{{ cta_text | escape }}</button>
+  </div>
+
+  <div class="adora-pdp__section adora-pdp__pairing">
+    <div class="adora-pdp__section-header"><p class="adora-pdp__eyebrow">COMPLETE THE RITUAL</p><h2>Complete the ritual</h2><p>Use this step inside a clear routine instead of building a noisy shelf.</p></div>
+    <div class="adora-pdp__ritual-flow">
+      <article><span>Before</span><strong>{{ section.settings.before_step | escape }}</strong></article>
+      <article class="is-active"><span>This step</span><strong>{{ product.title | escape }}</strong></article>
+      <article><span>After</span><strong>{{ section.settings.after_step | escape }}</strong></article>
+    </div>
+    {%- assign pairing_meta = product.metafields.adora.pairing_products.value -%}
+    {%- assign pairing_products = section.settings.pairing_products -%}
+    {%- if pairing_meta != blank or pairing_products != blank -%}
+      <div class="adora-pdp__product-cards">
+        {%- if pairing_meta != blank -%}
+          {%- for pairing in pairing_meta limit: 3 -%}{%- render 'adora-pdp-product-card', product_card: pairing -%}{%- endfor -%}
+        {%- else -%}
+          {%- for pairing in pairing_products limit: 3 -%}{%- render 'adora-pdp-product-card', product_card: pairing -%}{%- endfor -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="adora-pdp__section adora-pdp__value">
+    <div class="adora-pdp__section-header"><p class="adora-pdp__eyebrow">VALUE</p><h2>What's included</h2></div>
+    <div class="adora-pdp__value-list">
+      {%- assign value_meta = product.metafields.adora.value_points.value -%}
+      {%- if value_meta != blank -%}
+        {%- for value in value_meta limit: 6 -%}<div>{{ value | escape }}</div>{%- endfor -%}
+      {%- else -%}
+        {%- assign values = section.settings.value_points | split: '|' -%}
+        {%- for value in values limit: 6 -%}{%- if value != blank -%}<div>{{ value | strip | escape }}</div>{%- endif -%}{%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if product.metafields.reviews.rating.value != blank or request.design_mode -%}
+    <div class="adora-pdp__section adora-pdp__reviews">
+      <div class="adora-pdp__section-header"><p class="adora-pdp__eyebrow">SOCIAL PROOF</p><h2>Loved for the ritual feeling</h2>{% if product.metafields.reviews.rating.value != blank %}<p>{{ product.metafields.reviews.rating.value }} average rating</p>{% else %}<p>Real reviews will appear here when your reviews app provides product data.</p>{% endif %}</div>
+    </div>
+  {%- endif -%}
+
+  <div class="adora-pdp__section adora-pdp__faq">
+    <div class="adora-pdp__section-header"><p class="adora-pdp__eyebrow">FAQ</p><h2>Questions before you add it to your ritual?</h2></div>
+    <div class="adora-pdp__faq-list">
+      {%- for block in section.blocks -%}{%- if block.type == 'faq_item' -%}<details class="adora-pdp__faq-item" {{ block.shopify_attributes }}><summary>{{ block.settings.question | escape }}</summary><div>{{ block.settings.answer }}</div></details>{%- endif -%}{%- endfor -%}
+    </div>
+  </div>
+
+  <div class="adora-pdp__final-cta">
+    <p class="adora-pdp__eyebrow">ADORA RITUAL</p>
+    <h2>{{ section.settings.final_cta_headline | escape }}</h2>
+    <p>{{ section.settings.final_cta_body | escape }}</p>
+    <button class="adora-pdp__add-button adora-pdp__add-button--inline" type="submit" form="{{ product_form_id }}">{{ cta_text | escape }}</button>
+    <small>{{ guarantee_text | escape }} · Secure checkout · Premium skincare ritual</small>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "ADORA Universal PDP",
+  "tag": "section",
+  "class": "section-adora-universal-pdp",
+  "settings": [
+    { "type": "checkbox", "id": "show_announcement", "label": "Show announcement", "default": true },
+    { "type": "text", "id": "announcement_text", "label": "Announcement text", "default": "ADORA Ritual Drop · Clean skincare essentials for elevated daily rituals" },
+    { "type": "text", "id": "eyebrow", "label": "Fallback eyebrow", "default": "ADORA Ritual Essential" },
+    { "type": "text", "id": "hero_headline", "label": "Fallback hero headline", "default": "An elevated skincare essential for your daily ritual." },
+    { "type": "richtext", "id": "hero_subheadline", "label": "Fallback hero subheadline", "default": "<p>A refined ADORA ritual step designed to make your routine feel simpler, softer, and more intentional.</p>" },
+    { "type": "text", "id": "cta_text", "label": "CTA text", "default": "In mein Ritual legen" },
+    { "type": "text", "id": "guarantee_text", "label": "Guarantee text", "default": "14-Day Skin Comfort Promise" },
+    { "type": "textarea", "id": "primary_benefits", "label": "Fallback primary benefits, separated by |", "default": "Skin looks more cared for|Skin feels softer and more comfortable|Fits easily into your daily ritual" },
+    { "type": "text", "id": "skin_concern", "label": "Fallback skin concern", "default": "skin that needs calm ritual clarity" },
+    { "type": "text", "id": "visible_result", "label": "Fallback visible result", "default": "a softer, cared-for glow" },
+    { "type": "text", "id": "texture", "label": "Fallback texture", "default": "refined and comforting" },
+    { "type": "text", "id": "finish", "label": "Fallback finish", "default": "soft, fresh, naturally radiant" },
+    { "type": "text", "id": "ritual_role", "label": "Fallback ritual role", "default": "daily ritual step" },
+    { "type": "textarea", "id": "what_it_does", "label": "Fallback what it does", "default": "Supports the visible feeling of cared-for skin as part of a clear skincare ritual." },
+    { "type": "textarea", "id": "how_it_feels", "label": "Fallback how it feels", "default": "Soft, calm and sensorial, without making the routine feel overloaded." },
+    { "type": "textarea", "id": "why_it_matters", "label": "Fallback why it matters", "default": "It gives this step a clear role so the routine feels intentional and repeatable." },
+    { "type": "textarea", "id": "formula_logic", "label": "Fallback formula logic", "default": "A cosmetic skincare step selected for ritual clarity, texture experience and daily comfort." },
+    { "type": "textarea", "id": "how_to_use_morning", "label": "Fallback morning usage", "default": "Use as the relevant step in your morning ADORA ritual. Apply gently and follow with your next ritual step." },
+    { "type": "textarea", "id": "how_to_use_evening", "label": "Fallback evening usage", "default": "Use in the evening when your skin and routine need a calmer moment. Introduce gradually if your skin is reactive." },
+    { "type": "textarea", "id": "ritual_note", "label": "Fallback ritual note", "default": "Patch test first if your skin is highly reactive. Keep the ritual simple and consistent." },
+    { "type": "text", "id": "problem_eyebrow", "label": "Problem eyebrow", "default": "ROUTINE RESET" },
+    { "type": "text", "id": "problem_headline", "label": "Problem headline", "default": "Your skin does not need more noise. It needs the right ritual." },
+    { "type": "text", "id": "problem_transition", "label": "Problem transition", "default": "ADORA turns this step into a calm, elevated ritual." },
+    { "type": "text", "id": "ritual_eyebrow", "label": "Ritual eyebrow", "default": "RITUAL ROLE" },
+    { "type": "text", "id": "before_step", "label": "Before step fallback", "default": "Cleanse and prepare" },
+    { "type": "text", "id": "after_step", "label": "After step fallback", "default": "Seal and finish" },
+    { "type": "product_list", "id": "pairing_products", "label": "Fallback pairing products", "limit": 3 },
+    { "type": "textarea", "id": "value_points", "label": "Fallback value points, separated by |", "default": "Product|Premium packaging|Ritual guidance|Skin Comfort Promise|Secure checkout" },
+    { "type": "text", "id": "final_cta_headline", "label": "Final CTA headline", "default": "Make this part of your ADORA ritual" },
+    { "type": "text", "id": "final_cta_body", "label": "Final CTA body", "default": "A simple, elevated step for skin that looks and feels more cared for." }
+  ],
+  "blocks": [
+    { "type": "problem_point", "name": "Problem point", "limit": 3, "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "Feels stripped" }, { "type": "text", "id": "text", "label": "Text", "default": "Your routine can feel like too many steps with too little clarity." } ] },
+    { "type": "benefit_card", "name": "Benefit card", "limit": 4, "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "Skin looks more cared for" }, { "type": "text", "id": "text", "label": "Text", "default": "A visible ritual benefit without overcomplicating the routine." } ] },
+    { "type": "faq_item", "name": "FAQ item", "limit": 8, "settings": [ { "type": "text", "id": "question", "label": "Question", "default": "Is this suitable for my skin?" }, { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>This product is designed as a cosmetic skincare ritual step. If your skin is highly reactive, patch test first and introduce it gradually.</p>" } ] }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Universal PDP",
+      "blocks": [
+        { "type": "problem_point", "settings": { "title": "Feels stripped", "text": "Your routine can feel like too many steps with too little clarity." } },
+        { "type": "problem_point", "settings": { "title": "Looks dull", "text": "Skin can look less cared for when the ritual has no clear rhythm." } },
+        { "type": "problem_point", "settings": { "title": "Glow does not last", "text": "The finish can disappear when steps are not working as a ritual." } },
+        { "type": "benefit_card", "settings": { "title": "Skin looks more cared for", "text": "A visible benefit built around ritual consistency." } },
+        { "type": "benefit_card", "settings": { "title": "Skin feels softer", "text": "A calmer, more comfortable feeling in your daily care moment." } },
+        { "type": "benefit_card", "settings": { "title": "Routine feels clearer", "text": "A step with a purpose instead of another product on the shelf." } },
+        { "type": "benefit_card", "settings": { "title": "Care feels intentional", "text": "A more elevated way to repeat your skincare ritual." } },
+        { "type": "faq_item", "settings": { "question": "Is this suitable for my skin?", "answer": "<p>This product is designed as a cosmetic skincare ritual step. If your skin is highly reactive, patch test first and introduce it gradually.</p>" } },
+        { "type": "faq_item", "settings": { "question": "When should I use it?", "answer": "<p>Use it as part of your ADORA ritual according to the morning and evening guidance above.</p>" } },
+        { "type": "faq_item", "settings": { "question": "Can I combine it with other ADORA products?", "answer": "<p>Yes. ADORA products are designed to work as ritual steps. See the Complete The Ritual section for the best pairing.</p>" } },
+        { "type": "faq_item", "settings": { "question": "How long does it last?", "answer": "<p>This depends on frequency of use and amount applied. Use the recommended amount for best ritual consistency.</p>" } },
+        { "type": "faq_item", "settings": { "question": "What if my skin does not like it?", "answer": "<p>You are covered by the 14-Day Skin Comfort Promise.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
