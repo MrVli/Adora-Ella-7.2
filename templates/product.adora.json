@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "adora_universal_pdp": {
+      "type": "adora-universal-pdp",
+      "settings": {}
+    }
+  },
+  "order": [
+    "adora_universal_pdp"
+  ]
+}
