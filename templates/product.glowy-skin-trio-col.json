@@ -1,0 +1,95 @@
+{
+  "sections": {
+    "adora_universal_pdp": {
+      "type": "adora-universal-pdp",
+      "blocks": {
+        "problem_1": {
+          "type": "problem_point",
+          "settings": {
+            "title": "Zu viele Schritte",
+            "text": "Deine Routine wirkt schnell überladen, wenn jedes Produkt eine neue Entscheidung verlangt."
+          }
+        },
+        "problem_2": {
+          "type": "problem_point",
+          "settings": {
+            "title": "Zu wenig Klarheit",
+            "text": "ADORA bringt Reinigung, Pflege und Glow-Finish in eine klare Ritual-Reihenfolge."
+          }
+        },
+        "problem_3": {
+          "type": "problem_point",
+          "settings": {
+            "title": "Glow ohne Ruhe",
+            "text": "Das Ritual ist auf ein weiches, gepflegtes Hautgefühl ausgelegt, ohne überladen zu wirken."
+          }
+        },
+        "benefit_1": {
+          "type": "benefit_card",
+          "settings": {
+            "title": "Cleanse",
+            "text": "Sanfte Reinigung als weicher erster Schritt."
+          }
+        },
+        "benefit_2": {
+          "type": "benefit_card",
+          "settings": {
+            "title": "Hydrate",
+            "text": "Tägliche Feuchtigkeit für ein komfortables Hautgefühl."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit_card",
+          "settings": {
+            "title": "Seal the Glow",
+            "text": "Ein nährendes Finish rundet dein Ritual sichtbar ab."
+          }
+        },
+        "benefit_4": {
+          "type": "benefit_card",
+          "settings": {
+            "title": "Ritual Box",
+            "text": "Ein kuratiertes Set, das sich vollständig und hochwertig anfühlt."
+          }
+        },
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Für wen ist das ADORA Ritual gedacht?",
+            "answer": "Für alle, die ihre Pflege klarer, ruhiger und hochwertiger erleben möchten."
+          }
+        },
+        "faq_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Warum drei Schritte?",
+            "answer": "Die Reihenfolge Cleanse, Hydrate und Seal the Glow macht die Routine verständlich und vollständig."
+          }
+        },
+        "faq_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Kann ich einzelne Produkte später nachkaufen?",
+            "answer": "Ja, einzelne Essentials können als Ergänzung oder Nachkauf in deine Routine passen."
+          }
+        }
+      },
+      "block_order": [
+        "problem_1",
+        "problem_2",
+        "problem_3",
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "benefit_4",
+        "faq_1",
+        "faq_2",
+        "faq_3"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "adora_universal_pdp"
+  ]
+}
