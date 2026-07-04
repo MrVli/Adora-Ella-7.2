@@ -1,0 +1,56 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign form_id = 'AdoraPdpStickyForm-' | append: section.id
+-%}
+
+{%- if product != blank -%}
+  <section class="adora-pdp-sticky-atc" style="--adora-pdp-accent: {{ section.settings.accent_color }}; --adora-pdp-text: {{ section.settings.text_color }};" data-section-id="{{ section.id }}">
+    <div class="adora-pdp-sticky-atc__bar">
+      <div class="adora-pdp-sticky-atc__copy">
+        <strong>{{ product.title | escape }}</strong>
+        <span>{{ current_variant.price | money }}</span>
+      </div>
+      {%- form 'product', product, id: form_id, class: 'adora-pdp-sticky-atc__form' -%}
+        {%- if product.has_only_default_variant -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {%- else -%}
+          <select class="adora-pdp-sticky-atc__select" name="id" aria-label="{{ section.settings.variant_label | escape }}">
+            {%- for variant in product.variants -%}
+              <option value="{{ variant.id }}" {% if variant == current_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}{% unless variant.available %} - Ausverkauft{% endunless %}</option>
+            {%- endfor -%}
+          </select>
+        {%- endif -%}
+        <button class="adora-pdp-sticky-atc__button" type="submit" {% unless current_variant.available %}disabled{% endunless %}>{{ section.settings.cta_label | escape }}</button>
+      {%- endform -%}
+    </div>
+  </section>
+{%- endif -%}
+
+<style>
+  .adora-pdp-sticky-atc { position: sticky; bottom: 12px; z-index: 20; padding: 0 12px 12px; pointer-events: none; font-family: var(--font-body, Inter, sans-serif); }
+  .adora-pdp-sticky-atc__bar { width: min(100%, 980px); margin: 0 auto; display: grid; gap: 12px; align-items: center; border: 1px solid rgba(128,83,148,.18); border-radius: 999px; background: rgba(255,255,255,.84); box-shadow: 0 18px 60px rgba(58,35,81,.14); backdrop-filter: blur(18px); padding: 10px; pointer-events: auto; }
+  .adora-pdp-sticky-atc__copy { min-width: 0; padding-left: 12px; }
+  .adora-pdp-sticky-atc__copy strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--adora-pdp-text); font: 850 14px/1.15 var(--font-display, Inter, sans-serif); }
+  .adora-pdp-sticky-atc__copy span { color: rgba(36,24,44,.68); font-weight: 800; font-size: 13px; }
+  .adora-pdp-sticky-atc__form { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .adora-pdp-sticky-atc__select { min-width: 0; border: 1px solid rgba(128,83,148,.16); border-radius: 999px; padding: 12px 14px; background: #fff; }
+  .adora-pdp-sticky-atc__button { border: 0; border-radius: 999px; padding: 14px 22px; background: var(--adora-pdp-accent); color: #fff; font: 850 14px/1 var(--font-display, Inter, sans-serif); cursor: pointer; box-shadow: 0 14px 34px rgba(128,83,148,.22); }
+  .adora-pdp-sticky-atc__button:disabled { opacity: .45; cursor: not-allowed; }
+  @media (min-width: 750px) { .adora-pdp-sticky-atc__bar { grid-template-columns: minmax(0, 1fr) auto; } .adora-pdp-sticky-atc__form { grid-template-columns: minmax(190px, auto) auto; } }
+  @media (max-width: 749px) { .adora-pdp-sticky-atc__bar { border-radius: 28px; } }
+</style>
+
+{% schema %}
+{
+  "name": "ADORA PDP Sticky ATC",
+  "tag": "section",
+  "class": "section-adora-pdp-sticky-atc",
+  "settings": [
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "In mein Ritual legen" },
+    { "type": "text", "id": "variant_label", "label": "Variant label", "default": "Ritual Option" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#24182c" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" }
+  ],
+  "presets": [ { "name": "ADORA PDP Sticky ATC" } ]
+}
+{% endschema %}
