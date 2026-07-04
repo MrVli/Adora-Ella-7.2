@@ -1,0 +1,144 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign form_id = 'AdoraPdpHeroForm-' | append: section.id
+  assign eyebrow = product.metafields.adora.eyebrow.value | default: section.settings.eyebrow
+  assign headline = product.metafields.adora.hero_headline.value | default: section.settings.headline | default: product.title
+  assign subheadline = product.metafields.adora.hero_subheadline.value | default: section.settings.subheadline | default: product.description
+  assign benefits = product.metafields.adora.primary_benefits.value
+-%}
+
+<section class="adora-pdp-hero" style="--adora-pdp-accent: {{ section.settings.accent_color }}; --adora-pdp-text: {{ section.settings.text_color }}; --adora-pdp-bg: {{ section.settings.background_color }};" data-section-id="{{ section.id }}">
+  <div class="adora-pdp-hero__inner">
+    <div class="adora-pdp-hero__media">
+      {%- if product.media.size > 0 -%}
+        <div class="adora-pdp-hero__gallery">
+          {%- for media in product.media limit: section.settings.media_limit -%}
+            {%- assign media_loading = 'lazy' -%}
+            {%- if forloop.first -%}{%- assign media_loading = 'eager' -%}{%- endif -%}
+            <div class="adora-pdp-hero__media-card{% if forloop.first %} adora-pdp-hero__media-card--main{% endif %}">
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  {{ media | image_url: width: 1600 | image_tag: loading: media_loading, class: 'adora-pdp-hero__image', alt: media.alt | default: product.title }}
+                {%- when 'video' -%}
+                  {{ media | video_tag: image_size: '1200x', autoplay: false, loop: true, muted: true, controls: true, class: 'adora-pdp-hero__image' }}
+                {%- else -%}
+                  {{ media | media_tag: class: 'adora-pdp-hero__image' }}
+              {%- endcase -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- elsif product.featured_image != blank -%}
+        <div class="adora-pdp-hero__gallery">
+          <div class="adora-pdp-hero__media-card adora-pdp-hero__media-card--main">
+            {{ product.featured_image | image_url: width: 1600 | image_tag: loading: 'eager', class: 'adora-pdp-hero__image', alt: product.title }}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="adora-pdp-hero__placeholder" aria-hidden="true"><span>ADORA</span></div>
+      {%- endif -%}
+    </div>
+
+    <div class="adora-pdp-hero__panel">
+      {%- if eyebrow != blank -%}<p class="adora-pdp-hero__eyebrow">{{ eyebrow | escape }}</p>{%- endif -%}
+      <h1 class="adora-pdp-hero__title">{{ headline | escape }}</h1>
+      {%- if subheadline != blank -%}<div class="adora-pdp-hero__copy">{{ subheadline }}</div>{%- endif -%}
+
+      <div class="adora-pdp-hero__signals" role="list">
+        {%- if section.settings.signal_1 != blank -%}<div role="listitem"><span>{{ section.settings.signal_1_label | escape }}</span><strong>{{ section.settings.signal_1 | escape }}</strong></div>{%- endif -%}
+        {%- if section.settings.signal_2 != blank -%}<div role="listitem"><span>{{ section.settings.signal_2_label | escape }}</span><strong>{{ section.settings.signal_2 | escape }}</strong></div>{%- endif -%}
+        {%- if section.settings.signal_3 != blank -%}<div role="listitem"><span>{{ section.settings.signal_3_label | escape }}</span><strong>{{ section.settings.signal_3 | escape }}</strong></div>{%- endif -%}
+      </div>
+
+      <ul class="adora-pdp-hero__benefits" role="list">
+        {%- if benefits != blank -%}
+          {%- for item in benefits limit: 5 -%}<li>{{ item | escape }}</li>{%- endfor -%}
+        {%- else -%}
+          {%- assign fallback_benefits = section.settings.benefits | split: '|' -%}
+          {%- for item in fallback_benefits limit: 5 -%}{%- if item != blank -%}<li>{{ item | strip | escape }}</li>{%- endif -%}{%- endfor -%}
+        {%- endif -%}
+      </ul>
+
+      <div class="adora-pdp-hero__price">
+        <span>{{ current_variant.price | money }}</span>
+        {%- if current_variant.compare_at_price > current_variant.price -%}<s>{{ current_variant.compare_at_price | money }}</s>{%- endif -%}
+      </div>
+
+      {%- if product != blank -%}
+        {%- form 'product', product, id: form_id, class: 'adora-pdp-hero__form' -%}
+          {%- if product.has_only_default_variant -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}">
+          {%- else -%}
+            <label class="adora-pdp-hero__label" for="AdoraPdpVariant-{{ section.id }}">{{ section.settings.variant_label | escape }}</label>
+            <select id="AdoraPdpVariant-{{ section.id }}" class="adora-pdp-hero__select" name="id">
+              {%- for variant in product.variants -%}
+                <option value="{{ variant.id }}" {% if variant == current_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}{% unless variant.available %} - Ausverkauft{% endunless %}</option>
+              {%- endfor -%}
+            </select>
+          {%- endif -%}
+          <button class="adora-pdp-hero__button" type="submit" {% unless current_variant.available %}disabled{% endunless %}>{{ section.settings.cta_label | escape }}</button>
+        {%- endform -%}
+      {%- endif -%}
+
+      {%- if section.settings.microcopy != blank -%}<p class="adora-pdp-hero__microcopy">{{ section.settings.microcopy | escape }}</p>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .adora-pdp-hero { background: var(--adora-pdp-bg); color: var(--adora-pdp-text); padding: clamp(18px, 3vw, 46px) 16px clamp(42px, 6vw, 90px); font-family: var(--font-body, Inter, sans-serif); }
+  .adora-pdp-hero__inner { width: min(100%, 1480px); margin: 0 auto; display: grid; gap: 18px; }
+  .adora-pdp-hero__gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .adora-pdp-hero__media-card, .adora-pdp-hero__placeholder { min-height: 180px; border-radius: 28px; overflow: hidden; background: radial-gradient(circle at 22% 12%, rgba(232,175,254,.55), transparent 38%), #fbf3ff; box-shadow: 0 18px 60px rgba(58,35,81,.08); }
+  .adora-pdp-hero__media-card--main { grid-column: 1 / -1; min-height: min(78vh, 740px); }
+  .adora-pdp-hero__image { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .adora-pdp-hero__placeholder { display: grid; place-items: center; min-height: 520px; color: rgba(128,83,148,.24); font: 800 clamp(58px, 13vw, 160px)/1 var(--font-display, Inter, sans-serif); letter-spacing: .08em; }
+  .adora-pdp-hero__panel { border: 1px solid rgba(128,83,148,.16); border-radius: 30px; padding: clamp(24px, 4vw, 46px); background: rgba(255,255,255,.76); box-shadow: 0 18px 60px rgba(58,35,81,.08); backdrop-filter: blur(16px); }
+  .adora-pdp-hero__eyebrow { margin: 0 0 12px; color: var(--adora-pdp-accent); font: 800 12px/1 var(--font-display, Inter, sans-serif); letter-spacing: .14em; text-transform: uppercase; }
+  .adora-pdp-hero__title { margin: 0; max-width: 760px; font: 850 clamp(36px, 9vw, 76px)/.94 var(--font-display, Inter, sans-serif); letter-spacing: -.055em; }
+  .adora-pdp-hero__copy { margin-top: 16px; max-width: 650px; color: rgba(36,24,44,.76); font-size: clamp(15px, 2vw, 18px); line-height: 1.55; }
+  .adora-pdp-hero__signals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 22px; }
+  .adora-pdp-hero__signals div, .adora-pdp-hero__benefits li { border: 1px solid rgba(128,83,148,.14); border-radius: 18px; background: rgba(251,243,255,.72); padding: 14px; }
+  .adora-pdp-hero__signals span { display: block; color: rgba(36,24,44,.56); font-size: 12px; }
+  .adora-pdp-hero__signals strong { display: block; margin-top: 4px; font: 800 13px/1.15 var(--font-display, Inter, sans-serif); }
+  .adora-pdp-hero__benefits { display: grid; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+  .adora-pdp-hero__price { display: flex; align-items: baseline; gap: 12px; margin-top: 22px; font: 850 24px/1 var(--font-display, Inter, sans-serif); }
+  .adora-pdp-hero__price s { color: rgba(36,24,44,.42); font-size: 16px; }
+  .adora-pdp-hero__form { display: grid; gap: 12px; margin-top: 18px; }
+  .adora-pdp-hero__label { font-weight: 800; font-size: 13px; }
+  .adora-pdp-hero__select { width: 100%; border: 1px solid rgba(128,83,148,.18); border-radius: 999px; padding: 14px 18px; background: #fff; color: #24182c; }
+  .adora-pdp-hero__button { width: 100%; border: 0; border-radius: 999px; padding: 17px 28px; background: var(--adora-pdp-accent); color: #fff; font: 850 14px/1 var(--font-display, Inter, sans-serif); cursor: pointer; box-shadow: 0 16px 36px rgba(128,83,148,.24); }
+  .adora-pdp-hero__button:disabled { opacity: .45; cursor: not-allowed; }
+  .adora-pdp-hero__microcopy { margin: 12px 0 0; color: rgba(36,24,44,.62); font-size: 13px; text-align: center; }
+  @media (min-width: 990px) { .adora-pdp-hero__inner { grid-template-columns: minmax(0, 1.25fr) minmax(380px, .75fr); align-items: start; } .adora-pdp-hero__panel { position: sticky; top: 96px; } }
+  @media (max-width: 749px) { .adora-pdp-hero { padding-left: 10px; padding-right: 10px; } .adora-pdp-hero__gallery { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; } .adora-pdp-hero__media-card { flex: 0 0 86%; min-height: 460px; scroll-snap-align: start; } .adora-pdp-hero__media-card--main { grid-column: auto; } .adora-pdp-hero__signals { grid-template-columns: 1fr; } .adora-pdp-hero__panel { border-radius: 26px; } }
+</style>
+
+{% schema %}
+{
+  "name": "ADORA PDP Hero",
+  "tag": "section",
+  "class": "section-adora-pdp-hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "ADORA Ritual Essential" },
+    { "type": "text", "id": "headline", "label": "Fallback headline", "default": "Ein ruhiger Skincare-Schritt für dein tägliches Ritual." },
+    { "type": "richtext", "id": "subheadline", "label": "Fallback subheadline", "default": "<p>Eine hochwertige ADORA Pflege-Erfahrung, entwickelt für Klarheit, Komfort und einen gepflegten Glow.</p>" },
+    { "type": "text", "id": "cta_label", "label": "Add-to-cart label", "default": "In mein Ritual legen" },
+    { "type": "text", "id": "variant_label", "label": "Variant label", "default": "Ritual Option" },
+    { "type": "textarea", "id": "benefits", "label": "Benefits separated by |", "default": "Weiches Hautgefühl|Klare Ritual-Logik|Premium Pflege-Moment" },
+    { "type": "text", "id": "signal_1_label", "label": "Signal 1 label", "default": "Routine" },
+    { "type": "text", "id": "signal_1", "label": "Signal 1", "default": "Daily ritual" },
+    { "type": "text", "id": "signal_2_label", "label": "Signal 2 label", "default": "Finish" },
+    { "type": "text", "id": "signal_2", "label": "Signal 2", "default": "Soft glow" },
+    { "type": "text", "id": "signal_3_label", "label": "Signal 3 label", "default": "Feeling" },
+    { "type": "text", "id": "signal_3", "label": "Signal 3", "default": "Cared-for skin" },
+    { "type": "text", "id": "microcopy", "label": "Microcopy", "default": "Sicherer Checkout · Premium ADORA Ritual" },
+    { "type": "range", "id": "media_limit", "label": "Media items", "min": 1, "max": 8, "step": 1, "default": 5 },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#24182c" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" }
+  ],
+  "presets": [
+    { "name": "ADORA PDP Hero" }
+  ]
+}
+{% endschema %}
