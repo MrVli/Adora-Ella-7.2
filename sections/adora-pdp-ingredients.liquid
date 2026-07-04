@@ -1,0 +1,66 @@
+{%- liquid
+  assign formula_logic = product.metafields.adora.formula_logic.value | default: section.settings.formula_logic
+  assign ingredients = product.metafields.adora.ingredients.value | default: section.settings.ingredients
+-%}
+
+<section class="adora-pdp-ingredients" style="--adora-pdp-accent: {{ section.settings.accent_color }}; --adora-pdp-text: {{ section.settings.text_color }}; --adora-pdp-bg: {{ section.settings.background_color }};">
+  <div class="adora-pdp-ingredients__inner">
+    <div class="adora-pdp-ingredients__header">
+      {%- if section.settings.eyebrow != blank -%}<p>{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2>{{ section.settings.headline | escape }}</h2>
+      {%- if section.settings.subheadline != blank -%}<div>{{ section.settings.subheadline }}</div>{%- endif -%}
+    </div>
+    <div class="adora-pdp-ingredients__panel">
+      <article>
+        <span>{{ section.settings.logic_label | escape }}</span>
+        <p>{{ formula_logic | escape }}</p>
+      </article>
+      <article>
+        <span>{{ section.settings.ingredients_label | escape }}</span>
+        <p>{{ ingredients | escape }}</p>
+      </article>
+      {%- if section.blocks.size > 0 -%}
+        <div class="adora-pdp-ingredients__badges">
+          {%- for block in section.blocks -%}<span {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</span>{%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .adora-pdp-ingredients { background: var(--adora-pdp-bg); color: var(--adora-pdp-text); padding: clamp(46px, 7vw, 104px) 16px; font-family: var(--font-body, Inter, sans-serif); }
+  .adora-pdp-ingredients__inner { width: min(100%, 1240px); margin: 0 auto; display: grid; gap: 24px; }
+  .adora-pdp-ingredients__header p { margin: 0 0 10px; color: var(--adora-pdp-accent); font: 850 12px/1 var(--font-display, Inter, sans-serif); letter-spacing: .14em; text-transform: uppercase; }
+  .adora-pdp-ingredients__header h2 { margin: 0; max-width: 760px; font: 850 clamp(30px, 5vw, 56px)/.96 var(--font-display, Inter, sans-serif); letter-spacing: -.045em; }
+  .adora-pdp-ingredients__header div { margin-top: 14px; max-width: 620px; color: rgba(36,24,44,.68); line-height: 1.55; }
+  .adora-pdp-ingredients__panel { display: grid; gap: 14px; border: 1px solid rgba(128,83,148,.16); border-radius: 34px; background: rgba(255,255,255,.78); box-shadow: 0 18px 60px rgba(58,35,81,.07); padding: clamp(20px, 4vw, 38px); }
+  .adora-pdp-ingredients article { border-radius: 24px; background: rgba(251,243,255,.74); padding: 20px; }
+  .adora-pdp-ingredients article span { display: block; color: var(--adora-pdp-accent); font: 850 12px/1 var(--font-display, Inter, sans-serif); letter-spacing: .12em; text-transform: uppercase; }
+  .adora-pdp-ingredients article p { margin: 12px 0 0; color: rgba(36,24,44,.72); line-height: 1.58; }
+  .adora-pdp-ingredients__badges { display: flex; flex-wrap: wrap; gap: 10px; }
+  .adora-pdp-ingredients__badges span { border: 1px solid rgba(128,83,148,.18); border-radius: 999px; padding: 10px 14px; background: rgba(255,255,255,.8); color: var(--adora-pdp-accent); font-weight: 800; font-size: 13px; }
+  @media (min-width: 900px) { .adora-pdp-ingredients__inner { grid-template-columns: .85fr 1.15fr; align-items: center; } }
+</style>
+
+{% schema %}
+{
+  "name": "ADORA PDP Ingredients",
+  "tag": "section",
+  "class": "section-adora-pdp-ingredients",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "FORMULA CONFIDENCE" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Formelgefühl statt Ingredient Noise." },
+    { "type": "richtext", "id": "subheadline", "label": "Subheadline", "default": "<p>Erkläre Herkunft, Qualitätsmerkmale und Formel-Logik ruhig und hochwertig.</p>" },
+    { "type": "text", "id": "logic_label", "label": "Formula label", "default": "Ritual Logic" },
+    { "type": "textarea", "id": "formula_logic", "label": "Formula logic fallback", "default": "Ein kosmetischer Pflege-Schritt, ausgewählt für Ritual-Klarheit, Textur-Erlebnis und täglichen Komfort." },
+    { "type": "text", "id": "ingredients_label", "label": "Ingredients label", "default": "Key Details" },
+    { "type": "textarea", "id": "ingredients", "label": "Ingredients fallback", "default": "Nutze diesen Bereich für INCI, Key Ingredients oder bewusste Qualitätsmerkmale. Keine medizinischen Claims." },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#24182c" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#805394" }
+  ],
+  "blocks": [ { "type": "badge", "name": "Trust badge", "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "Vegan" } ] } ],
+  "presets": [ { "name": "ADORA PDP Ingredients", "blocks": [ { "type": "badge", "settings": { "text": "Vegan" } }, { "type": "badge", "settings": { "text": "Made in Europe" } }, { "type": "badge", "settings": { "text": "Ritual-first" } } ] } ]
+}
+{% endschema %}
