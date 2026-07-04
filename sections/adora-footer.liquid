@@ -1,0 +1,277 @@
+{%- liquid
+  assign footer_bg = section.settings.footer_background_color
+  case section.settings.footer_background_style
+    when 'cream'
+      assign footer_bg = 'var(--adora-cream, #fff8ef)'
+    when 'mist'
+      assign footer_bg = 'var(--adora-mist, #fbf3ff)'
+    when 'lilac_gradient'
+      assign footer_bg = 'radial-gradient(circle at 18% 0%, rgba(232, 175, 254, 0.42), transparent 34%), linear-gradient(180deg, #ffffff 0%, #fbf3ff 48%, #fff8ef 100%)'
+  endcase
+
+  assign hero_bg = section.settings.hero_background_color
+  case section.settings.hero_background_style
+    when 'cream'
+      assign hero_bg = 'var(--adora-cream, #fff8ef)'
+    when 'mist'
+      assign hero_bg = 'var(--adora-mist, #fbf3ff)'
+    when 'lilac_gradient'
+      assign hero_bg = 'radial-gradient(circle at 18% 12%, rgba(232, 175, 254, 0.56), transparent 36%), linear-gradient(135deg, #fff8ef 0%, #fbf3ff 54%, #f4d8ff 100%)'
+  endcase
+-%}
+
+<footer class="adora-footer adora-footer--hero-{{ section.settings.hero_layout }} adora-footer--nav-{{ section.settings.navigation_layout_desktop }} adora-footer--mobile-nav-{{ section.settings.navigation_layout_mobile }} adora-footer--trust-mobile-{{ section.settings.trust_layout_mobile }} adora-footer--bottom-{{ section.settings.bottom_bar_layout }}{% if section.settings.enable_glassmorphism %} adora-footer--glass{% endif %}{% if section.settings.enable_soft_shadow %} adora-footer--shadow{% endif %}{% if section.settings.enable_hover_lift %} adora-footer--hover{% endif %}"
+  style="--adora-footer-bg: {{ footer_bg }}; --adora-footer-text: {{ section.settings.footer_text_color }}; --adora-footer-muted: {{ section.settings.footer_muted_text_color }}; --adora-footer-accent: {{ section.settings.footer_accent_color }}; --adora-footer-border: {{ section.settings.footer_border_color }}; --adora-footer-max: {{ section.settings.footer_max_width }}px; --adora-footer-pad-d: {{ section.settings.footer_padding_desktop }}px; --adora-footer-pad-m: {{ section.settings.footer_padding_mobile }}px; --adora-footer-gap: {{ section.settings.footer_section_gap }}px; --adora-footer-hero-bg: {{ hero_bg }}; --adora-footer-hero-text: {{ section.settings.hero_text_color }}; --adora-footer-hero-accent: {{ section.settings.hero_accent_color }}; --adora-footer-hero-radius: {{ section.settings.hero_border_radius }}px; --adora-footer-hero-overlay: {{ section.settings.hero_overlay_opacity | divided_by: 100.0 }}; --adora-footer-nav-heading: {{ section.settings.nav_heading_color }}; --adora-footer-nav-link: {{ section.settings.nav_link_color }}; --adora-footer-nav-hover: {{ section.settings.nav_link_hover_color }}; --adora-footer-trust-text: {{ section.settings.trust_text_color }}; --adora-footer-trust-bg: {{ section.settings.trust_background_color }}; --adora-footer-trust-border: {{ section.settings.trust_border_color }}; --adora-footer-bottom-text: {{ section.settings.bottom_text_color }}; --adora-footer-bottom-border: {{ section.settings.bottom_border_color }};">
+  <div class="adora-footer__inner">
+    {%- if section.settings.show_footer_hero -%}
+      <div class="adora-footer__hero">
+        {%- if section.settings.show_hero_glow_veil -%}<span class="adora-footer__hero-glow" aria-hidden="true"></span>{%- endif -%}
+        <div class="adora-footer__hero-copy">
+          {%- if section.settings.hero_eyebrow != blank -%}<p class="adora-footer__eyebrow">{{ section.settings.hero_eyebrow | escape }}</p>{%- endif -%}
+          {%- if section.settings.hero_headline != blank -%}<h2 class="adora-footer__hero-heading">{{ section.settings.hero_headline | escape }}</h2>{%- endif -%}
+          {%- if section.settings.hero_text != blank -%}<div class="adora-footer__hero-text">{{ section.settings.hero_text }}</div>{%- endif -%}
+          <div class="adora-footer__hero-actions">
+            {%- render 'adora-button', label: section.settings.hero_primary_button_label, link: section.settings.hero_primary_button_link, style: 'primary', class: 'adora-footer__button', aria_label: section.settings.hero_primary_button_label -%}
+            {%- render 'adora-button', label: section.settings.hero_secondary_button_label, link: section.settings.hero_secondary_button_link, style: 'glass', class: 'adora-footer__button', aria_label: section.settings.hero_secondary_button_label -%}
+          </div>
+        </div>
+        {%- if section.settings.show_hero_image -%}
+          <div class="adora-footer__hero-media">
+            {%- render 'adora-image-frame', image: section.settings.hero_image, mobile_image: section.settings.hero_mobile_image, alt: section.settings.hero_image_alt, aspect_ratio: '4 / 5', class: 'adora-footer__hero-image', loading: 'lazy' -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="adora-footer__middle">
+      {%- if section.settings.show_navigation -%}
+        <nav class="adora-footer__nav" aria-label="Footer navigation">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'footer_column' -%}
+              <details class="adora-footer__nav-column" {% unless section.settings.enable_mobile_accordion %}open{% endunless %} {{ block.shopify_attributes }}>
+                <summary class="adora-footer__nav-heading">
+                  <span>{{ block.settings.column_heading | default: 'ADORA' | escape }}</span>
+                  <span class="adora-footer__accordion-icon" aria-hidden="true">+</span>
+                </summary>
+                <div class="adora-footer__nav-links">
+                  {%- if block.settings.menu != blank and block.settings.menu.links.size > 0 -%}
+                    {%- for link in block.settings.menu.links -%}
+                      <a href="{{ link.url }}" class="adora-footer__nav-link">{{ link.title | escape }}</a>
+                    {%- endfor -%}
+                  {%- else -%}
+                    {%- for i in (1..5) -%}
+                      {%- liquid
+                        assign label_key = 'custom_link_' | append: i | append: '_label'
+                        assign url_key = 'custom_link_' | append: i | append: '_url'
+                        assign item_label = block.settings[label_key]
+                        assign item_url = block.settings[url_key] | default: '#'
+                      -%}
+                      {%- if item_label != blank -%}<a href="{{ item_url }}" class="adora-footer__nav-link">{{ item_label | escape }}</a>{%- endif -%}
+                    {%- endfor -%}
+                  {%- endif -%}
+                </div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+
+      {%- if section.settings.show_newsletter -%}
+        <div class="adora-footer__newsletter" style="--adora-footer-newsletter-bg: {{ section.settings.newsletter_card_background }};">
+          {%- if section.settings.newsletter_heading != blank -%}<h3 class="adora-footer__newsletter-heading">{{ section.settings.newsletter_heading | escape }}</h3>{%- endif -%}
+          {%- if section.settings.newsletter_text != blank -%}<div class="adora-footer__newsletter-text">{{ section.settings.newsletter_text }}</div>{%- endif -%}
+          {%- form 'customer', id: 'AdoraFooterNewsletter', class: 'adora-footer__newsletter-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <label class="adora-footer__visually-hidden" for="AdoraFooterEmail-{{ section.id }}">{{ section.settings.newsletter_placeholder | escape }}</label>
+            <div class="adora-footer__field">
+              <input id="AdoraFooterEmail-{{ section.id }}" class="adora-footer__email-input" type="email" name="contact[email]" value="{{ form.email }}" placeholder="{{ section.settings.newsletter_placeholder | escape }}" autocorrect="off" autocapitalize="off" autocomplete="email" required>
+              <button class="adora-footer__submit" type="submit">{{ section.settings.newsletter_button_label | escape }}</button>
+            </div>
+            {%- if form.posted_successfully? -%}<p class="adora-footer__form-message" role="status">{{ section.settings.newsletter_success_message | escape }}</p>{%- endif -%}
+            {%- if form.errors -%}<p class="adora-footer__form-message adora-footer__form-message--error" role="alert">{{ section.settings.newsletter_error_message | escape }}</p>{%- endif -%}
+          {%- endform -%}
+          {%- if section.settings.newsletter_microcopy != blank -%}<p class="adora-footer__microcopy">{{ section.settings.newsletter_microcopy | escape }}</p>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_trust_row -%}
+      <div class="adora-footer__trust" role="list" aria-label="ADORA trust signals">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'trust_item' -%}
+            {%- liquid
+              assign trust_size = block.settings.trust_icon_size | default: section.settings.trust_icon_size
+              assign trust_alt = block.settings.trust_icon_alt | default: block.settings.trust_text
+            -%}
+            {%- capture trust_content -%}
+              {%- if block.settings.show_icon and block.settings.trust_icon != blank -%}<img class="adora-footer__trust-icon" src="{{ block.settings.trust_icon | image_url: width: trust_size }}" width="{{ trust_size }}" height="{{ trust_size }}" alt="{{ trust_alt | escape }}" loading="lazy">{%- endif -%}
+              {%- if block.settings.show_text and block.settings.trust_text != blank -%}<span>{{ block.settings.trust_text | escape }}</span>{%- endif -%}
+            {%- endcapture -%}
+            {%- if block.settings.trust_link != blank -%}<a class="adora-footer__trust-item" role="listitem" href="{{ block.settings.trust_link }}" {{ block.shopify_attributes }}>{{ trust_content }}</a>{%- else -%}<div class="adora-footer__trust-item" role="listitem" {{ block.shopify_attributes }}>{{ trust_content }}</div>{%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_bottom_bar -%}
+      <div class="adora-footer__bottom">
+        <div class="adora-footer__copyright">{{ section.settings.copyright_text | escape }}</div>
+        {%- if section.settings.bottom_claim != blank -%}<div class="adora-footer__claim">{{ section.settings.bottom_claim | escape }}</div>{%- endif -%}
+        <div class="adora-footer__bottom-links">
+          {%- if section.settings.legal_menu != blank and section.settings.legal_menu.links.size > 0 -%}
+            {%- for link in section.settings.legal_menu.links -%}<a href="{{ link.url }}">{{ link.title | escape }}</a>{%- endfor -%}
+          {%- endif -%}
+          {%- if section.settings.show_social_links -%}
+            {%- if section.settings.instagram_url != blank -%}<a href="{{ section.settings.instagram_url }}" aria-label="ADORA auf Instagram">Instagram</a>{%- endif -%}
+            {%- if section.settings.tiktok_url != blank -%}<a href="{{ section.settings.tiktok_url }}" aria-label="ADORA auf TikTok">TikTok</a>{%- endif -%}
+            {%- if section.settings.pinterest_url != blank -%}<a href="{{ section.settings.pinterest_url }}" aria-label="ADORA auf Pinterest">Pinterest</a>{%- endif -%}
+          {%- endif -%}
+        </div>
+        {%- if section.settings.show_payment_icons and shop.enabled_payment_types != blank -%}
+          <div class="adora-footer__payments" aria-label="Payment methods">
+            {%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag: class: 'adora-footer__payment-icon' }}{%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "ADORA Footer",
+  "tag": "section",
+  "class": "section-adora-footer",
+  "max_blocks": 14,
+  "settings": [
+    { "type": "header", "content": "Global" },
+    { "type": "select", "id": "footer_background_style", "label": "Footer background style", "default": "cream", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }] },
+    { "type": "color_background", "id": "footer_background_color", "label": "Footer background color", "default": "#fff8ef" },
+    { "type": "color", "id": "footer_text_color", "label": "Footer text color", "default": "#3a2351" },
+    { "type": "color", "id": "footer_muted_text_color", "label": "Muted text color", "default": "#7b6a84" },
+    { "type": "color", "id": "footer_accent_color", "label": "Accent color", "default": "#805394" },
+    { "type": "color", "id": "footer_border_color", "label": "Border color", "default": "rgba(128, 83, 148, 0.18)" },
+    { "type": "range", "id": "footer_max_width", "label": "Max width", "min": 1040, "max": 1680, "step": 20, "unit": "px", "default": 1440 },
+    { "type": "range", "id": "footer_padding_desktop", "label": "Padding desktop", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "footer_padding_mobile", "label": "Padding mobile", "min": 36, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "footer_section_gap", "label": "Section gap", "min": 24, "max": 96, "step": 4, "unit": "px", "default": 44 },
+    { "type": "checkbox", "id": "enable_glassmorphism", "label": "Enable glassmorphism", "default": true },
+    { "type": "checkbox", "id": "enable_soft_shadow", "label": "Enable soft shadow", "default": true },
+    { "type": "checkbox", "id": "enable_hover_lift", "label": "Enable hover lift", "default": true },
+    { "type": "checkbox", "id": "enable_reduced_motion_support", "label": "Respect reduced motion", "default": true },
+
+    { "type": "header", "content": "Signature footer hero" },
+    { "type": "checkbox", "id": "show_footer_hero", "label": "Show footer hero", "default": true },
+    { "type": "text", "id": "hero_eyebrow", "label": "Hero eyebrow", "default": "ADORA RITUALS" },
+    { "type": "text", "id": "hero_headline", "label": "Hero headline", "default": "Dein nächster Hautmoment beginnt hier." },
+    { "type": "richtext", "id": "hero_text", "label": "Hero text", "default": "<p>Entdecke kuratierte Skincare-Rituale, Essentials und Sets für weiche, gepflegte und sichtbar strahlende Haut.</p>" },
+    { "type": "text", "id": "hero_primary_button_label", "label": "Primary button label", "default": "Ritual entdecken" },
+    { "type": "url", "id": "hero_primary_button_link", "label": "Primary button link" },
+    { "type": "text", "id": "hero_secondary_button_label", "label": "Secondary button label", "default": "Alle Produkte ansehen" },
+    { "type": "url", "id": "hero_secondary_button_link", "label": "Secondary button link" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "image_picker", "id": "hero_mobile_image", "label": "Hero mobile image" },
+    { "type": "text", "id": "hero_image_alt", "label": "Hero image alt", "default": "ADORA ritual visual" },
+    { "type": "select", "id": "hero_layout", "label": "Hero layout", "default": "text_left", "options": [{ "value": "text_left", "label": "Text left / image right" }, { "value": "centered", "label": "Centered" }, { "value": "background_image", "label": "Background image" }] },
+    { "type": "select", "id": "hero_background_style", "label": "Hero background style", "default": "lilac_gradient", "options": [{ "value": "cream", "label": "Cream" }, { "value": "mist", "label": "Mist" }, { "value": "lilac_gradient", "label": "Lilac gradient" }, { "value": "custom", "label": "Custom" }] },
+    { "type": "color_background", "id": "hero_background_color", "label": "Hero background color", "default": "#fbf3ff" },
+    { "type": "color", "id": "hero_text_color", "label": "Hero text color", "default": "#3a2351" },
+    { "type": "color", "id": "hero_accent_color", "label": "Hero accent color", "default": "#805394" },
+    { "type": "range", "id": "hero_overlay_opacity", "label": "Hero overlay opacity", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 30 },
+    { "type": "range", "id": "hero_border_radius", "label": "Hero border radius", "min": 24, "max": 60, "step": 2, "unit": "px", "default": 44 },
+    { "type": "checkbox", "id": "show_hero_image", "label": "Show hero image", "default": true },
+    { "type": "checkbox", "id": "show_hero_glow_veil", "label": "Show hero glow veil", "default": true },
+
+    { "type": "header", "content": "Navigation" },
+    { "type": "checkbox", "id": "show_navigation", "label": "Show navigation", "default": true },
+    { "type": "select", "id": "navigation_layout_desktop", "label": "Navigation desktop layout", "default": "four_columns", "options": [{ "value": "four_columns", "label": "Four columns" }, { "value": "three_columns", "label": "Three columns" }, { "value": "editorial_grid", "label": "Editorial grid" }] },
+    { "type": "select", "id": "navigation_layout_mobile", "label": "Navigation mobile layout", "default": "accordion", "options": [{ "value": "accordion", "label": "Accordion" }, { "value": "stacked", "label": "Stacked" }] },
+    { "type": "color", "id": "nav_heading_color", "label": "Nav heading color", "default": "#3a2351" },
+    { "type": "color", "id": "nav_link_color", "label": "Nav link color", "default": "#7b6a84" },
+    { "type": "color", "id": "nav_link_hover_color", "label": "Nav link hover color", "default": "#805394" },
+    { "type": "checkbox", "id": "enable_mobile_accordion", "label": "Enable mobile accordion", "default": true },
+
+    { "type": "header", "content": "Newsletter" },
+    { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter", "default": true },
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Der ADORA Ritual Letter" },
+    { "type": "richtext", "id": "newsletter_text", "label": "Newsletter text", "default": "<p>Erhalte neue Rituale, Launches und Pflege-Inspirationen — ruhig, kuratiert und ohne Spam.</p>" },
+    { "type": "text", "id": "newsletter_placeholder", "label": "Email placeholder", "default": "Deine E-Mail-Adresse" },
+    { "type": "text", "id": "newsletter_button_label", "label": "Button label", "default": "Eintragen" },
+    { "type": "text", "id": "newsletter_microcopy", "label": "Microcopy", "default": "Neue Launches · Ritual Guides · Exklusive Drops" },
+    { "type": "color_background", "id": "newsletter_card_background", "label": "Newsletter card background", "default": "rgba(255, 255, 255, 0.62)" },
+    { "type": "text", "id": "newsletter_success_message", "label": "Success message", "default": "Danke. Dein Ritual Letter ist aktiviert." },
+    { "type": "text", "id": "newsletter_error_message", "label": "Error message", "default": "Bitte prüfe deine E-Mail-Adresse." },
+
+    { "type": "header", "content": "Trust row" },
+    { "type": "checkbox", "id": "show_trust_row", "label": "Show trust row", "default": true },
+    { "type": "select", "id": "trust_layout_desktop", "label": "Trust desktop layout", "default": "row", "options": [{ "value": "row", "label": "Row" }, { "value": "grid", "label": "Grid" }] },
+    { "type": "select", "id": "trust_layout_mobile", "label": "Trust mobile layout", "default": "wrap", "options": [{ "value": "wrap", "label": "Wrap" }, { "value": "scroll", "label": "Scroll" }, { "value": "stacked", "label": "Stacked" }] },
+    { "type": "range", "id": "trust_icon_size", "label": "Trust icon size", "min": 14, "max": 48, "step": 2, "unit": "px", "default": 22 },
+    { "type": "color", "id": "trust_text_color", "label": "Trust text color", "default": "#3a2351" },
+    { "type": "color_background", "id": "trust_background_color", "label": "Trust background", "default": "rgba(255, 255, 255, 0.56)" },
+    { "type": "color", "id": "trust_border_color", "label": "Trust border", "default": "rgba(128, 83, 148, 0.18)" },
+
+    { "type": "header", "content": "Bottom bar" },
+    { "type": "checkbox", "id": "show_bottom_bar", "label": "Show bottom bar", "default": true },
+    { "type": "text", "id": "copyright_text", "label": "Copyright text", "default": "© 2026 ADORA" },
+    { "type": "text", "id": "bottom_claim", "label": "Bottom claim", "default": "Soft lavender skincare rituals for modern skin." },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },
+    { "type": "checkbox", "id": "show_social_links", "label": "Show social links", "default": true },
+    { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
+    { "type": "url", "id": "tiktok_url", "label": "TikTok URL" },
+    { "type": "url", "id": "pinterest_url", "label": "Pinterest URL" },
+    { "type": "link_list", "id": "legal_menu", "label": "Legal menu" },
+    { "type": "select", "id": "bottom_bar_layout", "label": "Bottom layout", "default": "spread", "options": [{ "value": "spread", "label": "Spread" }, { "value": "centered", "label": "Centered" }, { "value": "stacked", "label": "Stacked" }] },
+    { "type": "color", "id": "bottom_text_color", "label": "Bottom text color", "default": "#7b6a84" },
+    { "type": "color", "id": "bottom_border_color", "label": "Bottom border color", "default": "rgba(128, 83, 148, 0.18)" }
+  ],
+  "blocks": [
+    {
+      "type": "footer_column",
+      "name": "Footer column",
+      "settings": [
+        { "type": "text", "id": "column_heading", "label": "Column heading", "default": "Shop ADORA" },
+        { "type": "link_list", "id": "menu", "label": "Menu" },
+        { "type": "text", "id": "custom_link_1_label", "label": "Custom link 1 label", "default": "Glass Skin Ritual" },
+        { "type": "url", "id": "custom_link_1_url", "label": "Custom link 1 URL" },
+        { "type": "text", "id": "custom_link_2_label", "label": "Custom link 2 label", "default": "Ritual Sets" },
+        { "type": "url", "id": "custom_link_2_url", "label": "Custom link 2 URL" },
+        { "type": "text", "id": "custom_link_3_label", "label": "Custom link 3 label", "default": "Single Essentials" },
+        { "type": "url", "id": "custom_link_3_url", "label": "Custom link 3 URL" },
+        { "type": "text", "id": "custom_link_4_label", "label": "Custom link 4 label", "default": "Body Rituals" },
+        { "type": "url", "id": "custom_link_4_url", "label": "Custom link 4 URL" },
+        { "type": "text", "id": "custom_link_5_label", "label": "Custom link 5 label", "default": "Gift Rituals" },
+        { "type": "url", "id": "custom_link_5_url", "label": "Custom link 5 URL" }
+      ]
+    },
+    {
+      "type": "trust_item",
+      "name": "Trust item",
+      "settings": [
+        { "type": "text", "id": "trust_text", "label": "Trust text", "default": "Vegan" },
+        { "type": "image_picker", "id": "trust_icon", "label": "Trust icon" },
+        { "type": "text", "id": "trust_icon_alt", "label": "Trust icon alt" },
+        { "type": "range", "id": "trust_icon_size", "label": "Icon size", "min": 12, "max": 48, "step": 2, "unit": "px", "default": 22 },
+        { "type": "url", "id": "trust_link", "label": "Trust link" },
+        { "type": "checkbox", "id": "show_icon", "label": "Show icon", "default": true },
+        { "type": "checkbox", "id": "show_text", "label": "Show text", "default": true }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ADORA Footer",
+      "blocks": [
+        { "type": "footer_column", "settings": { "column_heading": "Shop ADORA", "custom_link_1_label": "Glass Skin Ritual", "custom_link_2_label": "Ritual Sets", "custom_link_3_label": "Single Essentials", "custom_link_4_label": "Body Rituals", "custom_link_5_label": "Gift Rituals" } },
+        { "type": "footer_column", "settings": { "column_heading": "Explore", "custom_link_1_label": "The ADORA Method", "custom_link_2_label": "Ingredients", "custom_link_3_label": "How to Use", "custom_link_4_label": "Reviews", "custom_link_5_label": "" } },
+        { "type": "footer_column", "settings": { "column_heading": "Support", "custom_link_1_label": "Kontakt", "custom_link_2_label": "Versand", "custom_link_3_label": "Rückgabe", "custom_link_4_label": "FAQ", "custom_link_5_label": "" } },
+        { "type": "footer_column", "settings": { "column_heading": "Legal", "custom_link_1_label": "Impressum", "custom_link_2_label": "Datenschutz", "custom_link_3_label": "AGB", "custom_link_4_label": "Widerruf", "custom_link_5_label": "" } },
+        { "type": "trust_item", "settings": { "trust_text": "Vegan" } },
+        { "type": "trust_item", "settings": { "trust_text": "Made in Europe" } },
+        { "type": "trust_item", "settings": { "trust_text": "Premium Ritual Sets" } },
+        { "type": "trust_item", "settings": { "trust_text": "Secure Checkout" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
